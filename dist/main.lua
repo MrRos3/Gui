@@ -8799,6 +8799,18 @@ end
 
 ap.DropdownMenu=ak(ao,ap,am,"Dropdown")
 
+
+
+
+local aq=ap.DropdownMenu.Open
+local ar=ap.DropdownMenu.Close
+function ap.DropdownMenu.Open(as,...)
+if ap.Opened or ap.UIElements.MenuCanvas.Visible then
+return ar(as,...)
+end
+return aq(as,...)
+end
+
 ap.Display=ap.DropdownMenu.Display
 ap.Refresh=ap.DropdownMenu.Refresh
 ap.Select=ap.DropdownMenu.Select
@@ -8819,14 +8831,14 @@ Parent=ap.UIElements.Dropdown and ap.UIElements.Dropdown.Frame
 or ap.DropdownFrame.UIElements.Main,
 })
 
-function ap.Lock(aq)
+function ap.Lock(as)
 ap.Locked=true
 if ap.Opened or ap.UIElements.MenuCanvas.Visible then
 ap:Close()
 end
 return ap.DropdownFrame:Lock(ap.LockedTitle)
 end
-function ap.Unlock(aq)
+function ap.Unlock(as)
 ap.Locked=false
 return ap.DropdownFrame:Unlock()
 end
