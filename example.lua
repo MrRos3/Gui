@@ -1,4 +1,4 @@
-local VantaUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/MrRos3/Gui/main/main.lua"))()
+local VantaUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/MrRos3/VantaUI/main/main.lua"))()
 
 local Window = VantaUI:CreateWindow({
     Title = "VantaUI Showcase",
