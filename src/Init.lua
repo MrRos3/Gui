@@ -1,4 +1,5 @@
 local WindUI = {
+	Name = "Gui",
 	Window = nil,
 	Theme = nil,
 	Creator = require("./modules/Creator"),
@@ -7,7 +8,7 @@ local WindUI = {
 	Themes = nil,
 	Transparent = false,
 
-	TransparencyValue = 0.15,
+	TransparencyValue = 0.12,
 
 	UIScale = 1,
 
@@ -103,7 +104,7 @@ local UIScaleObj = New("UIScale", {
 WindUI.UIScaleObj = UIScaleObj
 
 WindUI.ScreenGui = New("ScreenGui", {
-	Name = "WindUI",
+	Name = "Gui",
 	Parent = GUIParent,
 	IgnoreGuiInset = true,
 	ScreenInsets = "None",
@@ -131,17 +132,17 @@ WindUI.ScreenGui = New("ScreenGui", {
 })
 
 WindUI.NotificationGui = New("ScreenGui", {
-	Name = "WindUI/Notifications",
+	Name = "Gui/Notifications",
 	Parent = GUIParent,
 	IgnoreGuiInset = true,
 })
 WindUI.DropdownGui = New("ScreenGui", {
-	Name = "WindUI/Dropdowns",
+	Name = "Gui/Dropdowns",
 	Parent = GUIParent,
 	IgnoreGuiInset = true,
 })
 WindUI.TooltipGui = New("ScreenGui", {
-	Name = "WindUI/Tooltips",
+	Name = "Gui/Tooltips",
 	Parent = GUIParent,
 	IgnoreGuiInset = true,
 })
@@ -297,17 +298,86 @@ end
 
 WindUI.Themes = require("./themes/Init")(WindUI, Creator)
 
+WindUI.Themes["Gui Dark"] = {
+	Name = "Gui Dark",
+	Accent = Color3.fromHex("#151923"),
+	Dialog = Color3.fromHex("#11141C"),
+	Outline = Color3.fromHex("#FFFFFF"),
+	Text = Color3.fromHex("#F7F9FF"),
+	Placeholder = Color3.fromHex("#98A1B3"),
+	Background = Color3.fromHex("#0B0E14"),
+	Button = Color3.fromHex("#242B3A"),
+	Icon = Color3.fromHex("#AEB7C8"),
+	Toggle = Color3.fromHex("#5DE7FF"),
+	Slider = Color3.fromHex("#7C8CFF"),
+	Checkbox = Color3.fromHex("#7C8CFF"),
+	Primary = Color3.fromHex("#7C8CFF"),
+	SliderIcon = Color3.fromHex("#A9B2C4"),
+	PanelBackground = Color3.fromHex("#FFFFFF"),
+	PanelBackgroundTransparency = 0.96,
+	LabelBackground = Color3.fromHex("#000000"),
+	LabelBackgroundTransparency = 0.82,
+	ElementBackground = Color3.fromHex("#171C27"),
+	ElementBackgroundTransparency = 0,
+}
+
+WindUI.Themes["Gui AMOLED"] = {
+	Name = "Gui AMOLED",
+	Accent = Color3.fromHex("#0A0A0D"),
+	Dialog = Color3.fromHex("#08090C"),
+	Outline = Color3.fromHex("#FFFFFF"),
+	Text = Color3.fromHex("#FFFFFF"),
+	Placeholder = Color3.fromHex("#858B98"),
+	Background = Color3.fromHex("#000000"),
+	Button = Color3.fromHex("#17191F"),
+	Icon = Color3.fromHex("#A8AFBC"),
+	Toggle = Color3.fromHex("#55F1D6"),
+	Slider = Color3.fromHex("#5DE7FF"),
+	Checkbox = Color3.fromHex("#5DE7FF"),
+	Primary = Color3.fromHex("#5DE7FF"),
+	SliderIcon = Color3.fromHex("#C4CAD4"),
+	PanelBackground = Color3.fromHex("#FFFFFF"),
+	PanelBackgroundTransparency = 0.975,
+	LabelBackground = Color3.fromHex("#090A0C"),
+	LabelBackgroundTransparency = 0.12,
+	ElementBackground = Color3.fromHex("#0D0F14"),
+	ElementBackgroundTransparency = 0,
+}
+
+WindUI.Themes["Gui Violet"] = {
+	Name = "Gui Violet",
+	Accent = Color3.fromHex("#211B35"),
+	Dialog = Color3.fromHex("#171323"),
+	Outline = Color3.fromHex("#FFFFFF"),
+	Text = Color3.fromHex("#FCF9FF"),
+	Placeholder = Color3.fromHex("#A49AB5"),
+	Background = Color3.fromHex("#0D0A13"),
+	Button = Color3.fromHex("#2C2440"),
+	Icon = Color3.fromHex("#C5B8D8"),
+	Toggle = Color3.fromHex("#A98BFF"),
+	Slider = Color3.fromHex("#A98BFF"),
+	Checkbox = Color3.fromHex("#D47CFF"),
+	Primary = Color3.fromHex("#A98BFF"),
+	SliderIcon = Color3.fromHex("#D7CCEA"),
+	PanelBackground = Color3.fromHex("#FFFFFF"),
+	PanelBackgroundTransparency = 0.965,
+	LabelBackground = Color3.fromHex("#120E1B"),
+	LabelBackgroundTransparency = 0.12,
+	ElementBackground = Color3.fromHex("#1B1628"),
+	ElementBackgroundTransparency = 0,
+}
+
 Creator.Themes = WindUI.Themes
 
-WindUI:SetTheme("Dark")
+WindUI:SetTheme("Gui Dark")
 WindUI:SetLanguage(Creator.Language)
 
 function WindUI:CreateWindow(Config)
 	local CreateWindow = require("./components/window/Init")
 
 	if not RunService:IsStudio() and writefile then
-		if not isfolder("WindUI") then
-			makefolder("WindUI")
+		if not isfolder("Gui") then
+			makefolder("Gui")
 		end
 		if Config.Folder then
 			makefolder(Config.Folder)
@@ -321,13 +391,13 @@ function WindUI:CreateWindow(Config)
 	Config.Parent = WindUI.ScreenGui.Window
 
 	if WindUI.Window then
-		warn("You cannot create more than one window")
+		warn("[Gui] You cannot create more than one window")
 		return
 	end
 
 	local CanLoadWindow = true
 
-	local Theme = WindUI.Themes[Config.Theme or "Dark"]
+	local Theme = WindUI.Themes[Config.Theme or "Gui Dark"]
 
 	--WindUI.Theme = Theme
 	Creator.SetTheme(Theme)
