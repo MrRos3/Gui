@@ -25,6 +25,7 @@ Gui.RuntimeVersion = tostring(Gui.Version or PROJECT_VERSION)
 Gui.Version = PROJECT_VERSION
 Gui.Name = "Gui"
 Gui.DefaultTheme = "Gui AMOLED"
+Gui.DefaultStartupTab = "Home"
 Gui.TransparencyValue = 0.1
 
 Gui.GuiInfo = {
@@ -178,7 +179,28 @@ function Gui:CreateWindow(config)
         config.Topbar.ButtonsType = "Mac"
     end
 
+    local startupTab = config.StartupTab or Gui.DefaultStartupTab
     local window = BaseCreateWindow(self, config)
+
+    local BaseTab = window.Tab
+    local startupTabSelected = false
+
+    function window:Tab(tabConfig)
+        tabConfig = tabConfig or {}
+        local tab = BaseTab(self, tabConfig)
+
+        if not startupTabSelected and tostring(tabConfig.Title or "") == tostring(startupTab) then
+            startupTabSelected = true
+            task.defer(function()
+                if not self.Destroyed and tab and tab.Index then
+                    self:SelectTab(tab.Index)
+                end
+            end)
+        end
+
+        return tab
+    end
+
     renameRuntimeGui()
     return window
 end
