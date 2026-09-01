@@ -90,6 +90,18 @@ function Element:New(Config)
 
 	Dropdown.DropdownMenu = CreateDropdown(Config, Dropdown, Element, "Dropdown")
 
+	-- The internal dropdown button calls DropdownMenu:Open() on every click.
+	-- Wrap Open so the same button behaves like a true toggle: click once opens,
+	-- click again closes. MenuCanvas.Visible also catches the short opening delay.
+	local BaseOpen = Dropdown.DropdownMenu.Open
+	local BaseClose = Dropdown.DropdownMenu.Close
+	function Dropdown.DropdownMenu:Open(...)
+		if Dropdown.Opened or Dropdown.UIElements.MenuCanvas.Visible then
+			return BaseClose(self, ...)
+		end
+		return BaseOpen(self, ...)
+	end
+
 	Dropdown.Display = Dropdown.DropdownMenu.Display
 	Dropdown.Refresh = Dropdown.DropdownMenu.Refresh
 	Dropdown.Select = Dropdown.DropdownMenu.Select
