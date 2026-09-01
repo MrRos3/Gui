@@ -49,7 +49,7 @@ function Element:New(Config)
 				end
 			end)
 			if not success then
-				Config.WindUI:Notify({
+				Config.Gui:Notify({
 					Title = "Error",
 					Content = "The " .. NewTitle .. " is not copied. Error: " .. result,
 					Icon = "x",
@@ -57,7 +57,7 @@ function Element:New(Config)
 				})
 			end
 		end
-	end, Config.WindUI.UIScale)
+	end, Config.Gui.UIScale)
 
 	function Code:SetCode(code)
 		CodeElement.Set(code)

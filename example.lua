@@ -48,7 +48,7 @@ Home:Button({
 
 Home:Button({
     Title = "Runtime info",
-    Desc = "Shows the vendored WindUI runtime version kept underneath Gui.",
+    Desc = "Shows the vendored Gui runtime version kept underneath Gui.",
     Icon = "package",
     Callback = function()
         local info = Gui:GetInfo()
@@ -81,7 +81,7 @@ addThemeButton("Gui Violet", "wand-sparkles")
 
 About:Button({
     Title = "MrRos3/Gui",
-    Desc = "Custom WindUI derivative with its own loader, branding and themes.",
+    Desc = "Custom Gui derivative with its own loader, branding and themes.",
     Icon = "github",
     Callback = function()
         Gui:Notify({

@@ -123,11 +123,11 @@ return function(Config)
 	end
 
 	if not RunService:IsStudio() and Window.Folder and writefile then
-		if not isfolder("WindUI/" .. Window.Folder) then
-			makefolder("WindUI/" .. Window.Folder)
+		if not isfolder("Gui/" .. Window.Folder) then
+			makefolder("Gui/" .. Window.Folder)
 		end
-		if not isfolder("WindUI/" .. Window.Folder .. "/assets") then
-			makefolder("WindUI/" .. Window.Folder .. "/assets")
+		if not isfolder("Gui/" .. Window.Folder .. "/assets") then
+			makefolder("Gui/" .. Window.Folder .. "/assets")
 		end
 		if not isfolder(Window.Folder) then
 			makefolder(Window.Folder)
@@ -274,7 +274,7 @@ return function(Config)
 			Window.UIElements.SideBarContainer.Content,
 			Window,
 			3,
-			Config.WindUI
+			Config.Gui
 		)
 	end
 
@@ -560,7 +560,7 @@ return function(Config)
 					writefile(videoPath, response)
 				end)
 				if not success then
-					warn("[ WindUI.Window.Background ] Failed to download video: " .. tostring(result))
+					warn("[ Gui.Window.Background ] Failed to download video: " .. tostring(result))
 				end
 			end
 
@@ -568,9 +568,9 @@ return function(Config)
 				return getcustomasset(videoPath)
 			end)
 			if not success then
-				warn("[ WindUI.Window.Background ] Failed to load custom asset: " .. tostring(customAsset))
+				warn("[ Gui.Window.Background ] Failed to load custom asset: " .. tostring(customAsset))
 			end
-			warn("[ WindUI.Window.Background ] VideoFrame may not work with custom video")
+			warn("[ Gui.Window.Background ] VideoFrame may not work with custom video")
 			BGVideo = customAsset
 		end
 
@@ -719,11 +719,11 @@ return function(Config)
 		Active = true,
 		--GroupTransparency = 1,
 	}, {
-		Config.WindUI.UIScaleObj,
+		Config.Gui.UIScaleObj,
 		Window.AcrylicPaint and Window.AcrylicPaint.Frame or nil,
 		Blur,
 		Creator.NewRoundFrame(Window.UICorner, "Squircle", {
-			ImageTransparency = 1, --  Window.Transparent and Config.WindUI.TransparencyValue or 0,
+			ImageTransparency = 1, --  Window.Transparent and Config.Gui.TransparencyValue or 0,
 			Size = UDim2.new(1, 0, 1, 0),
 			AnchorPoint = Vector2.new(0.5, 0.5),
 			Position = UDim2.new(0.5, 0, 0.5, 0),
@@ -868,19 +868,19 @@ return function(Config)
 	Creator.AddSignal(Window.UIElements.Main.Main.Topbar.Left:GetPropertyChangedSignal("AbsoluteSize"), function()
 		local LeftWidth = 0
 		local RightWidth = Window.UIElements.Main.Main.Topbar.Right.UIListLayout.AbsoluteContentSize.X
-			/ Config.WindUI.UIScale
+			/ Config.Gui.UIScale
 
-		LeftWidth = Window.UIElements.Main.Main.Topbar.Left.AbsoluteSize.X / Config.WindUI.UIScale
+		LeftWidth = Window.UIElements.Main.Main.Topbar.Left.AbsoluteSize.X / Config.Gui.UIScale
 		if Window.Topbar.ButtonsType ~= "Default" then
 			LeftWidth = LeftWidth + RightWidth + Window.UIPadding - 4
 		end
 
 		Window.UIElements.Main.Main.Topbar.Center.Position =
-			UDim2.new(0, LeftWidth + (Window.UIPadding / Config.WindUI.UIScale), 0.5, 0)
+			UDim2.new(0, LeftWidth + (Window.UIPadding / Config.Gui.UIScale), 0.5, 0)
 		Window.UIElements.Main.Main.Topbar.Center.Size = UDim2.new(
 			1,
 			-LeftWidth
-				- (Window.UIPadding / Config.WindUI.UIScale)
+				- (Window.UIPadding / Config.Gui.UIScale)
 				- (Window.Topbar.ButtonsType == "Default" and RightWidth + Window.UIPadding or 0),
 			1,
 			0
@@ -891,7 +891,7 @@ return function(Config)
 		Creator.AddSignal(Window.UIElements.Main.Main.Topbar.Right:GetPropertyChangedSignal("AbsoluteSize"), function()
 			Window.UIElements.Main.Main.Topbar.Left.Position = UDim2.new(
 				0,
-				(Window.UIElements.Main.Main.Topbar.Right.AbsoluteSize.X / Config.WindUI.UIScale) + Window.UIPadding - 4,
+				(Window.UIElements.Main.Main.Topbar.Right.AbsoluteSize.X / Config.Gui.UIScale) + Window.UIPadding - 4,
 				0,
 				0
 			)
@@ -1089,7 +1089,7 @@ return function(Config)
 		Window.UIElements.BackgroundGradient = Creator.NewRoundFrame(Window.UICorner, "Squircle", {
 			Size = UDim2.new(1, 0, 1, 0),
 			Parent = Window.UIElements.Main.Background,
-			ImageTransparency = Window.Transparent and Config.WindUI.TransparencyValue or 0,
+			ImageTransparency = Window.Transparent and Config.Gui.TransparencyValue or 0,
 		}, {
 			BackgroundGradient,
 		})
@@ -1189,7 +1189,7 @@ return function(Config)
 
 	function Window:SetBackgroundTransparency(v)
 		local rounded = math.floor(tonumber(v) * 10 + 0.5) / 10
-		Config.WindUI.TransparencyValue = rounded
+		Config.Gui.TransparencyValue = rounded
 		Window:ToggleTransparency(rounded > 0)
 	end
 
@@ -1214,9 +1214,9 @@ return function(Config)
 		Tween(Window.UIElements.Main, 0.45, {
 			Size = not Window.IsFullscreen and CurrentSize or UDim2.new(
 				0,
-				(Config.WindUI.ScreenGui.AbsoluteSize.X - 20) / Config.WindUI.UIScale,
+				(Config.Gui.ScreenGui.AbsoluteSize.X - 20) / Config.Gui.UIScale,
 				0,
-				(Config.WindUI.ScreenGui.AbsoluteSize.Y - 20 - 52) / Config.WindUI.UIScale
+				(Config.Gui.ScreenGui.AbsoluteSize.Y - 20 - 52) / Config.Gui.UIScale
 			),
 		}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
 
@@ -1250,7 +1250,7 @@ return function(Config)
 		SetSize(true)
 	end
 
-	Creator.AddSignal(Config.WindUI.ScreenGui:GetPropertyChangedSignal("AbsoluteSize"), function()
+	Creator.AddSignal(Config.Gui.ScreenGui:GetPropertyChangedSignal("AbsoluteSize"), function()
 		if Window.IsFullscreen then
 			SetSize()
 		end
@@ -1275,7 +1275,7 @@ return function(Config)
 		-- end
 		-- if not Notified then
 		--     Notified = not Notified
-		--     Config.WindUI:Notify({
+		--     Config.Gui:Notify({
 		--         Title = "Minimize",
 		--         Content = "You've closed the Window. " .. NotifiedText,
 		--         Icon = "eye-off",
@@ -1294,7 +1294,7 @@ return function(Config)
 		Window.OnDestroyCallback = func
 	end
 
-	if Config.WindUI.UseAcrylic then
+	if Config.Gui.UseAcrylic then
 		Window.AcrylicPaint.AddParent(Window.UIElements.Main)
 	end
 
@@ -1343,7 +1343,7 @@ return function(Config)
 			Window.UIElements.Main.Background.ImageTransparency = 1
 			Tween(Window.UIElements.Main.Background, 0.4, {
 				--Size = UDim2.new(1, 0, 1, 0),
-				ImageTransparency = Window.Transparent and Config.WindUI.TransparencyValue or 0,
+				ImageTransparency = Window.Transparent and Config.Gui.TransparencyValue or 0,
 			}, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out):Play()
 
 			if BGImage then
@@ -1360,11 +1360,11 @@ return function(Config)
 				Window.OpenButtonMain:Visible(false)
 			end
 
-			--[[Config.WindUI.UIScaleObj.Scale -= 1 - 0.85
+			--[[Config.Gui.UIScaleObj.Scale -= 1 - 0.85
 			Tween(
-				Config.WindUI.UIScaleObj,
+				Config.Gui.UIScaleObj,
 				0.33,
-				{ Scale = Config.WindUI.UIScale },
+				{ Scale = Config.Gui.UIScale },
 				Enum.EasingStyle.Back,
 				Enum.EasingDirection.Out
 			):Play()]]
@@ -1406,7 +1406,7 @@ return function(Config)
 
 			Window.UIElements.Main:WaitForChild("Main").Visible = true
 
-			Config.WindUI:ToggleAcrylic(true)
+			Config.Gui:ToggleAcrylic(true)
 			--end)
 		end)
 	end
@@ -1423,7 +1423,7 @@ return function(Config)
 			end)
 		end
 
-		Config.WindUI:ToggleAcrylic(false)
+		Config.Gui:ToggleAcrylic(false)
 
 		if Window.UIElements.Main and Window.UIElements.Main:WaitForChild("Main") then
 			Window.UIElements.Main.Main.Visible = false
@@ -1448,9 +1448,9 @@ return function(Config)
 		}, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut):Play()
 
 		--[[Tween(
-			Config.WindUI.UIScaleObj,
+			Config.Gui.UIScaleObj,
 			0.28,
-			{ Scale = Config.WindUI.UIScale - (1 - 0.85) },
+			{ Scale = Config.Gui.UIScale - (1 - 0.85) },
 			Enum.EasingStyle.Quint,
 			Enum.EasingDirection.Out
 		):Play()]]
@@ -1515,10 +1515,10 @@ return function(Config)
 
 				task.wait(0.4)
 
-				Config.WindUI.ScreenGui:Destroy()
-				Config.WindUI.NotificationGui:Destroy()
-				Config.WindUI.DropdownGui:Destroy()
-				Config.WindUI.TooltipGui:Destroy()
+				Config.Gui.ScreenGui:Destroy()
+				Config.Gui.NotificationGui:Destroy()
+				Config.Gui.DropdownGui:Destroy()
+				Config.Gui.TooltipGui:Destroy()
 
 				Creator.DisconnectAll()
 
@@ -1542,10 +1542,10 @@ return function(Config)
 	function Window:ToggleTransparency(Value)
 		-- Config.Transparent = Value
 		Window.Transparent = Value
-		Config.WindUI.Transparent = Value
+		Config.Gui.Transparent = Value
 
-		Window.UIElements.Main.Background.ImageTransparency = Value and Config.WindUI.TransparencyValue or 0
-		-- Window.UIElements.Main.Background.ImageLabel.ImageTransparency = Value and Config.WindUI.TransparencyValue or 0
+		Window.UIElements.Main.Background.ImageTransparency = Value and Config.Gui.TransparencyValue or 0
+		-- Window.UIElements.Main.Background.ImageLabel.ImageTransparency = Value and Config.Gui.TransparencyValue or 0
 		--Window.UIElements.MainBar.Background.ImageTransparency = Value and 0.97 or 0.95
 	end
 
@@ -1587,12 +1587,12 @@ return function(Config)
 	end
 
 	function Window:GetUIScale(v)
-		return Config.WindUI.UIScale
+		return Config.Gui.UIScale
 	end
 
 	function Window:SetUIScale(v)
-		Config.WindUI.UIScale = v
-		Tween(Config.WindUI.UIScaleObj, 0.2, { Scale = v }, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
+		Config.Gui.UIScale = v
+		Tween(Config.Gui.UIScaleObj, 0.2, { Scale = v }, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
 		return Window
 	end
 
@@ -1674,7 +1674,7 @@ return function(Config)
 
 	local TabModuleMain = require("./Tab")
 	local SectionModule = require("./Section")
-	local TabModule = TabModuleMain.Init(Window, Config.WindUI, Config.WindUI.TooltipGui)
+	local TabModule = TabModuleMain.Init(Window, Config.Gui, Config.Gui.TooltipGui)
 	TabModule:OnChange(function(t)
 		Window.CurrentTab = t
 	end)
@@ -1683,7 +1683,7 @@ return function(Config)
 
 	function Window:Tab(TabConfig)
 		TabConfig.Parent = Window.UIElements.SideBar.Frame
-		return TabModule.New(TabConfig, Config.WindUI.UIScale)
+		return TabModule.New(TabConfig, Config.Gui.UIScale)
 	end
 
 	function Window:SelectTab(Tab)
@@ -1695,7 +1695,7 @@ return function(Config)
 			SectionConfig,
 			Window.UIElements.SideBar.Frame,
 			Window.Folder,
-			Config.WindUI.UIScale,
+			Config.Gui.UIScale,
 			Window
 		)
 	end
@@ -1757,7 +1757,7 @@ return function(Config)
 
 			TextPadding = 14,
 		}
-		local Dialog = DialogModule.Create(false, "Dialog", Window, Config.WindUI, Window.UIElements.Main.Main)
+		local Dialog = DialogModule.Create(false, "Dialog", Window, Config.Gui, Window.UIElements.Main.Main)
 
 		Dialog.UIElements.Main.Size = UDim2.new(0, DialogTable.Width, 0, 0)
 
@@ -1907,8 +1907,8 @@ return function(Config)
 
 			wait()
 
-			local totalWidth = ButtonsLayout.AbsoluteContentSize.X / Config.WindUI.UIScale
-			local parentWidth = ButtonsContent.AbsoluteSize.X / Config.WindUI.UIScale
+			local totalWidth = ButtonsLayout.AbsoluteContentSize.X / Config.Gui.UIScale
+			local parentWidth = ButtonsContent.AbsoluteSize.X / Config.Gui.UIScale
 
 			if totalWidth > parentWidth then
 				ButtonsLayout.FillDirection = Enum.FillDirection.Vertical
@@ -1927,7 +1927,7 @@ return function(Config)
 					local smallestWidth = math.huge
 
 					for _, button in ipairs(Buttons) do
-						local buttonWidth = button.AbsoluteSize.X / Config.WindUI.UIScale
+						local buttonWidth = button.AbsoluteSize.X / Config.Gui.UIScale
 						if buttonWidth < smallestWidth then
 							smallestWidth = buttonWidth
 							smallestButton = button
@@ -1996,7 +1996,7 @@ return function(Config)
 		return Tag:New(TagConfig, Window.UIElements.Main.Main.Topbar.Center.Holder)
 	end
 
-	local CurResizeInput = Config.WindUI.GenerateGUID()
+	local CurResizeInput = Config.Gui.GenerateGUID()
 
 	local function startResizing(input)
 		if Window.CanResize then
@@ -2010,11 +2010,11 @@ return function(Config)
 
 			Creator.AddSignal(input.Changed, function()
 				if input.UserInputState == Enum.UserInputState.End then
-					if Config.WindUI.CurrentInput and Config.WindUI.CurrentInput ~= CurResizeInput then
+					if Config.Gui.CurrentInput and Config.Gui.CurrentInput ~= CurResizeInput then
 						return
 					end
 
-					Config.WindUI.CurrentInput = nil
+					Config.Gui.CurrentInput = nil
 
 					isResizing = false
 					FullScreenIcon.Active = false
@@ -2031,10 +2031,10 @@ return function(Config)
 			input.UserInputType == Enum.UserInputType.MouseButton1
 			or input.UserInputType == Enum.UserInputType.Touch
 		then
-			if Config.WindUI.CurrentInput and Config.WindUI.CurrentInput ~= CurResizeInput then
+			if Config.Gui.CurrentInput and Config.Gui.CurrentInput ~= CurResizeInput then
 				return
 			end
-			Config.WindUI.CurrentInput = CurResizeInput
+			Config.Gui.CurrentInput = CurResizeInput
 
 			if Window.CanResize then
 				startResizing(input)
@@ -2068,7 +2068,7 @@ return function(Config)
 	end)
 
 	Creator.AddSignal(ResizeHandle.MouseEnter, function()
-		if Config.WindUI.CurrentInput and Config.WindUI.CurrentInput ~= CurResizeInput then
+		if Config.Gui.CurrentInput and Config.Gui.CurrentInput ~= CurResizeInput then
 			return
 		end
 		if not isResizing then
@@ -2076,7 +2076,7 @@ return function(Config)
 		end
 	end)
 	Creator.AddSignal(ResizeHandle.MouseLeave, function()
-		if Config.WindUI.CurrentInput and Config.WindUI.CurrentInput ~= CurResizeInput then
+		if Config.Gui.CurrentInput and Config.Gui.CurrentInput ~= CurResizeInput then
 			return
 		end
 		if not isResizing then

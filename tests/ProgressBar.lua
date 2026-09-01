@@ -1,6 +1,6 @@
-local WindUI = require("../src/Init")
+local Gui = require("../src/Init")
 
-local Window = WindUI:CreateWindow({
+local Window = Gui:CreateWindow({
 	Title = "ProgressBar Test",
 })
 

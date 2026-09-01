@@ -4,7 +4,7 @@
         "$className": "DataModel",
 
         "ReplicatedStorage": {
-            "WindUI": {
+            "Gui": {
                 "$path": "src/"
             },
             "build": {

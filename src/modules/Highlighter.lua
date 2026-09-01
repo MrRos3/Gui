@@ -1,5 +1,5 @@
 -- Credits: https://devforum.roblox.com/t/realtime-richtext-lua-syntax-highlighting/2500399
--- Modified by me (Footagesus)
+-- Modified by me (MrRos3)
 
 local highlighter = {}
 local keywords = {

@@ -1,4 +1,4 @@
-local WindUI = {
+local Gui = {
 	Name = "Gui",
 	Window = nil,
 	Theme = nil,
@@ -31,7 +31,7 @@ local cloneref = (cloneref or clonereference or function(instance)
 	return instance
 end)
 
-WindUI.cloneref = cloneref
+Gui.cloneref = cloneref
 
 local HttpService = cloneref(game:GetService("HttpService"))
 local Players = cloneref(game:GetService("Players"))
@@ -39,11 +39,11 @@ local CoreGui = cloneref(game:GetService("CoreGui"))
 local RunService = cloneref(game:GetService("RunService"))
 local UserInputService = cloneref(game:GetService("UserInputService"))
 
-function WindUI.GenerateGUID()
+function Gui.GenerateGUID()
 	return HttpService:GenerateGUID(false)
 end
 
-local CurInput = WindUI.GenerateGUID()
+local CurInput = Gui.GenerateGUID()
 
 UserInputService.InputBegan:Connect(function(Input, GameProcessed)
 	--[[if GameProcessed then
@@ -55,23 +55,23 @@ UserInputService.InputBegan:Connect(function(Input, GameProcessed)
 			Input.UserInputType == Enum.UserInputType.MouseButton1
 			or Input.UserInputType == Enum.UserInputType.Touch
 		then
-			if WindUI.CurrentInput and WindUI.CurrentInput ~= CurInput then
+			if Gui.CurrentInput and Gui.CurrentInput ~= CurInput then
 				return
 			end
 
-			WindUI.CurrentInput = CurInput
+			Gui.CurrentInput = CurInput
 			--print(CurInput)
-			--WindUI.InputStartedOnUI = false
+			--Gui.InputStartedOnUI = false
 		end
 	end)
 end)
 UserInputService.InputEnded:Connect(function(Input, GameProcessed)
 	if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
-		if WindUI.CurrentInput and WindUI.CurrentInput ~= CurInput then
+		if Gui.CurrentInput and Gui.CurrentInput ~= CurInput then
 			return
 		end
 
-		WindUI.CurrentInput = nil
+		Gui.CurrentInput = nil
 	end
 end)
 
@@ -79,17 +79,17 @@ local LocalPlayer = Players.LocalPlayer or nil
 
 local Package = HttpService:JSONDecode(require("../build/package"))
 if Package then
-	WindUI.Version = Package.version
+	Gui.Version = Package.version
 end
 
 local KeySystem = require("./components/KeySystem")
 
-local Creator = WindUI.Creator
+local Creator = Gui.Creator
 
 local New = Creator.New
 
 --local Tween = Creator.Tween
---local ServicesModule = WindUI.Services
+--local ServicesModule = Gui.Services
 
 local Acrylic = require("./utils/Acrylic/Init")
 
@@ -98,12 +98,12 @@ local ProtectGui = protectgui or (syn and syn.protect_gui) or function() end
 local GUIParent = gethui and gethui() or (CoreGui or LocalPlayer:WaitForChild("PlayerGui"))
 
 local UIScaleObj = New("UIScale", {
-	Scale = WindUI.UIScale,
+	Scale = Gui.UIScale,
 })
 
-WindUI.UIScaleObj = UIScaleObj
+Gui.UIScaleObj = UIScaleObj
 
-WindUI.ScreenGui = New("ScreenGui", {
+Gui.ScreenGui = New("ScreenGui", {
 	Name = "Gui",
 	Parent = GUIParent,
 	IgnoreGuiInset = true,
@@ -131,111 +131,111 @@ WindUI.ScreenGui = New("ScreenGui", {
 	}),
 })
 
-WindUI.NotificationGui = New("ScreenGui", {
+Gui.NotificationGui = New("ScreenGui", {
 	Name = "Gui/Notifications",
 	Parent = GUIParent,
 	IgnoreGuiInset = true,
 })
-WindUI.DropdownGui = New("ScreenGui", {
+Gui.DropdownGui = New("ScreenGui", {
 	Name = "Gui/Dropdowns",
 	Parent = GUIParent,
 	IgnoreGuiInset = true,
 })
-WindUI.TooltipGui = New("ScreenGui", {
+Gui.TooltipGui = New("ScreenGui", {
 	Name = "Gui/Tooltips",
 	Parent = GUIParent,
 	IgnoreGuiInset = true,
 })
-ProtectGui(WindUI.ScreenGui)
-ProtectGui(WindUI.NotificationGui)
-ProtectGui(WindUI.DropdownGui)
-ProtectGui(WindUI.TooltipGui)
+ProtectGui(Gui.ScreenGui)
+ProtectGui(Gui.NotificationGui)
+ProtectGui(Gui.DropdownGui)
+ProtectGui(Gui.TooltipGui)
 
-Creator.Init(WindUI)
+Creator.Init(Gui)
 
-function WindUI:SetParent(parent)
-	if WindUI.ScreenGui then
-		WindUI.ScreenGui.Parent = parent
+function Gui:SetParent(parent)
+	if Gui.ScreenGui then
+		Gui.ScreenGui.Parent = parent
 	end
-	if WindUI.NotificationGui then
-		WindUI.NotificationGui.Parent = parent
+	if Gui.NotificationGui then
+		Gui.NotificationGui.Parent = parent
 	end
-	if WindUI.DropdownGui then
-		WindUI.DropdownGui.Parent = parent
+	if Gui.DropdownGui then
+		Gui.DropdownGui.Parent = parent
 	end
-	if WindUI.TooltipGui then
-		WindUI.TooltipGui.Parent = parent
+	if Gui.TooltipGui then
+		Gui.TooltipGui.Parent = parent
 	end
 end
-math.clamp(WindUI.TransparencyValue, 0, 1)
+math.clamp(Gui.TransparencyValue, 0, 1)
 
-local Holder = WindUI.NotificationModule.Init(WindUI.NotificationGui)
+local Holder = Gui.NotificationModule.Init(Gui.NotificationGui)
 
-function WindUI:Notify(Config)
+function Gui:Notify(Config)
 	Config.Holder = Holder.Frame
-	Config.Window = WindUI.Window
-	--Config.WindUI = WindUI
-	return WindUI.NotificationModule.New(Config)
+	Config.Window = Gui.Window
+	--Config.Gui = Gui
+	return Gui.NotificationModule.New(Config)
 end
 
-function WindUI:SetNotificationLower(Val)
+function Gui:SetNotificationLower(Val)
 	Holder.SetLower(Val)
 end
 
-function WindUI:SetFont(FontId)
+function Gui:SetFont(FontId)
 	Creator.UpdateFont(FontId)
 end
 
-function WindUI:OnThemeChange(func)
-	WindUI.OnThemeChangeFunction = func
+function Gui:OnThemeChange(func)
+	Gui.OnThemeChangeFunction = func
 end
 
-function WindUI:AddTheme(LTheme)
-	WindUI.Themes[LTheme.Name] = LTheme
+function Gui:AddTheme(LTheme)
+	Gui.Themes[LTheme.Name] = LTheme
 	return LTheme
 end
 
-function WindUI:SetTheme(Value)
-	if WindUI.Themes[Value] then
-		WindUI.Theme = WindUI.Themes[Value]
-		Creator.SetTheme(WindUI.Themes[Value])
+function Gui:SetTheme(Value)
+	if Gui.Themes[Value] then
+		Gui.Theme = Gui.Themes[Value]
+		Creator.SetTheme(Gui.Themes[Value])
 
-		if WindUI.OnThemeChangeFunction then
-			WindUI.OnThemeChangeFunction(Value)
+		if Gui.OnThemeChangeFunction then
+			Gui.OnThemeChangeFunction(Value)
 		end
 
-		return WindUI.Themes[Value]
+		return Gui.Themes[Value]
 	end
 	return nil
 end
 
-function WindUI:GetThemes()
-	return WindUI.Themes
+function Gui:GetThemes()
+	return Gui.Themes
 end
-function WindUI:GetCurrentTheme()
-	return WindUI.Theme.Name
+function Gui:GetCurrentTheme()
+	return Gui.Theme.Name
 end
-function WindUI:GetTransparency()
-	return WindUI.Transparent or false
+function Gui:GetTransparency()
+	return Gui.Transparent or false
 end
-function WindUI:GetWindowSize()
-	return WindUI.Window.UIElements.Main.Size
+function Gui:GetWindowSize()
+	return Gui.Window.UIElements.Main.Size
 end
-function WindUI:Localization(LocalizationConfig)
-	return WindUI.LocalizationModule:New(LocalizationConfig, Creator)
+function Gui:Localization(LocalizationConfig)
+	return Gui.LocalizationModule:New(LocalizationConfig, Creator)
 end
 
-function WindUI:SetLanguage(Value)
+function Gui:SetLanguage(Value)
 	if Creator.Localization then
 		return Creator.SetLanguage(Value)
 	end
 	return false
 end
 
-function WindUI:ToggleAcrylic(Value)
-	if WindUI.Window and WindUI.Window.AcrylicPaint and WindUI.Window.AcrylicPaint.Model then
-		WindUI.Window.Acrylic = Value
-		WindUI.Window.AcrylicPaint.Model.Transparency = Value and 0.98 or 1
+function Gui:ToggleAcrylic(Value)
+	if Gui.Window and Gui.Window.AcrylicPaint and Gui.Window.AcrylicPaint.Model then
+		Gui.Window.Acrylic = Value
+		Gui.Window.AcrylicPaint.Model.Transparency = Value and 0.98 or 1
 		if Value then
 			Acrylic.Enable()
 		else
@@ -244,7 +244,7 @@ function WindUI:ToggleAcrylic(Value)
 	end
 end
 
-function WindUI:Gradient(stops, props)
+function Gui:Gradient(stops, props)
 	local colorSequence = {}
 	local transparencySequence = {}
 
@@ -291,14 +291,14 @@ function WindUI:Gradient(stops, props)
 	return gradientData
 end
 
-function WindUI:Popup(PopupConfig)
-	PopupConfig.WindUI = WindUI
-	return require("./components/popup/Init").new(PopupConfig, WindUI.ScreenGui.Popups)
+function Gui:Popup(PopupConfig)
+	PopupConfig.Gui = Gui
+	return require("./components/popup/Init").new(PopupConfig, Gui.ScreenGui.Popups)
 end
 
-WindUI.Themes = require("./themes/Init")(WindUI, Creator)
+Gui.Themes = require("./themes/Init")(Gui, Creator)
 
-WindUI.Themes["Gui Dark"] = {
+Gui.Themes["Gui Dark"] = {
 	Name = "Gui Dark",
 	Accent = Color3.fromHex("#151923"),
 	Dialog = Color3.fromHex("#11141C"),
@@ -321,7 +321,7 @@ WindUI.Themes["Gui Dark"] = {
 	ElementBackgroundTransparency = 0,
 }
 
-WindUI.Themes["Gui AMOLED"] = {
+Gui.Themes["Gui AMOLED"] = {
 	Name = "Gui AMOLED",
 	Accent = Color3.fromHex("#0A0A0D"),
 	Dialog = Color3.fromHex("#08090C"),
@@ -344,7 +344,7 @@ WindUI.Themes["Gui AMOLED"] = {
 	ElementBackgroundTransparency = 0,
 }
 
-WindUI.Themes["Gui Violet"] = {
+Gui.Themes["Gui Violet"] = {
 	Name = "Gui Violet",
 	Accent = Color3.fromHex("#211B35"),
 	Dialog = Color3.fromHex("#171323"),
@@ -367,12 +367,12 @@ WindUI.Themes["Gui Violet"] = {
 	ElementBackgroundTransparency = 0,
 }
 
-Creator.Themes = WindUI.Themes
+Creator.Themes = Gui.Themes
 
-WindUI:SetTheme("Gui Dark")
-WindUI:SetLanguage(Creator.Language)
+Gui:SetTheme("Gui Dark")
+Gui:SetLanguage(Creator.Language)
 
-function WindUI:CreateWindow(Config)
+function Gui:CreateWindow(Config)
 	local CreateWindow = require("./components/window/Init")
 
 	if not RunService:IsStudio() and writefile then
@@ -386,20 +386,20 @@ function WindUI:CreateWindow(Config)
 		end
 	end
 
-	Config.WindUI = WindUI
-	Config.Window = WindUI.Window
-	Config.Parent = WindUI.ScreenGui.Window
+	Config.Gui = Gui
+	Config.Window = Gui.Window
+	Config.Parent = Gui.ScreenGui.Window
 
-	if WindUI.Window then
+	if Gui.Window then
 		warn("[Gui] You cannot create more than one window")
 		return
 	end
 
 	local CanLoadWindow = true
 
-	local Theme = WindUI.Themes[Config.Theme or "Gui Dark"]
+	local Theme = Gui.Themes[Config.Theme or "Gui Dark"]
 
-	--WindUI.Theme = Theme
+	--Gui.Theme = Theme
 	Creator.SetTheme(Theme)
 
 	local hwid = gethwid or function()
@@ -452,7 +452,7 @@ function WindUI:CreateWindow(Config)
 				local isSuccess = false
 
 				for _, i in next, Config.KeySystem.API do
-					local serviceData = WindUI.Services[i.Type]
+					local serviceData = Gui.Services[i.Type]
 					if serviceData then
 						local args = {}
 						for _, argName in next, serviceData.Args do
@@ -484,19 +484,19 @@ function WindUI:CreateWindow(Config)
 
 	local Window = CreateWindow(Config)
 
-	WindUI.Transparent = Config.Transparent
-	WindUI.Window = Window
+	Gui.Transparent = Config.Transparent
+	Gui.Window = Window
 
 	if Config.Acrylic then
 		Acrylic.init()
 	end
 
 	-- function Window:ToggleTransparency(Value)
-	--     WindUI.Transparent = Value
-	--     WindUI.Window.Transparent = Value
+	--     Gui.Transparent = Value
+	--     Gui.Window.Transparent = Value
 
-	--     Window.UIElements.Main.Background.BackgroundTransparency = Value and WindUI.TransparencyValue or 0
-	--     Window.UIElements.Main.Background.ImageLabel.ImageTransparency = Value and WindUI.TransparencyValue or 0
+	--     Window.UIElements.Main.Background.BackgroundTransparency = Value and Gui.TransparencyValue or 0
+	--     Window.UIElements.Main.Background.ImageLabel.ImageTransparency = Value and Gui.TransparencyValue or 0
 	--     Window.UIElements.Main.Gradient.UIGradient.Transparency = NumberSequence.new{
 	--         NumberSequenceKeypoint.new(0, 1),
 	--         NumberSequenceKeypoint.new(1, Value and 0.85 or 0.7),
@@ -506,4 +506,4 @@ function WindUI:CreateWindow(Config)
 	return Window
 end
 
-return WindUI
+return Gui

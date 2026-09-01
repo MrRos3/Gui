@@ -20,7 +20,7 @@ Height:number?,
 Focused:boolean,
 
 Window:any,
-WindUI:any,
+Gui:any,
 Tab:any,
 Parent:Instance,
 }local a a={cache={}, load=function(b)if not a.cache[b]then a.cache[b]={c=a[b]()}end return a.cache[b].c end}do function a.a()
@@ -616,7 +616,7 @@ local i=a.load'a'local j=
 
 d.Heartbeat
 
-local l="https://raw.githubusercontent.com/Footagesus/Icons/main/Main-v2.lua"
+local l="https://raw.githubusercontent.com/MrRos3/Icons/main/Main-v2.lua"
 
 local m
 if d:IsStudio()or not writefile then
@@ -770,7 +770,7 @@ if not v then
 if p and p.Window and p.Window.Debug then local
 z, A=x:find":%d+: "
 
-warn("[ WindUI: DEBUG Mode ] "..x)
+warn("[ Gui: DEBUG Mode ] "..x)
 
 return p:Notify{
 Title="DEBUG Mode: Error",
@@ -1388,7 +1388,7 @@ Colors={
 }.IconFrame
 L.Parent=J
 elseif string.find(x,"http")and not string.find(x,"roblox.com")then
-local L="WindUI/"..B.."/assets/."..C.."-"..z..".png"
+local L="Gui/"..B.."/assets/."..C.."-"..z..".png"
 local M,N=pcall(function()
 task.spawn(function()
 local M=r.Request
@@ -1409,7 +1409,7 @@ J.ImageLabel.Image=O
 else
 warn(
 string.format(
-"[ WindUI.Creator ] Failed to load custom asset '%s': %s",
+"[ Gui.Creator ] Failed to load custom asset '%s': %s",
 L,
 tostring(O)
 )
@@ -1422,7 +1422,7 @@ end)
 end)
 if not M then
 warn(
-"[ WindUI.Creator ]  '"..identifyexecutor()
+"[ Gui.Creator ]  '"..identifyexecutor()
 or"Studio".."' doesnt support the URL Images. Error: "..N
 )
 
@@ -2787,7 +2787,7 @@ UICorner=22,
 UIPadding=14,
 
 Window=ag,
-WindUI=ah,
+Gui=ah,
 
 UIElements={},
 }
@@ -2925,7 +2925,7 @@ local af=a.load'n'.New
 
 function aa.new(ag,ah,ai,aj)
 local ak=a.load'o'
-local al=ak.Create(true,"Popup",ag.Window,ag.WindUI,ag.WindUI.ScreenGui.KeySystem)
+local al=ak.Create(true,"Popup",ag.Window,ag.Gui,ag.Gui.ScreenGui.KeySystem)
 
 local am={}
 
@@ -3221,7 +3221,7 @@ PaddingBottom=UDim.new(0,10),
 })
 
 for i,l in next,ag.KeySystem.API do
-local m=ag.WindUI.Services[l.Type]
+local m=ag.Gui.Services[l.Type]
 if m then
 local p={}
 for r,u in next,m.Args do
@@ -3307,7 +3307,7 @@ ad(v,0.08,{ImageTransparency=1}):Play()
 end)
 ab.AddSignal(v.MouseButton1Click,function()
 r.Copy()
-ag.WindUI:Notify{
+ag.Gui:Notify{
 Title="Key System",
 Content="Key link copied to clipboard.",
 Image="key",
@@ -3363,7 +3363,7 @@ task.wait(0.4)
 ai(true)
 end
 else
-ag.WindUI:Notify{
+ag.Gui:Notify{
 Title="Key System. Error",
 Content="Invalid key.",
 Icon="triangle-alert",
@@ -3396,7 +3396,7 @@ end
 if b then
 handleSuccess(aA)
 else
-ag.WindUI:Notify{
+ag.Gui:Notify{
 Title="Key System. Error",
 Content=d,
 Icon="triangle-alert",
@@ -3792,7 +3792,7 @@ IconSize=22,
 }
 
 local ah=a.load'o'
-local ai=ah.Create(true,"Popup",ae.WindUI.Window,ae.WindUI,af)
+local ai=ah.Create(true,"Popup",ae.Gui.Window,ae.Gui,af)
 
 local aj=200
 
@@ -3813,7 +3813,7 @@ al=ab.Image(
 ag.Icon,
 ag.Title..":"..ag.Icon,
 0,
-ae.WindUI.Window,
+ae.Gui.Window,
 "Popup",
 true,
 ae.IconThemed,
@@ -6828,7 +6828,7 @@ as:Disconnect()
 as=nil
 end
 
-al.WindUI.CurrentInput=nil
+al.Gui.CurrentInput=nil
 
 if aB then
 return
@@ -7067,7 +7067,7 @@ end
 
 ai:Set(ak,false,ah.Window.NewElements)
 
-local an=ah.WindUI.GenerateGUID()
+local an=ah.Gui.GenerateGUID()
 
 if ah.Window.NewElements and am.Animate then
 if ai.Type=="Toggle"then
@@ -7079,11 +7079,11 @@ ao.UserInputType==Enum.UserInputType.MouseButton1
 or ao.UserInputType==Enum.UserInputType.Touch
 )
 then
-if ah.WindUI.CurrentInput and ah.WindUI.CurrentInput~=an then
+if ah.Gui.CurrentInput and ah.Gui.CurrentInput~=an then
 return
 end
 
-ah.WindUI.CurrentInput=an
+ah.Gui.CurrentInput=an
 am:Animate(ao,ai)
 end
 end)
@@ -7414,7 +7414,7 @@ ao:Disconnect()
 ai=false
 ay.ScrollingEnabled=true
 
-ak.WindUI.CurrentInput=nil
+ak.Gui.CurrentInput=nil
 
 if ak.Window.NewElements then
 ag(al.UIElements.SliderIcon.Frame.Thumb,0.2,{
@@ -7494,7 +7494,7 @@ end
 end
 end)
 
-local az=ak.WindUI.GenerateGUID()
+local az=ak.Gui.GenerateGUID()
 
 ae.AddSignal(al.UIElements.SliderContainer.InputBegan,function(aA)
 if al.Locked or ai then
@@ -7504,10 +7504,10 @@ if
 aA.UserInputType==Enum.UserInputType.MouseButton1
 or aA.UserInputType==Enum.UserInputType.Touch
 then
-if ak.WindUI.CurrentInput and ak.WindUI.CurrentInput~=az then
+if ak.Gui.CurrentInput and ak.Gui.CurrentInput~=az then
 return
 end
-ak.WindUI.CurrentInput=az
+ak.Gui.CurrentInput=az
 
 al:Set(ap,aA)
 
@@ -8235,7 +8235,7 @@ Position=UDim2.new(-10,0,-10,0),
 Visible=false,
 Active=false,
 
-Parent=ao.WindUI.DropdownGui,
+Parent=ao.Gui.DropdownGui,
 AnchorPoint=Vector2.new(1,0),
 },{
 ap.UIElements.Menu,
@@ -8251,7 +8251,7 @@ UDim2.fromOffset(0,ap.UIElements.UIListLayout.AbsoluteContentSize.Y)
 end
 
 local function RecalculateListSize()
-local at=ao.WindUI.DropdownGui.AbsoluteSize.Y
+local at=ao.Gui.DropdownGui.AbsoluteSize.Y
 
 local au=ap.UIElements.UIListLayout.AbsoluteContentSize.Y/ao.UIScale
 local av=ap.SearchBarEnabled and(aq.SearchBarHeight+(aq.MenuPadding*3))
@@ -9506,7 +9506,7 @@ am.OnCopy()
 end
 end)
 if not ap then
-al.WindUI:Notify{
+al.Gui:Notify{
 Title="Error",
 Content="The "..ao.." is not copied. Error: "..aq,
 Icon="x",
@@ -9514,7 +9514,7 @@ Duration=5,
 }
 end
 end
-end,al.WindUI.UIScale)
+end,al.Gui.UIScale)
 
 function am.SetCode(ap,aq)
 ao.Set(aq)
@@ -10417,7 +10417,7 @@ aa.AddSignal(aw.UIElements.Colorpicker.MouseButton1Click,function()
 if ax and not aw.IsShowed then
 aw.IsShowed=true
 
-as:Colorpicker(aw,av.Window,av.WindUI,function(ay,az)
+as:Colorpicker(aw,av.Window,av.Gui,function(ay,az)
 aw:Update(ay,az)
 aw.Default=ay
 aw.Transparency=az
@@ -10660,7 +10660,7 @@ end)
 
 local au=am.ElementsModule
 
-au.Load(an,at.Outline.Content,au.Elements,am.Window,am.WindUI,function()
+au.Load(an,at.Outline.Content,au.Elements,am.Window,am.Gui,function()
 if not an.Expandable then
 an.Expandable=true
 ap.Visible=true
@@ -10930,7 +10930,7 @@ am,
 an,
 ao.Elements,
 al.Window,
-al.WindUI,
+al.Gui,
 function(ap,aq)
 local ar=al.Tab and al.Tab.Gap or(al.Window.NewElements and 1 or 6)
 
@@ -11016,7 +11016,7 @@ am,
 an,
 ao.Elements,
 al.Window,
-al.WindUI,
+al.Gui,
 function(ap,aq)
 local ar=al.Tab and al.Tab.Gap or(al.Window.NewElements and 1 or 6)
 
@@ -11116,7 +11116,7 @@ am,
 an,
 ao.Elements,
 al.Window,
-al.WindUI,
+al.Gui,
 
 
 
@@ -11243,7 +11243,7 @@ and au.Y>=av.Y
 and au.Y<=av.Y+aw.Y
 end
 
-local au=an.WindUI.GenerateGUID()
+local au=an.Gui.GenerateGUID()
 
 ai.AddSignal(at.CanvasGroup.Viewport.MouseEnter,function()
 if ao.Interactive then
@@ -11266,11 +11266,11 @@ if
 (av.UserInputType==Enum.UserInputType.MouseButton1)
 or(av.UserInputType==Enum.UserInputType.Touch and not aq)
 then
-if an.WindUI.CurrentInput and an.WindUI.CurrentInput~=au then
+if an.Gui.CurrentInput and an.Gui.CurrentInput~=au then
 return
 end
 
-an.WindUI.CurrentInput=au
+an.Gui.CurrentInput=au
 
 ap=true
 as=av.Position
@@ -11284,11 +11284,11 @@ if
 av.UserInputType==Enum.UserInputType.MouseButton1
 or av.UserInputType==Enum.UserInputType.Touch
 then
-if an.WindUI.CurrentInput and an.WindUI.CurrentInput~=au then
+if an.Gui.CurrentInput and an.Gui.CurrentInput~=au then
 return
 end
 
-an.WindUI.CurrentInput=nil
+an.Gui.CurrentInput=nil
 
 ap=false
 end
@@ -11438,7 +11438,7 @@ at.Index=#aa.Elements+1
 at.GlobalIndex=#ak.AllElements+1
 at.Parent=af
 at.Window=ak
-at.WindUI=al
+at.Gui=al
 at.UIScale=ao
 at.ElementsModule=an local
 
@@ -11462,7 +11462,7 @@ if ay then
 ak.PendingConfigData[at.Flag]=nil
 else
 warn(
-"[ WindUI ] Failed to apply pending config for '"
+"[ Gui ] Failed to apply pending config for '"
 ..at.Flag
 .."': "
 ..tostring(az)
@@ -11587,7 +11587,7 @@ OnChangeFunc=function(ao)end,
 
 function ao.Init(ap,aq,ar,as)
 Window=ap
-WindUI=aq
+Gui=aq
 ao.ToolTipParent=ar
 ao.TabHighlight=as
 return ao
@@ -11916,7 +11916,7 @@ ar.UIElements.ContainerFrame,
 ar.UIElements.ContainerFrameCanvas.ScrollSliderHolder,
 Window,
 4,
-WindUI
+Gui
 )
 end
 
@@ -12014,7 +12014,7 @@ ar,
 ar.UIElements.ContainerFrame,
 aA.Elements,
 Window,
-WindUI,
+Gui,
 nil,
 aA,
 aq,
@@ -13057,11 +13057,11 @@ aw.Topbar={Height=52,ButtonsType="Default"}
 end
 
 if not ai:IsStudio()and aw.Folder and writefile then
-if not isfolder("WindUI/"..aw.Folder)then
-makefolder("WindUI/"..aw.Folder)
+if not isfolder("Gui/"..aw.Folder)then
+makefolder("Gui/"..aw.Folder)
 end
-if not isfolder("WindUI/"..aw.Folder.."/assets")then
-makefolder("WindUI/"..aw.Folder.."/assets")
+if not isfolder("Gui/"..aw.Folder.."/assets")then
+makefolder("Gui/"..aw.Folder.."/assets")
 end
 if not isfolder(aw.Folder)then
 makefolder(aw.Folder)
@@ -13208,7 +13208,7 @@ aw.UIElements.SideBar,
 aw.UIElements.SideBarContainer.Content,
 aw,
 3,
-av.WindUI
+av.Gui
 )
 end
 
@@ -13494,7 +13494,7 @@ Headers={["User-Agent"]="Roblox/Exploit"},
 writefile(r,u)
 end)
 if not u then
-warn("[ WindUI.Window.Background ] Failed to download video: "..tostring(v))
+warn("[ Gui.Window.Background ] Failed to download video: "..tostring(v))
 end
 end
 
@@ -13502,9 +13502,9 @@ local u,v=pcall(function()
 return getcustomasset(r)
 end)
 if not u then
-warn("[ WindUI.Window.Background ] Failed to load custom asset: "..tostring(v))
+warn("[ Gui.Window.Background ] Failed to load custom asset: "..tostring(v))
 end
-warn"[ WindUI.Window.Background ] VideoFrame may not work with custom video"
+warn"[ Gui.Window.Background ] VideoFrame may not work with custom video"
 l=v
 end
 
@@ -13653,7 +13653,7 @@ AnchorPoint=Vector2.new(0.5,0.5),
 Active=true,
 
 },{
-av.WindUI.UIScaleObj,
+av.Gui.UIScaleObj,
 aw.AcrylicPaint and aw.AcrylicPaint.Frame or nil,
 b,
 an.NewRoundFrame(aw.UICorner,"Squircle",{
@@ -13802,19 +13802,19 @@ PaddingBottom=UDim.new(0,aw.UIPadding),
 an.AddSignal(aw.UIElements.Main.Main.Topbar.Left:GetPropertyChangedSignal"AbsoluteSize",function()
 local z=0
 local A=aw.UIElements.Main.Main.Topbar.Right.UIListLayout.AbsoluteContentSize.X
-/av.WindUI.UIScale
+/av.Gui.UIScale
 
-z=aw.UIElements.Main.Main.Topbar.Left.AbsoluteSize.X/av.WindUI.UIScale
+z=aw.UIElements.Main.Main.Topbar.Left.AbsoluteSize.X/av.Gui.UIScale
 if aw.Topbar.ButtonsType~="Default"then
 z=z+A+aw.UIPadding-4
 end
 
 aw.UIElements.Main.Main.Topbar.Center.Position=
-UDim2.new(0,z+(aw.UIPadding/av.WindUI.UIScale),0.5,0)
+UDim2.new(0,z+(aw.UIPadding/av.Gui.UIScale),0.5,0)
 aw.UIElements.Main.Main.Topbar.Center.Size=UDim2.new(
 1,
 -z
--(aw.UIPadding/av.WindUI.UIScale)
+-(aw.UIPadding/av.Gui.UIScale)
 -(aw.Topbar.ButtonsType=="Default"and A+aw.UIPadding or 0),
 1,
 0
@@ -13825,7 +13825,7 @@ if aw.Topbar.ButtonsType~="Default"then
 an.AddSignal(aw.UIElements.Main.Main.Topbar.Right:GetPropertyChangedSignal"AbsoluteSize",function()
 aw.UIElements.Main.Main.Topbar.Left.Position=UDim2.new(
 0,
-(aw.UIElements.Main.Main.Topbar.Right.AbsoluteSize.X/av.WindUI.UIScale)+aw.UIPadding-4,
+(aw.UIElements.Main.Main.Topbar.Right.AbsoluteSize.X/av.Gui.UIScale)+aw.UIPadding-4,
 0,
 0
 )
@@ -14023,7 +14023,7 @@ end
 aw.UIElements.BackgroundGradient=an.NewRoundFrame(aw.UICorner,"Squircle",{
 Size=UDim2.new(1,0,1,0),
 Parent=aw.UIElements.Main.Background,
-ImageTransparency=aw.Transparent and av.WindUI.TransparencyValue or 0,
+ImageTransparency=aw.Transparent and av.Gui.TransparencyValue or 0,
 },{
 A,
 })
@@ -14123,7 +14123,7 @@ end
 
 function aw.SetBackgroundTransparency(A,B)
 local C=math.floor(tonumber(B)*10+0.5)/10
-av.WindUI.TransparencyValue=C
+av.Gui.TransparencyValue=C
 aw:ToggleTransparency(C>0)
 end
 
@@ -14148,9 +14148,9 @@ local function SetSize(C)
 ap(aw.UIElements.Main,0.45,{
 Size=not aw.IsFullscreen and B or UDim2.new(
 0,
-(av.WindUI.ScreenGui.AbsoluteSize.X-20)/av.WindUI.UIScale,
+(av.Gui.ScreenGui.AbsoluteSize.X-20)/av.Gui.UIScale,
 0,
-(av.WindUI.ScreenGui.AbsoluteSize.Y-20-52)/av.WindUI.UIScale
+(av.Gui.ScreenGui.AbsoluteSize.Y-20-52)/av.Gui.UIScale
 ),
 },Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
 
@@ -14184,7 +14184,7 @@ aw.IsFullscreen=not F
 SetSize(true)
 end
 
-an.AddSignal(av.WindUI.ScreenGui:GetPropertyChangedSignal"AbsoluteSize",function()
+an.AddSignal(av.Gui.ScreenGui:GetPropertyChangedSignal"AbsoluteSize",function()
 if aw.IsFullscreen then
 SetSize()
 end
@@ -14228,7 +14228,7 @@ function aw.OnDestroy(C,F)
 aw.OnDestroyCallback=F
 end
 
-if av.WindUI.UseAcrylic then
+if av.Gui.UseAcrylic then
 aw.AcrylicPaint.AddParent(aw.UIElements.Main)
 end
 
@@ -14277,7 +14277,7 @@ end
 aw.UIElements.Main.Background.ImageTransparency=1
 ap(aw.UIElements.Main.Background,0.4,{
 
-ImageTransparency=aw.Transparent and av.WindUI.TransparencyValue or 0,
+ImageTransparency=aw.Transparent and av.Gui.TransparencyValue or 0,
 },Enum.EasingStyle.Exponential,Enum.EasingDirection.Out):Play()
 
 if i then
@@ -14340,7 +14340,7 @@ aw.UIElements.Main.Visible=true
 
 aw.UIElements.Main:WaitForChild"Main".Visible=true
 
-av.WindUI:ToggleAcrylic(true)
+av.Gui:ToggleAcrylic(true)
 
 end)
 end
@@ -14357,7 +14357,7 @@ an.SafeCallback(aw.OnCloseCallback)
 end)
 end
 
-av.WindUI:ToggleAcrylic(false)
+av.Gui:ToggleAcrylic(false)
 
 if aw.UIElements.Main and aw.UIElements.Main:WaitForChild"Main"then
 aw.UIElements.Main.Main.Visible=false
@@ -14449,10 +14449,10 @@ aw.Destroyed=true
 
 task.wait(0.4)
 
-av.WindUI.ScreenGui:Destroy()
-av.WindUI.NotificationGui:Destroy()
-av.WindUI.DropdownGui:Destroy()
-av.WindUI.TooltipGui:Destroy()
+av.Gui.ScreenGui:Destroy()
+av.Gui.NotificationGui:Destroy()
+av.Gui.DropdownGui:Destroy()
+av.Gui.TooltipGui:Destroy()
 
 an.DisconnectAll()
 
@@ -14476,9 +14476,9 @@ end
 function aw.ToggleTransparency(C,F)
 
 aw.Transparent=F
-av.WindUI.Transparent=F
+av.Gui.Transparent=F
 
-aw.UIElements.Main.Background.ImageTransparency=F and av.WindUI.TransparencyValue or 0
+aw.UIElements.Main.Background.ImageTransparency=F and av.Gui.TransparencyValue or 0
 
 
 end
@@ -14521,12 +14521,12 @@ return F
 end
 
 function aw.GetUIScale(C,F)
-return av.WindUI.UIScale
+return av.Gui.UIScale
 end
 
 function aw.SetUIScale(C,F)
-av.WindUI.UIScale=F
-ap(av.WindUI.UIScaleObj,0.2,{Scale=F},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+av.Gui.UIScale=F
+ap(av.Gui.UIScaleObj,0.2,{Scale=F},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
 return aw
 end
 
@@ -14608,7 +14608,7 @@ end
 
 local C=a.load'aa'
 local F=a.load'ab'
-local G=C.Init(aw,av.WindUI,av.WindUI.TooltipGui)
+local G=C.Init(aw,av.Gui,av.Gui.TooltipGui)
 G:OnChange(function(H)
 aw.CurrentTab=H
 end)
@@ -14617,7 +14617,7 @@ aw.TabModule=G
 
 function aw.Tab(H,J)
 J.Parent=aw.UIElements.SideBar.Frame
-return G.New(J,av.WindUI.UIScale)
+return G.New(J,av.Gui.UIScale)
 end
 
 function aw.SelectTab(H,J)
@@ -14629,7 +14629,7 @@ return F.New(
 J,
 aw.UIElements.SideBar.Frame,
 aw.Folder,
-av.WindUI.UIScale,
+av.Gui.UIScale,
 aw
 )
 end
@@ -14691,7 +14691,7 @@ Buttons=L.Buttons or{},
 
 TextPadding=14,
 }
-local N=H.Create(false,"Dialog",aw,av.WindUI,aw.UIElements.Main.Main)
+local N=H.Create(false,"Dialog",aw,av.Gui,aw.UIElements.Main.Main)
 
 N.UIElements.Main.Size=UDim2.new(0,M.Width,0,0)
 
@@ -14930,7 +14930,7 @@ M.Window=aw
 return at:New(M,aw.UIElements.Main.Main.Topbar.Center.Holder)
 end
 
-local L=av.WindUI.GenerateGUID()
+local L=av.Gui.GenerateGUID()
 
 local function startResizing(M)
 if aw.CanResize then
@@ -14944,11 +14944,11 @@ ap(az.ImageLabel,0.1,{ImageTransparency=0.35}):Play()
 
 an.AddSignal(M.Changed,function()
 if M.UserInputState==Enum.UserInputState.End then
-if av.WindUI.CurrentInput and av.WindUI.CurrentInput~=L then
+if av.Gui.CurrentInput and av.Gui.CurrentInput~=L then
 return
 end
 
-av.WindUI.CurrentInput=nil
+av.Gui.CurrentInput=nil
 
 isResizing=false
 aA.Active=false
@@ -14965,10 +14965,10 @@ if
 M.UserInputType==Enum.UserInputType.MouseButton1
 or M.UserInputType==Enum.UserInputType.Touch
 then
-if av.WindUI.CurrentInput and av.WindUI.CurrentInput~=L then
+if av.Gui.CurrentInput and av.Gui.CurrentInput~=L then
 return
 end
-av.WindUI.CurrentInput=L
+av.Gui.CurrentInput=L
 
 if aw.CanResize then
 startResizing(M)
@@ -15002,7 +15002,7 @@ end
 end)
 
 an.AddSignal(az.MouseEnter,function()
-if av.WindUI.CurrentInput and av.WindUI.CurrentInput~=L then
+if av.Gui.CurrentInput and av.Gui.CurrentInput~=L then
 return
 end
 if not isResizing then
@@ -15010,7 +15010,7 @@ ap(az.ImageLabel,0.1,{ImageTransparency=0.35}):Play()
 end
 end)
 an.AddSignal(az.MouseLeave,function()
-if av.WindUI.CurrentInput and av.WindUI.CurrentInput~=L then
+if av.Gui.CurrentInput and av.Gui.CurrentInput~=L then
 return
 end
 if not isResizing then
@@ -15449,7 +15449,7 @@ return f
 end
 
 function aa.Popup(az,aA)
-aA.WindUI=aa
+aA.Gui=aa
 return a.load'u'.new(aA,aa.ScreenGui.Popups)
 end
 
@@ -15543,7 +15543,7 @@ makefolder(aA.Title)
 end
 end
 
-aA.WindUI=aa
+aA.Gui=aa
 aA.Window=aa.Window
 aA.Parent=aa.ScreenGui.Window
 
