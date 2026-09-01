@@ -7,7 +7,7 @@
 
     v0.3.0  |  2026-09-01  |  VantaUI - polished AMOLED-first Roblox UI library by MrRos3
 
-    Source: https://github.com/MrRos3/Gui
+    Source: https://github.com/MrRos3/VantaUI
     Project: VantaUI by MrRos3
     License: MIT
 ]]
@@ -2474,7 +2474,7 @@ return[[
     "name": "mrros3-vantaui",
     "version": "0.3.0",
     "main": "./dist/main.lua",
-    "repository": "https://github.com/MrRos3/Gui",
+    "repository": "https://github.com/MrRos3/VantaUI",
     "author": "MrRos3",
     "description": "VantaUI - polished AMOLED-first Roblox UI library by MrRos3",
     "license": "MIT",
