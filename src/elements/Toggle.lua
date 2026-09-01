@@ -30,7 +30,8 @@ function Element:New(Config)
 		-- ThumbnailSize = Config.ThumbnailSize,
 		Window = Config.Window,
 		Parent = Config.Parent,
-		TextOffset = Config.Window.NewElements and 58 or 54,
+		-- Reserve room for the reference-style ON/OFF label + 52px switch.
+		TextOffset = Config.Window.NewElements and 108 or 104,
 		Hover = false,
 		Tab = Config.Tab,
 		Index = Config.Index,
