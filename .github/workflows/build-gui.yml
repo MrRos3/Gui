@@ -1,4 +1,4 @@
-# Rebuild marker: legacy branding cleanup
+# Rebuild marker: runtime compatibility restore
 name: Build Gui
 
 on:
