@@ -5208,7 +5208,7 @@ local ah
 
 local ai=ac("TextLabel",{
 Text=af.Title,
-TextSize=17,
+TextSize=16,
 FontFace=Font.new(ab.Font,Enum.FontWeight.Medium),
 BackgroundTransparency=1,
 AutomaticSize="XY",
@@ -5230,7 +5230,7 @@ AnchorPoint=Vector2.new(0.5,0.5),
 ThemeTag={
 ImageColor3="Icon",
 },
-ImageTransparency=.3,
+ImageTransparency=.4,
 })
 })
 local ak=ac("Frame",{
@@ -5238,7 +5238,7 @@ Size=UDim2.new(0,1,1,0),
 Position=UDim2.new(0,36,0.5,0),
 AnchorPoint=Vector2.new(0,0.5),
 BackgroundColor3=Color3.new(1,1,1),
-BackgroundTransparency=.9,
+BackgroundTransparency=.88,
 })
 
 local al=ac("Frame",{
@@ -5261,22 +5261,26 @@ Size=UDim2.new(0,0,0,44),
 AutomaticSize="X",
 Parent=al,
 Active=false,
-BackgroundTransparency=.25,
+BackgroundTransparency=.12,
 ZIndex=99,
-BackgroundColor3=Color3.new(0,0,0),
+BackgroundColor3=Color3.fromHex"#0B0E14",
 },{
 am,
 ac("UICorner",{
 CornerRadius=UDim.new(1,0)
 }),
+ac("UIGradient",{
+Rotation=90,
+Color=ColorSequence.new(Color3.fromHex"#151923",Color3.fromHex"#0B0E14"),
+}),
 ac("UIStroke",{
 Thickness=1,
 ApplyStrokeMode="Border",
 Color=Color3.new(1,1,1),
-Transparency=0,
+Transparency=.15,
 },{
 ac("UIGradient",{
-Color=ColorSequence.new(Color3.fromHex"40c9ff",Color3.fromHex"e81cff")
+Color=ColorSequence.new(Color3.fromHex"#5DE7FF",Color3.fromHex"#7C8CFF")
 })
 }),
 aj,
@@ -5293,7 +5297,6 @@ AutomaticSize="XY",
 Active=true,
 BackgroundTransparency=1,
 Size=UDim2.new(0,0,0,36),
-
 BackgroundColor3=Color3.new(1,1,1),
 },{
 ac("UICorner",{
@@ -5355,10 +5358,10 @@ al.Size=UDim2.new(
 end)
 
 ab.AddSignal(an.TextButton.MouseEnter,function()
-ad(an.TextButton,.1,{BackgroundTransparency=.93}):Play()
+ad(an.TextButton,.16,{BackgroundTransparency=.9}):Play()
 end)
 ab.AddSignal(an.TextButton.MouseLeave,function()
-ad(an.TextButton,.1,{BackgroundTransparency=1}):Play()
+ad(an.TextButton,.16,{BackgroundTransparency=1}):Play()
 end)
 
 local ao=ab.Drag(al)
@@ -5382,13 +5385,11 @@ OnlyIcon=aq.OnlyIcon or false,
 Draggable=aq.Draggable or nil,
 OnlyMobile=aq.OnlyMobile,
 CornerRadius=aq.CornerRadius or UDim.new(1,0),
-StrokeThickness=aq.StrokeThickness or 2,
+StrokeThickness=aq.StrokeThickness or 1,
 Scale=aq.Scale or 1,
 Color=aq.Color
-or ColorSequence.new(Color3.fromHex"40c9ff",Color3.fromHex"e81cff"),
+or ColorSequence.new(Color3.fromHex"#5DE7FF",Color3.fromHex"#7C8CFF"),
 }
-
-
 
 if ar.Enabled==false then
 af.IsOpenButtonEnabled=false
@@ -5424,10 +5425,6 @@ an.TextButton.UIPadding.PaddingLeft=UDim.new(0,11)
 an.TextButton.UIPadding.PaddingRight=UDim.new(0,11)
 end
 
-
-
-
-
 if ai then
 if ar.Title then
 ai.Text=ar.Title
@@ -5442,10 +5439,6 @@ ag:SetIcon(ar.Icon)
 end
 
 an.UIStroke.UIGradient.Color=ar.Color
-if Glow then
-Glow.UIGradient.Color=ar.Color
-end
-
 an.UICorner.CornerRadius=ar.CornerRadius
 an.TextButton.UICorner.CornerRadius=UDim.new(ar.CornerRadius.Scale,ar.CornerRadius.Offset-4)
 an.UIStroke.Thickness=ar.StrokeThickness
