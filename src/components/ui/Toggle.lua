@@ -9,29 +9,28 @@ local UserInputService = game:GetService("UserInputService")
 function Toggle.New(Value, Icon, IconSize, Parent, Callback, NewElement, Config)
 	local Toggle = {}
 
-	-- Compact iOS-style switch proportions for dense settings layouts.
-	local ToggleWidth = NewElement and 51 or 47
-	local ToggleHeight = NewElement and 31 or 29
-	local ThumbWidth = NewElement and 27 or 25
-	local ThumbHeight = ThumbWidth
-	local Inset = 2
+	-- Compact Windows 11-inspired toggle for dense settings panels.
+	local ToggleWidth = NewElement and 40 or 38
+	local ToggleHeight = NewElement and 20 or 19
+	local ThumbSize = NewElement and 12 or 11
+	local Inset = 4
 	local Radius = ToggleHeight / 2
-	local Travel = ToggleWidth - ThumbWidth - (Inset * 2)
+	local Travel = ToggleWidth - ThumbSize - (Inset * 2)
 
 	local IconToggleFrame
 	if Icon and Icon ~= "" then
 		local iconData = Creator.Icon(Icon)
 		if iconData then
 			IconToggleFrame = New("ImageLabel", {
-				Size = UDim2.fromOffset(math.min(12, IconSize or 12), math.min(12, IconSize or 12)),
+				Size = UDim2.fromOffset(math.min(8, IconSize or 8), math.min(8, IconSize or 8)),
 				BackgroundTransparency = 1,
 				AnchorPoint = Vector2.new(0.5, 0.5),
 				Position = UDim2.fromScale(0.5, 0.5),
 				Image = iconData[1],
 				ImageRectOffset = iconData[2].ImageRectPosition,
 				ImageRectSize = iconData[2].ImageRectSize,
-				ImageTransparency = 0.45,
-				ImageColor3 = Color3.fromRGB(96, 98, 105),
+				ImageTransparency = 0.35,
+				ImageColor3 = Color3.fromRGB(72, 72, 76),
 				ZIndex = 7,
 			})
 		end
@@ -44,7 +43,7 @@ function Toggle.New(Value, Icon, IconSize, Parent, Callback, NewElement, Config)
 	})
 
 	local ToggleFrame = Creator.NewRoundFrame(Radius, "Squircle", {
-		ImageColor3 = Color3.fromRGB(69, 71, 78),
+		ImageColor3 = Color3.fromRGB(45, 45, 50),
 		ImageTransparency = 0,
 		Parent = ToggleContainer,
 		Size = UDim2.fromOffset(ToggleWidth, ToggleHeight),
@@ -62,26 +61,16 @@ function Toggle.New(Value, Icon, IconSize, Parent, Callback, NewElement, Config)
 			ZIndex = 1,
 		}),
 
-		Creator.NewRoundFrame(Radius - 1, "SquircleOutline", {
-			Size = UDim2.new(1, -2, 1, -2),
-			AnchorPoint = Vector2.new(0.5, 0.5),
-			Position = UDim2.fromScale(0.5, 0.5),
-			Name = "InnerStroke",
-			ImageColor3 = Color3.fromRGB(255, 255, 255),
-			ImageTransparency = 0.84,
-			ZIndex = 2,
-		}),
-
 		Creator.NewRoundFrame(Radius, "SquircleOutline", {
 			Size = UDim2.fromScale(1, 1),
 			Name = "Stroke",
-			ImageColor3 = Color3.fromRGB(255, 255, 255),
-			ImageTransparency = 0.92,
+			ImageColor3 = Color3.fromRGB(150, 150, 156),
+			ImageTransparency = 0.38,
 			ZIndex = 2,
 		}),
 
 		Creator.NewRoundFrame(9999, "Squircle", {
-			Size = UDim2.fromOffset(ThumbWidth, ThumbHeight),
+			Size = UDim2.fromOffset(ThumbSize, ThumbSize),
 			Position = UDim2.new(0, Inset, 0.5, 0),
 			AnchorPoint = Vector2.new(0, 0.5),
 			ImageTransparency = 1,
@@ -92,7 +81,7 @@ function Toggle.New(Value, Icon, IconSize, Parent, Callback, NewElement, Config)
 				Size = UDim2.fromScale(1, 1),
 				AnchorPoint = Vector2.new(0.5, 0.5),
 				Position = UDim2.fromScale(0.5, 0.5),
-				ImageColor3 = Color3.fromRGB(252, 252, 253),
+				ImageColor3 = Color3.fromRGB(245, 245, 245),
 				ImageTransparency = 0,
 				Name = "Bar",
 				ZIndex = 5,
@@ -104,19 +93,10 @@ function Toggle.New(Value, Icon, IconSize, Parent, Callback, NewElement, Config)
 					Size = UDim2.new(1, 1, 1, 1),
 					AnchorPoint = Vector2.new(0.5, 0.5),
 					Position = UDim2.fromScale(0.5, 0.5),
-					ImageColor3 = Color3.fromRGB(255, 255, 255),
-					ImageTransparency = 0.34,
-					Name = "GlassEdge",
+					ImageColor3 = Color3.fromRGB(20, 20, 22),
+					ImageTransparency = 0.72,
+					Name = "ThumbStroke",
 					ZIndex = 6,
-				}),
-				Creator.NewRoundFrame(9999, "SquircleOutline", {
-					Size = UDim2.new(1, 3, 1, 3),
-					AnchorPoint = Vector2.new(0.5, 0.5),
-					Position = UDim2.new(0.5, 0, 0.5, 1),
-					ImageColor3 = Color3.fromRGB(0, 0, 0),
-					ImageTransparency = 0.84,
-					Name = "ThumbShadow",
-					ZIndex = 4,
 				}),
 				IconToggleFrame,
 			}),
@@ -143,16 +123,16 @@ function Toggle.New(Value, Icon, IconSize, Parent, Callback, NewElement, Config)
 	local function applyVisual(toggled, animate)
 		local thumbPosition = UDim2.new(0, getThumbX(toggled), 0.5, 0)
 		local layerTransparency = toggled and 0 or 1
-		local strokeTransparency = toggled and 0.94 or 0.86
+		local strokeTransparency = toggled and 0.82 or 0.38
 
 		if animate then
-			Tween(ToggleFrame.Frame, 0.26, { Position = thumbPosition }, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
-			Tween(ToggleFrame.Layer, 0.2, { ImageTransparency = layerTransparency }, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
-			Tween(ToggleFrame.InnerStroke, 0.2, { ImageTransparency = strokeTransparency }, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
+			Tween(ToggleFrame.Frame, 0.18, { Position = thumbPosition }, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
+			Tween(ToggleFrame.Layer, 0.16, { ImageTransparency = layerTransparency }, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
+			Tween(ToggleFrame.Stroke, 0.16, { ImageTransparency = strokeTransparency }, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
 		else
 			ToggleFrame.Frame.Position = thumbPosition
 			ToggleFrame.Layer.ImageTransparency = layerTransparency
-			ToggleFrame.InnerStroke.ImageTransparency = strokeTransparency
+			ToggleFrame.Stroke.ImageTransparency = strokeTransparency
 		end
 	end
 
@@ -180,7 +160,7 @@ function Toggle.New(Value, Icon, IconSize, Parent, Callback, NewElement, Config)
 		local hasDragged = false
 		local isScrolling = false
 
-		Tween(ToggleFrame.Frame.Bar.UIScale, 0.16, { Scale = 1.035 }, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
+		Tween(ToggleFrame.Frame.Bar.UIScale, 0.12, { Scale = 1.08 }, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
 
 		if dragConnection then
 			dragConnection:Disconnect()
@@ -215,6 +195,7 @@ function Toggle.New(Value, Icon, IconSize, Parent, Callback, NewElement, Config)
 
 			ToggleFrame.Frame.Position = UDim2.new(0, newX, 0.5, 0)
 			ToggleFrame.Layer.ImageTransparency = 1 - percent
+			ToggleFrame.Stroke.ImageTransparency = 0.38 + (0.44 * percent)
 		end)
 
 		if endConnection then
@@ -241,7 +222,7 @@ function Toggle.New(Value, Icon, IconSize, Parent, Callback, NewElement, Config)
 				endConnection = nil
 			end
 
-			Tween(ToggleFrame.Frame.Bar.UIScale, 0.2, { Scale = 1 }, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
+			Tween(ToggleFrame.Frame.Bar.UIScale, 0.14, { Scale = 1 }, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
 
 			if isScrolling then
 				applyVisual(ToggleObj.Value, true)
