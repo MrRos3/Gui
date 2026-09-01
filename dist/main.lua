@@ -6470,9 +6470,9 @@ function aa.New(af,ag,ah,ai,aj,ak,al)
 local am={}
 
 
-local an=ak and 54 or 50
-local ao=ak and 32 or 30
-local ap=ak and 29 or 27
+local an=ak and 64 or 60
+local ao=ak and 29 or 28
+local ap=ak and 36 or 34
 local aq=ao-6
 local ar=3
 local as=ao/2
@@ -6512,7 +6512,6 @@ AnchorPoint=Vector2.new(0.5,0.5),
 Position=UDim2.fromScale(0.5,0.5),
 Name="ToggleFrame",
 },{
-
 ab.NewRoundFrame(as,"Squircle",{
 Size=UDim2.fromScale(1,1),
 Name="Layer",
@@ -6523,14 +6522,13 @@ ImageTransparency=1,
 ZIndex=1,
 }),
 
-
 ab.NewRoundFrame(as-1,"SquircleOutline",{
 Size=UDim2.new(1,-2,1,-2),
 AnchorPoint=Vector2.new(0.5,0.5),
 Position=UDim2.fromScale(0.5,0.5),
 Name="InnerStroke",
 ImageColor3=Color3.fromRGB(255,255,255),
-ImageTransparency=0.82,
+ImageTransparency=0.84,
 ZIndex=2,
 }),
 
@@ -6538,10 +6536,9 @@ ab.NewRoundFrame(as,"SquircleOutline",{
 Size=UDim2.fromScale(1,1),
 Name="Stroke",
 ImageColor3=Color3.fromRGB(255,255,255),
-ImageTransparency=0.9,
+ImageTransparency=0.92,
 ZIndex=2,
 }),
-
 
 ab.NewRoundFrame(9999,"Squircle",{
 Size=UDim2.fromOffset(ap,aq),
@@ -6551,12 +6548,11 @@ ImageTransparency=1,
 Name="Frame",
 ZIndex=4,
 },{
-
 ab.NewRoundFrame(9999,"Squircle",{
 Size=UDim2.fromScale(1,1),
 AnchorPoint=Vector2.new(0.5,0.5),
 Position=UDim2.fromScale(0.5,0.5),
-ImageColor3=Color3.fromRGB(250,250,252),
+ImageColor3=Color3.fromRGB(252,252,253),
 ImageTransparency=0,
 Name="Bar",
 ZIndex=5,
@@ -6569,7 +6565,7 @@ Size=UDim2.new(1,1,1,1),
 AnchorPoint=Vector2.new(0.5,0.5),
 Position=UDim2.fromScale(0.5,0.5),
 ImageColor3=Color3.fromRGB(255,255,255),
-ImageTransparency=0.38,
+ImageTransparency=0.34,
 Name="GlassEdge",
 ZIndex=6,
 }),
@@ -6578,7 +6574,7 @@ Size=UDim2.new(1,3,1,3),
 AnchorPoint=Vector2.new(0.5,0.5),
 Position=UDim2.new(0.5,0,0.5,1),
 ImageColor3=Color3.fromRGB(0,0,0),
-ImageTransparency=0.82,
+ImageTransparency=0.84,
 Name="ThumbShadow",
 ZIndex=4,
 }),
@@ -6607,10 +6603,10 @@ end
 local function applyVisual(az,aA)
 local aB=UDim2.new(0,getThumbX(az),0.5,0)
 local b=az and 0 or 1
-local d=az and 0.93 or 0.84
+local d=az and 0.94 or 0.86
 
 if aA then
-ad(aw.Frame,0.28,{Position=aB},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+ad(aw.Frame,0.3,{Position=aB},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
 ad(aw.Layer,0.2,{ImageTransparency=b},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
 ad(aw.InnerStroke,0.2,{ImageTransparency=d},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
 else
@@ -6621,7 +6617,6 @@ end
 end
 
 function am.Set(az,aA,aB,b)
-
 applyVisual(aA,not b)
 
 aB=aB~=false
@@ -6645,8 +6640,7 @@ local f=aw.Frame.Position.X.Offset
 local g=false
 local h=false
 
-
-ad(aw.Frame.Bar.UIScale,0.16,{Scale=1.045},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+ad(aw.Frame.Bar.UIScale,0.16,{Scale=1.035},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
 
 if ax then
 ax:Disconnect()
@@ -6861,7 +6855,7 @@ Desc=ai.Desc,
 
 Window=ah.Window,
 Parent=ah.Parent,
-TextOffset=(52),
+TextOffset=ah.Window.NewElements and 68 or 64,
 Hover=false,
 Tab=ah.Tab,
 Index=ah.Index,
