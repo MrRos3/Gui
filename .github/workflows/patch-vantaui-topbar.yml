@@ -1,0 +1,110 @@
+name: Patch VantaUI Mac topbar
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/patch-vantaui-topbar.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  patch-and-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout VantaUI
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Patch Mac topbar layout
+        shell: python
+        run: |
+          from pathlib import Path
+
+          path = Path("src/components/window/Init.lua")
+          text = path.read_text(encoding="utf-8")
+
+          replacements = [
+              (
+                  '''\t\t\t\t\tPosition = UDim2.new(Window.Topbar.ButtonsType == "Default" and 1 or 0, 0, 0.5, 0),
+\t\t\t\t\tAnchorPoint = Vector2.new(Window.Topbar.ButtonsType == "Default" and 1 or 0, 0.5),''',
+                  '''\t\t\t\t\tPosition = UDim2.new(1, 0, 0.5, 0),
+\t\t\t\t\tAnchorPoint = Vector2.new(1, 0.5),'''
+              ),
+              (
+                  '''\t\tLeftWidth = Window.UIElements.Main.Main.Topbar.Left.AbsoluteSize.X / Config.WindUI.UIScale
+\t\tif Window.Topbar.ButtonsType ~= "Default" then
+\t\t\tLeftWidth = LeftWidth + RightWidth + Window.UIPadding - 4
+\t\tend''',
+                  '''\t\tLeftWidth = Window.UIElements.Main.Main.Topbar.Left.AbsoluteSize.X / Config.WindUI.UIScale'''
+              ),
+              (
+                  '''\t\t\t\t- (Window.Topbar.ButtonsType == "Default" and RightWidth + Window.UIPadding or 0),''',
+                  '''\t\t\t\t- (RightWidth + Window.UIPadding),'''
+              ),
+              (
+                  '''\n\tif Window.Topbar.ButtonsType ~= "Default" then
+\t\tCreator.AddSignal(Window.UIElements.Main.Main.Topbar.Right:GetPropertyChangedSignal("AbsoluteSize"), function()
+\t\t\tWindow.UIElements.Main.Main.Topbar.Left.Position = UDim2.new(
+\t\t\t\t0,
+\t\t\t\t(Window.UIElements.Main.Main.Topbar.Right.AbsoluteSize.X / Config.WindUI.UIScale) + Window.UIPadding - 4,
+\t\t\t\t0,
+\t\t\t\t0
+\t\t\t)
+\t\tend)
+\tend
+''',
+                  '''\n'''
+              ),
+              (
+                  '''\t\t(Window.Topbar.ButtonsType == "Default" and 998 or 999),''',
+                  '''\t\t(Window.Topbar.ButtonsType == "Default" and 998 or 997),'''
+              ),
+              (
+                  '''\tend, (Window.Topbar.ButtonsType == "Default" and 999 or 997), nil, Color3.fromHex("#F4695F"))''',
+                  '''\tend, 999, nil, Color3.fromHex("#F4695F"))'''
+              ),
+          ]
+
+          for old, new in replacements:
+              count = text.count(old)
+              if count != 1:
+                  raise RuntimeError(f"Expected exactly one match, found {count}: {old[:90]!r}")
+              text = text.replace(old, new, 1)
+
+          path.write_text(text, encoding="utf-8")
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Setup Lua
+        uses: leafo/gh-actions-lua@v11
+        with:
+          luaVersion: "5.1"
+
+      - name: Setup Aftman
+        uses: ok-nick/setup-aftman@v0.3.0
+
+      - name: Install build tools
+        run: aftman install
+
+      - name: Build customized runtime
+        run: npm run build
+
+      - name: Commit source and runtime
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git restore package-lock.json 2>/dev/null || true
+          git add src/components/window/Init.lua dist/main.lua build/package.lua
+          git commit -m "Move Mac topbar controls to right"
+          git pull --rebase origin main
+          git push origin HEAD:main
