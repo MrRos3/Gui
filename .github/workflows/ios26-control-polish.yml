@@ -21,32 +21,37 @@ jobs:
         shell: python
         run: |
           from pathlib import Path
+          import re
 
           slider_path = Path('src/elements/Slider.lua')
           s = slider_path.read_text()
 
-          replacements = [
-              ('\t\tThumbSize = 13,', '\t\tThumbSize = 16,'),
-              ('\t\tImageTransparency = 0.95,\n\t\tSize = UDim2.new(1, not Slider.IsTextbox and -TotalSliderWidth or (-Slider.TextBoxWidth - 8), 0, 4),',
-               '\t\tImageTransparency = 0.88,\n\t\tSize = UDim2.new(1, not Slider.IsTextbox and -TotalSliderWidth or (-Slider.TextBoxWidth - 8), 0, 3),'),
-              ('\t\t\tImageTransparency = 0.1,\n\t\t\tThemeTag = {\n\t\t\t\tImageColor3 = "Slider",\n\t\t\t},',
-               '\t\t\tImageTransparency = 0,\n\t\t\tThemeTag = {\n\t\t\t\tImageColor3 = "Slider",\n\t\t\t},'),
-              ('\t\t\t\tSize = UDim2.new(\n\t\t\t\t\t0,\n\t\t\t\t\tConfig.Window.NewElements and (Slider.ThumbSize * 2) or (Slider.ThumbSize + 2),\n\t\t\t\t\t0,\n\t\t\t\t\tConfig.Window.NewElements and (Slider.ThumbSize + 4) or (Slider.ThumbSize + 2)\n\t\t\t\t),',
-               '\t\t\t\tSize = UDim2.fromOffset(Slider.ThumbSize, Slider.ThumbSize),'),
-              ('\t\t\t\tThemeTag = {\n\t\t\t\t\tImageColor3 = "SliderThumb",\n\t\t\t\t},\n\t\t\t\tName = "Thumb",',
-               '\t\t\t\tImageColor3 = Color3.fromRGB(255, 255, 255),\n\t\t\t\tName = "Thumb",'),
-              ('\t\t\t\tCreator.NewRoundFrame(999, "SquircleGlass", {\n\t\t\t\t\tSize = UDim2.new(1, 0, 1, 0),\n\t\t\t\t\tImageColor3 = Color3.new(1, 1, 1),\n\t\t\t\t\tName = "Highlight",\n\t\t\t\t\tImageTransparency = 0.5,\n\t\t\t\t}),',
-               '\t\t\t\tCreator.NewRoundFrame(999, "SquircleOutline", {\n\t\t\t\t\tSize = UDim2.new(1, 2, 1, 2),\n\t\t\t\t\tAnchorPoint = Vector2.new(0.5, 0.5),\n\t\t\t\t\tPosition = UDim2.fromScale(0.5, 0.5),\n\t\t\t\t\tImageColor3 = Color3.fromRGB(0, 0, 0),\n\t\t\t\t\tName = "Highlight",\n\t\t\t\t\tImageTransparency = 0.78,\n\t\t\t\t}),'),
-              ('\t\t\t\t\tImageTransparency = 0,\n\t\t\t\t\tSize = UDim2.new(\n\t\t\t\t\t\t0,\n\t\t\t\t\t\tConfig.Window.NewElements and (Slider.ThumbSize * 2) or (Slider.ThumbSize + 2),\n\t\t\t\t\t\t0,\n\t\t\t\t\t\tConfig.Window.NewElements and (Slider.ThumbSize + 4) or (Slider.ThumbSize + 2)\n\t\t\t\t\t),',
-               '\t\t\t\t\tImageTransparency = 0,\n\t\t\t\t\tSize = UDim2.fromOffset(Slider.ThumbSize, Slider.ThumbSize),'),
-              ('\t\t\t\t\tImageTransparency = 0.85,\n\t\t\t\t\tSize = UDim2.new(\n\t\t\t\t\t\t0,\n\t\t\t\t\t\t(Config.Window.NewElements and (Slider.ThumbSize * 2) or Slider.ThumbSize) + 8,\n\t\t\t\t\t\t0,\n\t\t\t\t\t\tSlider.ThumbSize + 8\n\t\t\t\t\t),',
-               '\t\t\t\t\tImageTransparency = 0,\n\t\t\t\t\tSize = UDim2.fromOffset(Slider.ThumbSize + 3, Slider.ThumbSize + 3),'),
-          ]
+          if '\t\tThumbSize = 13,' not in s:
+              raise SystemExit('ThumbSize anchor missing')
+          s = s.replace('\t\tThumbSize = 13,', '\t\tThumbSize = 16,', 1)
 
-          for old, new in replacements:
-              if old not in s:
-                  raise SystemExit('Expected slider snippet not found:\n' + old[:160])
-              s = s.replace(old, new, 1)
+          old_track = 'Size = UDim2.new(1, not Slider.IsTextbox and -TotalSliderWidth or (-Slider.TextBoxWidth - 8), 0, 4),'
+          new_track = 'Size = UDim2.new(1, not Slider.IsTextbox and -TotalSliderWidth or (-Slider.TextBoxWidth - 8), 0, 3),'
+          if old_track not in s:
+              raise SystemExit('Slider track anchor missing')
+          s = s.replace(old_track, new_track, 1)
+          s = s.replace('\t\tImageTransparency = 0.95,', '\t\tImageTransparency = 0.88,', 1)
+          s = s.replace('\t\t\tImageTransparency = 0.1,', '\t\t\tImageTransparency = 0,', 1)
+
+          normal_thumb = re.compile(
+              r'Size = UDim2\.new\(\s*0,\s*Config\.Window\.NewElements and \(Slider\.ThumbSize \* 2\) or \(Slider\.ThumbSize \+ 2\),\s*0,\s*Config\.Window\.NewElements and \(Slider\.ThumbSize \+ 4\) or \(Slider\.ThumbSize \+ 2\)\s*\),'
+          )
+          s, normal_count = normal_thumb.subn('Size = UDim2.fromOffset(Slider.ThumbSize, Slider.ThumbSize),', s)
+          if normal_count != 2:
+              raise SystemExit(f'Expected 2 normal thumb size blocks, found {normal_count}')
+
+          pressed_thumb = re.compile(
+              r'Size = UDim2\.new\(\s*0,\s*\(Config\.Window\.NewElements and \(Slider\.ThumbSize \* 2\) or Slider\.ThumbSize\) \+ 8,\s*0,\s*Slider\.ThumbSize \+ 8\s*\),'
+          )
+          s, pressed_count = pressed_thumb.subn('Size = UDim2.fromOffset(Slider.ThumbSize + 3, Slider.ThumbSize + 3),', s, count=1)
+          if pressed_count != 1:
+              raise SystemExit(f'Expected pressed thumb size block, found {pressed_count}')
+          s = s.replace('ImageTransparency = 0.85,', 'ImageTransparency = 0,', 1)
 
           slider_path.write_text(s)
 
