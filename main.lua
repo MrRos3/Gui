@@ -1,5 +1,5 @@
 --[[
-    Gui v0.3.0
+    VantaUI v0.3.0
     Roblox UI library by MrRos3.
 
     Source: https://github.com/MrRos3/Gui
@@ -13,23 +13,23 @@ local ok, source = pcall(function()
     return game:HttpGet(RUNTIME_URL)
 end)
 
-assert(ok and type(source) == "string" and #source > 0, "[Gui] Failed to download the UI runtime")
+assert(ok and type(source) == "string" and #source > 0, "[VantaUI] Failed to download the UI runtime")
 
 local loader, loadError = loadstring(source)
-assert(loader, "[Gui] Failed to compile the UI runtime: " .. tostring(loadError))
+assert(loader, "[VantaUI] Failed to compile the UI runtime: " .. tostring(loadError))
 
-local Gui = loader()
-assert(type(Gui) == "table", "[Gui] UI runtime returned an invalid value")
+local VantaUI = loader()
+assert(type(VantaUI) == "table", "[VantaUI] UI runtime returned an invalid value")
 
-Gui.RuntimeVersion = tostring(Gui.Version or PROJECT_VERSION)
-Gui.Version = PROJECT_VERSION
-Gui.Name = "Gui"
-Gui.DefaultTheme = "Gui AMOLED"
-Gui.DefaultStartupTab = "Home"
-Gui.TransparencyValue = 0.1
+VantaUI.RuntimeVersion = tostring(VantaUI.Version or PROJECT_VERSION)
+VantaUI.Version = PROJECT_VERSION
+VantaUI.Name = "VantaUI"
+VantaUI.DefaultTheme = "Vanta AMOLED"
+VantaUI.DefaultStartupTab = "Home"
+VantaUI.TransparencyValue = 0.1
 
-Gui.GuiInfo = {
-    Name = "Gui",
+VantaUI.GuiInfo = {
+    Name = "VantaUI",
     Version = PROJECT_VERSION,
     Owner = "MrRos3",
     Repository = "MrRos3/Gui",
@@ -37,16 +37,16 @@ Gui.GuiInfo = {
     License = "MIT",
 }
 
-Gui.Brand = {
-    Name = "Gui",
+VantaUI.Brand = {
+    Name = "VantaUI",
     Owner = "MrRos3",
     Accent = Color3.fromHex("#929AA7"),
     Cyan = Color3.fromHex("#5DE7FF"),
 }
 
-local GuiThemes = {
+local VantaThemes = {
     {
-        Name = "Gui Smoked",
+        Name = "Vanta Smoked",
         Accent = Color3.fromHex("#171A20"),
         Dialog = Color3.fromHex("#121419"),
         Outline = Color3.fromHex("#FFFFFF"),
@@ -68,7 +68,7 @@ local GuiThemes = {
         ElementBackgroundTransparency = 0,
     },
     {
-        Name = "Gui Dark",
+        Name = "Vanta Dark",
         Accent = Color3.fromHex("#151923"),
         Dialog = Color3.fromHex("#11141C"),
         Outline = Color3.fromHex("#FFFFFF"),
@@ -90,7 +90,7 @@ local GuiThemes = {
         ElementBackgroundTransparency = 0,
     },
     {
-        Name = "Gui AMOLED",
+        Name = "Vanta AMOLED",
         Accent = Color3.fromHex("#0A0A0D"),
         Dialog = Color3.fromHex("#08090C"),
         Outline = Color3.fromHex("#FFFFFF"),
@@ -112,7 +112,7 @@ local GuiThemes = {
         ElementBackgroundTransparency = 0,
     },
     {
-        Name = "Gui Violet",
+        Name = "Vanta Violet",
         Accent = Color3.fromHex("#211B35"),
         Dialog = Color3.fromHex("#171323"),
         Outline = Color3.fromHex("#FFFFFF"),
@@ -135,37 +135,51 @@ local GuiThemes = {
     },
 }
 
-for _, theme in ipairs(GuiThemes) do
-    Gui:AddTheme(theme)
+local LegacyThemeNames = {
+    ["Vanta Smoked"] = "Gui Smoked",
+    ["Vanta Dark"] = "Gui Dark",
+    ["Vanta AMOLED"] = "Gui AMOLED",
+    ["Vanta Violet"] = "Gui Violet",
+}
+
+for _, theme in ipairs(VantaThemes) do
+    VantaUI:AddTheme(theme)
+
+    local legacyTheme = {}
+    for key, value in pairs(theme) do
+        legacyTheme[key] = value
+    end
+    legacyTheme.Name = LegacyThemeNames[theme.Name]
+    VantaUI:AddTheme(legacyTheme)
 end
 
 local function renameRuntimeGui()
-    if Gui.ScreenGui then
-        Gui.ScreenGui.Name = "Gui"
+    if VantaUI.ScreenGui then
+        VantaUI.ScreenGui.Name = "VantaUI"
     end
-    if Gui.NotificationGui then
-        Gui.NotificationGui.Name = "Gui/Notifications"
+    if VantaUI.NotificationGui then
+        VantaUI.NotificationGui.Name = "VantaUI/Notifications"
     end
-    if Gui.DropdownGui then
-        Gui.DropdownGui.Name = "Gui/Dropdowns"
+    if VantaUI.DropdownGui then
+        VantaUI.DropdownGui.Name = "VantaUI/Dropdowns"
     end
-    if Gui.TooltipGui then
-        Gui.TooltipGui.Name = "Gui/Tooltips"
+    if VantaUI.TooltipGui then
+        VantaUI.TooltipGui.Name = "VantaUI/Tooltips"
     end
 end
 
 renameRuntimeGui()
-Gui:SetTheme(Gui.DefaultTheme)
+VantaUI:SetTheme(VantaUI.DefaultTheme)
 
-local BaseCreateWindow = Gui.CreateWindow
-function Gui:CreateWindow(config)
+local BaseCreateWindow = VantaUI.CreateWindow
+function VantaUI:CreateWindow(config)
     config = config or {}
 
     if config.Theme == nil then
-        config.Theme = Gui.DefaultTheme
+        config.Theme = VantaUI.DefaultTheme
     end
     if config.Folder == nil then
-        config.Folder = "Gui"
+        config.Folder = "VantaUI"
     end
     if config.NewElements == nil then
         config.NewElements = true
@@ -179,7 +193,7 @@ function Gui:CreateWindow(config)
         config.Topbar.ButtonsType = "Mac"
     end
 
-    local startupTab = config.StartupTab or Gui.DefaultStartupTab
+    local startupTab = config.StartupTab or VantaUI.DefaultStartupTab
     local window = BaseCreateWindow(self, config)
 
     local BaseTab = window.Tab
@@ -205,21 +219,26 @@ function Gui:CreateWindow(config)
     return window
 end
 
-local BaseNotify = Gui.Notify
-function Gui:Notify(config)
+local BaseNotify = VantaUI.Notify
+function VantaUI:Notify(config)
     config = config or {}
     if config.Title == nil then
-        config.Title = "Gui"
+        config.Title = "VantaUI"
     end
     return BaseNotify(self, config)
 end
 
-function Gui:GetGuiThemes()
-    return { "Gui Smoked", "Gui Dark", "Gui AMOLED", "Gui Violet" }
+function VantaUI:GetVantaThemes()
+    return { "Vanta Smoked", "Vanta Dark", "Vanta AMOLED", "Vanta Violet" }
 end
 
-function Gui:GetInfo()
-    return Gui.GuiInfo
+-- Backward-compatible public method used by existing scripts.
+function VantaUI:GetGuiThemes()
+    return self:GetVantaThemes()
 end
 
-return Gui
+function VantaUI:GetInfo()
+    return VantaUI.GuiInfo
+end
+
+return VantaUI

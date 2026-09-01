@@ -70,7 +70,7 @@ SIZE=$(($(wc -c < "$OUTPUT") / 1024))
 echo ""
 echo -e "[ $(date '+%H:%M:%S') ]"
 echo -e "${P}[ ✓ ]${R} $PREFIX"
-echo -e "${P}[ > ]${R} Gui Build completed successfully"
+echo -e "${P}[ > ]${R} VantaUI Build completed successfully"
 echo -e "${P}[ > ]${R} Version: ${VER}"
 echo -e "${P}[ > ]${R} Time taken: ${TIME}ms"
 echo -e "${P}[ > ]${R} Size: ${SIZE}KB"

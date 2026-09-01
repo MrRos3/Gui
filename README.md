@@ -1,25 +1,26 @@
-# Gui
+# VantaUI
 
-A polished Roblox UI library by **MrRos3**.
+A polished AMOLED-first Roblox UI library by **MrRos3**.
 
 ## Loader
 
 ```lua
-local Gui = loadstring(game:HttpGet("https://raw.githubusercontent.com/MrRos3/Gui/main/main.lua"))()
+local VantaUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/MrRos3/Gui/main/main.lua"))()
 ```
 
 ## v0.3.0
 
-- Public loader runs the customized build from `dist/main.lua`
-- Runtime ScreenGui names use the `Gui` brand
-- Config storage uses `Gui/...`
-- Default theme is **Gui Dark**
-- Includes **Gui Dark**, **Gui AMOLED**, and **Gui Violet**
-- Default topbar uses Mac-style controls with a 44px height
-- Notifications default to the `Gui` title
-- Package and build metadata point to `MrRos3/Gui`
-- GitHub Actions automatically regenerates the runtime when source files change
-- Refined open button, dialogs, spacing, colors, and motion
+- Public brand is **VantaUI**
+- Default theme is **Vanta AMOLED**
+- Startup tab defaults to **Home**
+- Includes **Vanta Smoked**, **Vanta Dark**, **Vanta AMOLED**, and **Vanta Violet**
+- ON toggles stay green across all built-in themes
+- Compact capsule toggles and fixed dropdown second-click closing
+- Runtime GUI names use the `VantaUI` brand
+- Config storage defaults to `VantaUI/...`
+- Notifications default to the `VantaUI` title
+- Legacy `Gui Smoked`, `Gui Dark`, `Gui AMOLED`, and `Gui Violet` theme names remain supported for compatibility
+- GitHub Actions automatically regenerates `dist/main.lua` when source files change
 
 ## Example
 
@@ -29,8 +30,8 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/MrRos3/Gui/main/examp
 
 ## Project layout
 
-- `main.lua` - stable public loader and Gui customization layer
-- `dist/main.lua` - compiled Gui runtime
+- `main.lua` - stable VantaUI public loader and customization layer
+- `dist/main.lua` - compiled runtime
 - `src/` - editable UI source
 - `build/` - build tooling
 - `example.lua` - showcase and test script

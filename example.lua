@@ -1,11 +1,13 @@
-local Gui = loadstring(game:HttpGet("https://raw.githubusercontent.com/MrRos3/Gui/main/main.lua"))()
+local VantaUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/MrRos3/Gui/main/main.lua"))()
 
-local Window = Gui:CreateWindow({
-    Title = "Gui Showcase",
+local Window = VantaUI:CreateWindow({
+    Title = "VantaUI Showcase",
     Icon = "sparkles",
+    Theme = "Vanta AMOLED",
+    StartupTab = "Home",
     HideSearchBar = false,
     OpenButton = {
-        Title = "Open Gui",
+        Title = "Open VantaUI",
         Enabled = true,
         Draggable = true,
         OnlyMobile = false,
@@ -13,7 +15,7 @@ local Window = Gui:CreateWindow({
 })
 
 Window:Tag({
-    Title = "v" .. Gui.Version,
+    Title = "v" .. VantaUI.Version,
     Icon = "github",
     Color = Color3.fromHex("#171C27"),
     Border = true,
@@ -35,12 +37,12 @@ local About = Window:Tab({
 })
 
 Home:Button({
-    Title = "Gui is alive",
-    Desc = "This window is loaded from MrRos3/Gui.",
+    Title = "VantaUI is alive",
+    Desc = "This window is loaded from the VantaUI public loader.",
     Icon = "sparkles",
     Callback = function()
-        Gui:Notify({
-            Content = "Gui v" .. Gui.Version .. " is running 🎉",
+        VantaUI:Notify({
+            Content = "VantaUI v" .. VantaUI.Version .. " is running 🎉",
             Icon = "sparkles",
         })
     end,
@@ -48,13 +50,13 @@ Home:Button({
 
 Home:Button({
     Title = "Runtime info",
-    Desc = "Shows the current Gui runtime version.",
+    Desc = "Shows the current VantaUI runtime version.",
     Icon = "package",
     Callback = function()
-        local info = Gui:GetInfo()
-        Gui:Notify({
-            Title = "Gui Runtime",
-            Content = "Gui " .. tostring(info.Version) .. " • runtime " .. tostring(Gui.RuntimeVersion or info.Version),
+        local info = VantaUI:GetInfo()
+        VantaUI:Notify({
+            Title = "VantaUI Runtime",
+            Content = "VantaUI " .. tostring(info.Version) .. " • runtime " .. tostring(VantaUI.RuntimeVersion or info.Version),
             Icon = "package",
         })
     end,
@@ -66,8 +68,8 @@ local function addThemeButton(themeName, icon)
         Desc = "Switch the whole interface to " .. themeName .. ".",
         Icon = icon,
         Callback = function()
-            Gui:SetTheme(themeName)
-            Gui:Notify({
+            VantaUI:SetTheme(themeName)
+            VantaUI:Notify({
                 Content = "Theme changed to " .. themeName,
                 Icon = icon,
             })
@@ -75,17 +77,18 @@ local function addThemeButton(themeName, icon)
     })
 end
 
-addThemeButton("Gui Dark", "moon")
-addThemeButton("Gui AMOLED", "circle-dot")
-addThemeButton("Gui Violet", "wand-sparkles")
+addThemeButton("Vanta Smoked", "cloud-fog")
+addThemeButton("Vanta Dark", "moon")
+addThemeButton("Vanta AMOLED", "circle-dot")
+addThemeButton("Vanta Violet", "wand-sparkles")
 
 About:Button({
-    Title = "MrRos3/Gui",
-    Desc = "Custom Gui library with its own loader, branding and themes.",
+    Title = "VantaUI",
+    Desc = "Custom Roblox UI library by MrRos3.",
     Icon = "github",
     Callback = function()
-        Gui:Notify({
-            Content = "Built from your own GitHub repository 🩵",
+        VantaUI:Notify({
+            Content = "VantaUI • built by MrRos3 🖤",
             Icon = "heart",
         })
     end,
