@@ -6845,7 +6845,8 @@ Desc=ai.Desc,
 
 Window=ah.Window,
 Parent=ah.Parent,
-TextOffset=ah.Window.NewElements and 58 or 54,
+
+TextOffset=ah.Window.NewElements and 108 or 104,
 Hover=false,
 Tab=ah.Tab,
 Index=ah.Index,
