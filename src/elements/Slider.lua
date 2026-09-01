@@ -31,7 +31,7 @@ function Element:New(Config)
 
 		Width = Config.Width or 130,
 		TextBoxWidth = Config.Window.NewElements and 40 or 30,
-		ThumbSize = 13,
+		ThumbSize = 16,
 		IconSize = 26,
 	}
 	if Slider.Icons == {} then
@@ -119,8 +119,8 @@ function Element:New(Config)
 	})
 
 	Slider.UIElements.SliderIcon = Creator.NewRoundFrame(99, "Squircle", {
-		ImageTransparency = 0.95,
-		Size = UDim2.new(1, not Slider.IsTextbox and -TotalSliderWidth or (-Slider.TextBoxWidth - 8), 0, 4),
+		ImageTransparency = 0.88,
+		Size = UDim2.new(1, not Slider.IsTextbox and -TotalSliderWidth or (-Slider.TextBoxWidth - 8), 0, 3),
 		AnchorPoint = Vector2.new(0.5, 0.5),
 		Position = UDim2.new(0.5, 0, 0.5, 0),
 		Name = "Frame",
@@ -131,18 +131,13 @@ function Element:New(Config)
 		Creator.NewRoundFrame(99, "Squircle", {
 			Name = "Frame",
 			Size = UDim2.new(delta, 0, 1, 0),
-			ImageTransparency = 0.1,
+			ImageTransparency = 0,
 			ThemeTag = {
 				ImageColor3 = "Slider",
 			},
 		}, {
 			Creator.NewRoundFrame(99, "Squircle", {
-				Size = UDim2.new(
-					0,
-					Config.Window.NewElements and (Slider.ThumbSize * 2) or (Slider.ThumbSize + 2),
-					0,
-					Config.Window.NewElements and (Slider.ThumbSize + 4) or (Slider.ThumbSize + 2)
-				),
+				Size = UDim2.fromOffset(Slider.ThumbSize, Slider.ThumbSize),
 				Position = UDim2.new(1, 0, 0.5, 0),
 				AnchorPoint = Vector2.new(0.5, 0.5),
 				ThemeTag = {
@@ -307,12 +302,7 @@ function Element:New(Config)
 							if Config.Window.NewElements then
 								Tween(Slider.UIElements.SliderIcon.Frame.Thumb, 0.2, {
 									ImageTransparency = 0,
-									Size = UDim2.new(
-										0,
-										Config.Window.NewElements and (Slider.ThumbSize * 2) or (Slider.ThumbSize + 2),
-										0,
-										Config.Window.NewElements and (Slider.ThumbSize + 4) or (Slider.ThumbSize + 2)
-									),
+									Size = UDim2.fromOffset(Slider.ThumbSize, Slider.ThumbSize),
 								}, Enum.EasingStyle.Quint, Enum.EasingDirection.InOut):Play()
 							end
 							if Tooltip then
@@ -402,13 +392,8 @@ function Element:New(Config)
 			-- drag slider
 			if Config.Window.NewElements then
 				Tween(Slider.UIElements.SliderIcon.Frame.Thumb, 0.24, {
-					ImageTransparency = 0.85,
-					Size = UDim2.new(
-						0,
-						(Config.Window.NewElements and (Slider.ThumbSize * 2) or Slider.ThumbSize) + 8,
-						0,
-						Slider.ThumbSize + 8
-					),
+					ImageTransparency = 0,
+					Size = UDim2.fromOffset(Slider.ThumbSize + 3, Slider.ThumbSize + 3),
 				}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
 			end
 			if Tooltip then
