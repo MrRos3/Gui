@@ -24,8 +24,8 @@ assert(type(Gui) == "table", "[Gui] UI runtime returned an invalid value")
 Gui.RuntimeVersion = tostring(Gui.Version or PROJECT_VERSION)
 Gui.Version = PROJECT_VERSION
 Gui.Name = "Gui"
-Gui.DefaultTheme = "Gui Dark"
-Gui.TransparencyValue = 0.12
+Gui.DefaultTheme = "Gui Smoked"
+Gui.TransparencyValue = 0.1
 
 Gui.GuiInfo = {
     Name = "Gui",
@@ -39,11 +39,33 @@ Gui.GuiInfo = {
 Gui.Brand = {
     Name = "Gui",
     Owner = "MrRos3",
-    Accent = Color3.fromHex("#7C8CFF"),
+    Accent = Color3.fromHex("#929AA7"),
     Cyan = Color3.fromHex("#5DE7FF"),
 }
 
 local GuiThemes = {
+    {
+        Name = "Gui Smoked",
+        Accent = Color3.fromHex("#171A20"),
+        Dialog = Color3.fromHex("#121419"),
+        Outline = Color3.fromHex("#FFFFFF"),
+        Text = Color3.fromHex("#F5F7FA"),
+        Placeholder = Color3.fromHex("#8B919C"),
+        Background = Color3.fromHex("#0B0D10"),
+        Button = Color3.fromHex("#282D35"),
+        Icon = Color3.fromHex("#B1B7C1"),
+        Toggle = Color3.fromHex("#34C759"),
+        Slider = Color3.fromHex("#929AA7"),
+        Checkbox = Color3.fromHex("#929AA7"),
+        Primary = Color3.fromHex("#929AA7"),
+        SliderIcon = Color3.fromHex("#B8BEC8"),
+        PanelBackground = Color3.fromHex("#FFFFFF"),
+        PanelBackgroundTransparency = 0.975,
+        LabelBackground = Color3.fromHex("#0A0C0F"),
+        LabelBackgroundTransparency = 0.16,
+        ElementBackground = Color3.fromHex("#1C2027"),
+        ElementBackgroundTransparency = 0,
+    },
     {
         Name = "Gui Dark",
         Accent = Color3.fromHex("#151923"),
@@ -171,7 +193,7 @@ function Gui:Notify(config)
 end
 
 function Gui:GetGuiThemes()
-    return { "Gui Dark", "Gui AMOLED", "Gui Violet" }
+    return { "Gui Smoked", "Gui Dark", "Gui AMOLED", "Gui Violet" }
 end
 
 function Gui:GetInfo()
