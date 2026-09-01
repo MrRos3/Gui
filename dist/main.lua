@@ -6470,10 +6470,10 @@ function aa.New(af,ag,ah,ai,aj,ak,al)
 local am={}
 
 
-local an=ak and 40 or 38
-local ao=ak and 20 or 19
-local ap=ak and 12 or 11
-local aq=4
+local an=52
+local ao=30
+local ap=26
+local aq=2
 local ar=ao/2
 local as=an-ap-(aq*2)
 
@@ -6482,7 +6482,7 @@ if ag and ag~=""then
 local au=ab.Icon(ag)
 if au then
 at=ac("ImageLabel",{
-Size=UDim2.fromOffset(math.min(8,ah or 8),math.min(8,ah or 8)),
+Size=UDim2.fromOffset(math.min(12,ah or 12),math.min(12,ah or 12)),
 BackgroundTransparency=1,
 AnchorPoint=Vector2.new(0.5,0.5),
 Position=UDim2.fromScale(0.5,0.5),
@@ -6503,7 +6503,7 @@ Parent=ai,
 })
 
 local av=ab.NewRoundFrame(ar,"Squircle",{
-ImageColor3=Color3.fromRGB(45,45,50),
+ImageColor3=Color3.fromRGB(40,40,40),
 ImageTransparency=0,
 Parent=au,
 Size=UDim2.fromOffset(an,ao),
@@ -6521,14 +6521,6 @@ ImageTransparency=1,
 ZIndex=1,
 }),
 
-ab.NewRoundFrame(ar,"SquircleOutline",{
-Size=UDim2.fromScale(1,1),
-Name="Stroke",
-ImageColor3=Color3.fromRGB(150,150,156),
-ImageTransparency=0.38,
-ZIndex=2,
-}),
-
 ab.NewRoundFrame(9999,"Squircle",{
 Size=UDim2.fromOffset(ap,ap),
 Position=UDim2.new(0,aq,0.5,0),
@@ -6541,7 +6533,7 @@ ab.NewRoundFrame(9999,"Squircle",{
 Size=UDim2.fromScale(1,1),
 AnchorPoint=Vector2.new(0.5,0.5),
 Position=UDim2.fromScale(0.5,0.5),
-ImageColor3=Color3.fromRGB(245,245,245),
+ImageColor3=Color3.new(1,1,1),
 ImageTransparency=0,
 Name="Bar",
 ZIndex=5,
@@ -6550,11 +6542,13 @@ ac("UIScale",{
 Scale=1,
 }),
 ab.NewRoundFrame(9999,"SquircleOutline",{
-Size=UDim2.new(1,1,1,1),
+Size=UDim2.fromScale(1,1),
 AnchorPoint=Vector2.new(0.5,0.5),
 Position=UDim2.fromScale(0.5,0.5),
-ImageColor3=Color3.fromRGB(20,20,22),
-ImageTransparency=0.72,
+ThemeTag={
+ImageColor3="Toggle",
+},
+ImageTransparency=0.55,
 Name="ThumbStroke",
 ZIndex=6,
 }),
@@ -6583,16 +6577,13 @@ end
 local function applyVisual(ay,az)
 local aA=UDim2.new(0,getThumbX(ay),0.5,0)
 local aB=ay and 0 or 1
-local b=ay and 0.82 or 0.38
 
 if az then
-ad(av.Frame,0.18,{Position=aA},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
-ad(av.Layer,0.16,{ImageTransparency=aB},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
-ad(av.Stroke,0.16,{ImageTransparency=b},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+ad(av.Layer,0.22,{ImageTransparency=aB},Enum.EasingStyle.Quart,Enum.EasingDirection.Out):Play()
+ad(av.Frame,0.24,{Position=aA},Enum.EasingStyle.Back,Enum.EasingDirection.Out):Play()
 else
 av.Frame.Position=aA
 av.Layer.ImageTransparency=aB
-av.Stroke.ImageTransparency=b
 end
 end
 
@@ -6620,7 +6611,7 @@ local d=av.Frame.Position.X.Offset
 local f=false
 local g=false
 
-ad(av.Frame.Bar.UIScale,0.12,{Scale=1.08},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+ad(av.Frame.Bar.UIScale,0.12,{Scale=1.04},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
 
 if aw then
 aw:Disconnect()
@@ -6655,7 +6646,6 @@ local r=as>0 and math.clamp((p-aq)/as,0,1)or 0
 
 av.Frame.Position=UDim2.new(0,p,0.5,0)
 av.Layer.ImageTransparency=1-r
-av.Stroke.ImageTransparency=0.38+(0.44*r)
 end)
 
 if ax then
@@ -6682,7 +6672,7 @@ ax:Disconnect()
 ax=nil
 end
 
-ad(av.Frame.Bar.UIScale,0.14,{Scale=1},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+ad(av.Frame.Bar.UIScale,0.16,{Scale=1},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
 
 if g then
 applyVisual(aA.Value,true)
