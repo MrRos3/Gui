@@ -7,13 +7,13 @@ local DialogModule = {
 	Parent = nil,
 }
 
-function DialogModule.Create(Key, Type, Window, Gui, Parent)
+function DialogModule.Create(Key, Type, Window, WindUI, Parent)
 	local Dialog = {
 		UICorner = 22,
 		UIPadding = 14,
 
 		Window = Window,
-		Gui = Gui,
+		WindUI = WindUI,
 
 		UIElements = {},
 	}

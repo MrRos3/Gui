@@ -12,7 +12,7 @@ local DynamicShapeModule = require("./DynamicShape")
 
 local RenderStepped = RunService.Heartbeat
 
-local IconsURL = "https://raw.githubusercontent.com/MrRos3/Icons/main/Main-v2.lua"
+local IconsURL = "https://raw.githubusercontent.com/Footagesus/Icons/main/Main-v2.lua"
 
 local Icons
 if RunService:IsStudio() or not writefile then
@@ -25,7 +25,7 @@ end
 
 Icons.SetIconsType("lucide")
 
-local Gui
+local WindUI
 
 local Creator
 Creator = {
@@ -133,12 +133,12 @@ Creator = {
 	ThemeChangeCallbacks = {},
 }
 
-function Creator.Init(GuiTable)
-	Gui = GuiTable
+function Creator.Init(WindUITable)
+	WindUI = WindUITable
 
 	Creator.ThemeFallbacks = require("../themes/Fallbacks")(Creator)
 
-	Creator.UIScale = GuiTable.UIScale
+	Creator.UIScale = WindUITable.UIScale
 
 	DynamicShapeModule:Init(Creator)
 end
@@ -163,12 +163,12 @@ function Creator.SafeCallback(Function, ...)
 
 	local Success, Event = pcall(Function, ...)
 	if not Success then
-		if Gui and Gui.Window and Gui.Window.Debug then
+		if WindUI and WindUI.Window and WindUI.Window.Debug then
 			local _, i = Event:find(":%d+: ")
 
-			warn("[ Gui: DEBUG Mode ] " .. Event)
+			warn("[ WindUI: DEBUG Mode ] " .. Event)
 
-			return Gui:Notify({
+			return WindUI:Notify({
 				Title = "DEBUG Mode: Error",
 				Content = not i and Event or Event:sub(i + 1),
 				Duration = 8,
@@ -178,8 +178,8 @@ function Creator.SafeCallback(Function, ...)
 end
 
 function Creator.Gradient(stops, props)
-	if Gui and Gui.Gradient then
-		return Gui:Gradient(stops, props)
+	if WindUI and WindUI.Gradient then
+		return WindUI:Gradient(stops, props)
 	end
 
 	local colorSequence = {}
@@ -625,7 +625,7 @@ function Creator.SetDraggable(can)
 end
 
 function Creator.Drag(mainFrame, dragFrames, ondrag)
-	local CurInput = Gui.GenerateGUID()
+	local CurInput = WindUI.GenerateGUID()
 
 	local currentDragFrame = nil
 	local dragging = false
@@ -666,11 +666,11 @@ function Creator.Drag(mainFrame, dragFrames, ondrag)
 				input.UserInputType == Enum.UserInputType.MouseButton1
 				or input.UserInputType == Enum.UserInputType.Touch
 			then
-				if Gui and Gui.CurrentInput and Gui.CurrentInput ~= CurInput then
+				if WindUI and WindUI.CurrentInput and WindUI.CurrentInput ~= CurInput then
 					return
 				end
 
-				Gui.CurrentInput = CurInput
+				WindUI.CurrentInput = CurInput
 
 				dragging = true
 				activeInput = input
@@ -689,7 +689,7 @@ function Creator.Drag(mainFrame, dragFrames, ondrag)
 		if not dragging then
 			return
 		end
-		if Gui.CurrentInput and Gui.CurrentInput ~= CurInput then
+		if WindUI.CurrentInput and WindUI.CurrentInput ~= CurInput then
 			return
 		end
 
@@ -705,7 +705,7 @@ function Creator.Drag(mainFrame, dragFrames, ondrag)
 	end)
 
 	UserInputService.InputEnded:Connect(function(input)
-		if not dragging or Gui.CurrentInput ~= CurInput then
+		if not dragging or WindUI.CurrentInput ~= CurInput then
 			return
 		end
 
@@ -716,7 +716,7 @@ function Creator.Drag(mainFrame, dragFrames, ondrag)
 				and input.UserInputType == Enum.UserInputType.MouseButton1
 			)
 		then
-			Gui.CurrentInput = nil
+			WindUI.CurrentInput = nil
 			dragging = false
 			activeInput = nil
 			currentDragFrame = nil
@@ -784,7 +784,7 @@ function Creator.Image(Img, Name, Corner, Folder, Type, IsThemeTag, Themed, Them
 		}).IconFrame
 		IconLabel.Parent = ImageFrame
 	elseif string.find(Img, "http") and not string.find(Img, "roblox.com") then
-		local FileName = "Gui/" .. Folder .. "/assets/." .. Type .. "-" .. Name .. ".png"
+		local FileName = "WindUI/" .. Folder .. "/assets/." .. Type .. "-" .. Name .. ".png"
 		local success, response = pcall(function()
 			task.spawn(function()
 				local response = Creator.Request
@@ -805,7 +805,7 @@ function Creator.Image(Img, Name, Corner, Folder, Type, IsThemeTag, Themed, Them
 				else
 					warn(
 						string.format(
-							"[ Gui.Creator ] Failed to load custom asset '%s': %s",
+							"[ WindUI.Creator ] Failed to load custom asset '%s': %s",
 							FileName,
 							tostring(asset)
 						)
@@ -818,7 +818,7 @@ function Creator.Image(Img, Name, Corner, Folder, Type, IsThemeTag, Themed, Them
 		end)
 		if not success then
 			warn(
-				"[ Gui.Creator ]  '" .. identifyexecutor()
+				"[ WindUI.Creator ]  '" .. identifyexecutor()
 					or "Studio" .. "' doesnt support the URL Images. Error: " .. response
 			)
 
