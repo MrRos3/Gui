@@ -1,32 +1,33 @@
 --[[
-    Gui v0.1.0
-    A customized WindUI derivative/bootstrap.
+    Gui v0.2.0
+    Customized WindUI derivative.
 
-    WindUI is licensed under the MIT License.
-    Original copyright and license are preserved in LICENSE.
+    The runtime and editable source are now vendored in this repository.
+    WindUI is licensed under the MIT License. See LICENSE and NOTICE.md.
 ]]
 
 local UPSTREAM_VERSION = "1.6.66"
-local UPSTREAM_URL = "https://github.com/Footagesus/WindUI/releases/download/1.6.66/main.lua"
+local RUNTIME_URL = "https://raw.githubusercontent.com/MrRos3/Gui/main/vendor/windui.lua"
 
 local ok, source = pcall(function()
-    return game:HttpGet(UPSTREAM_URL)
+    return game:HttpGet(RUNTIME_URL)
 end)
 
-assert(ok and type(source) == "string", "[Gui] Failed to download the WindUI runtime")
+assert(ok and type(source) == "string", "[Gui] Failed to download the vendored UI runtime")
 
 local loader, loadError = loadstring(source)
-assert(loader, "[Gui] Failed to compile the WindUI runtime: " .. tostring(loadError))
+assert(loader, "[Gui] Failed to compile the UI runtime: " .. tostring(loadError))
 
 local Gui = loader()
-assert(type(Gui) == "table", "[Gui] WindUI runtime returned an invalid value")
+assert(type(Gui) == "table", "[Gui] UI runtime returned an invalid value")
 
 Gui.GuiInfo = {
     Name = "Gui",
-    Version = "0.1.0",
+    Version = "0.2.0",
     Upstream = "WindUI",
     UpstreamVersion = UPSTREAM_VERSION,
     Repository = "MrRos3/Gui",
+    Runtime = "vendor/windui.lua",
 }
 
 Gui:AddTheme({
