@@ -16,7 +16,7 @@ function Element:New(Config)
 		LockedTitle = Config.LockedTitle,
 		Value = Config.Value,
 		Icon = Config.Icon or nil,
-		IconSize = Config.IconSize or 23, -- from 26 to 0
+		IconSize = Config.IconSize or 23,
 		Type = Config.Type or "Toggle",
 		Callback = Config.Callback or function() end,
 		UIElements = {},
@@ -24,14 +24,10 @@ function Element:New(Config)
 	Toggle.ToggleFrame = require("../components/window/Element")({
 		Title = Toggle.Title,
 		Desc = Toggle.Desc,
-		-- Image = Config.Image,
-		-- ImageSize = Config.ImageSize,
-		-- Thumbnail = Config.Thumbnail,
-		-- ThumbnailSize = Config.ThumbnailSize,
 		Window = Config.Window,
 		Parent = Config.Parent,
-		-- Reserve room for the reference-style ON/OFF label + 52px switch.
-		TextOffset = Config.Window.NewElements and 108 or 104,
+		-- 86px is the exact width of the state label + capsule group.
+		TextOffset = Config.Window.NewElements and 86 or 82,
 		Hover = false,
 		Tab = Config.Tab,
 		Index = Config.Index,
@@ -121,11 +117,6 @@ function Element:New(Config)
 				end
 			end)
 		end
-		-- Creator.AddSignal(Toggle.ToggleFrame.UIElements.Main.InputEnded, function(input)
-		--     if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-		--         ToggleFunc:Animate(input, true, Toggle)
-		--     end
-		-- end)
 	else
 		if Toggle.Type == "Toggle" then
 			Creator.AddSignal(ToggleFrame.ToggleFrame.Hitbox.MouseButton1Click, function()
