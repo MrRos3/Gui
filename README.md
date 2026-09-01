@@ -5,7 +5,7 @@ A polished AMOLED-first Roblox UI library by **MrRos3**.
 ## Loader
 
 ```lua
-local VantaUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/MrRos3/Gui/main/main.lua"))()
+local VantaUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/MrRos3/VantaUI/main/main.lua"))()
 ```
 
 ## v0.3.0
@@ -19,13 +19,13 @@ local VantaUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/MrRos
 - Runtime GUI names use the `VantaUI` brand
 - Config storage defaults to `VantaUI/...`
 - Notifications default to the `VantaUI` title
-- Legacy `Gui Smoked`, `Gui Dark`, `Gui AMOLED`, and `Gui Violet` theme names remain supported for compatibility
+- Legacy theme aliases remain supported for compatibility
 - GitHub Actions automatically regenerates `dist/main.lua` when source files change
 
 ## Example
 
 ```lua
-loadstring(game:HttpGet("https://raw.githubusercontent.com/MrRos3/Gui/main/example.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/MrRos3/VantaUI/main/example.lua"))()
 ```
 
 ## Project layout
@@ -39,4 +39,6 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/MrRos3/Gui/main/examp
 
 ## License
 
-MIT License. See [`LICENSE`](./LICENSE).
+VantaUI is released under the MIT License, Copyright (c) 2026 MrRos3. See [`LICENSE`](./LICENSE).
+
+Required notices for inherited permissively licensed portions are preserved separately in [`THIRD_PARTY_NOTICES`](./THIRD_PARTY_NOTICES).
