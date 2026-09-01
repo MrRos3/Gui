@@ -2,12 +2,12 @@
     VantaUI v0.3.0
     Roblox UI library by MrRos3.
 
-    Source: https://github.com/MrRos3/Gui
+    Source: https://github.com/MrRos3/VantaUI
     License: MIT
 ]]
 
 local PROJECT_VERSION = "0.3.0"
-local RUNTIME_URL = "https://raw.githubusercontent.com/MrRos3/Gui/main/dist/main.lua"
+local RUNTIME_URL = "https://raw.githubusercontent.com/MrRos3/VantaUI/main/dist/main.lua"
 
 local ok, source = pcall(function()
     return game:HttpGet(RUNTIME_URL)
@@ -32,7 +32,7 @@ VantaUI.GuiInfo = {
     Name = "VantaUI",
     Version = PROJECT_VERSION,
     Owner = "MrRos3",
-    Repository = "MrRos3/Gui",
+    Repository = "MrRos3/VantaUI",
     Runtime = "dist/main.lua",
     License = "MIT",
 }
