@@ -20,8 +20,8 @@ jobs:
           fetch-depth: 0
 
       - name: Patch Mac topbar layout
-        shell: python
         run: |
+          python3 - <<'PY'
           from pathlib import Path
 
           path = Path("src/components/window/Init.lua")
@@ -29,43 +29,28 @@ jobs:
 
           replacements = [
               (
-                  '''\t\t\t\t\tPosition = UDim2.new(Window.Topbar.ButtonsType == "Default" and 1 or 0, 0, 0.5, 0),
-\t\t\t\t\tAnchorPoint = Vector2.new(Window.Topbar.ButtonsType == "Default" and 1 or 0, 0.5),''',
-                  '''\t\t\t\t\tPosition = UDim2.new(1, 0, 0.5, 0),
-\t\t\t\t\tAnchorPoint = Vector2.new(1, 0.5),'''
+                  '\t\t\t\t\tPosition = UDim2.new(Window.Topbar.ButtonsType == "Default" and 1 or 0, 0, 0.5, 0),\n\t\t\t\t\tAnchorPoint = Vector2.new(Window.Topbar.ButtonsType == "Default" and 1 or 0, 0.5),',
+                  '\t\t\t\t\tPosition = UDim2.new(1, 0, 0.5, 0),\n\t\t\t\t\tAnchorPoint = Vector2.new(1, 0.5),'
               ),
               (
-                  '''\t\tLeftWidth = Window.UIElements.Main.Main.Topbar.Left.AbsoluteSize.X / Config.WindUI.UIScale
-\t\tif Window.Topbar.ButtonsType ~= "Default" then
-\t\t\tLeftWidth = LeftWidth + RightWidth + Window.UIPadding - 4
-\t\tend''',
-                  '''\t\tLeftWidth = Window.UIElements.Main.Main.Topbar.Left.AbsoluteSize.X / Config.WindUI.UIScale'''
+                  '\t\tLeftWidth = Window.UIElements.Main.Main.Topbar.Left.AbsoluteSize.X / Config.WindUI.UIScale\n\t\tif Window.Topbar.ButtonsType ~= "Default" then\n\t\t\tLeftWidth = LeftWidth + RightWidth + Window.UIPadding - 4\n\t\tend',
+                  '\t\tLeftWidth = Window.UIElements.Main.Main.Topbar.Left.AbsoluteSize.X / Config.WindUI.UIScale'
               ),
               (
-                  '''\t\t\t\t- (Window.Topbar.ButtonsType == "Default" and RightWidth + Window.UIPadding or 0),''',
-                  '''\t\t\t\t- (RightWidth + Window.UIPadding),'''
+                  '\t\t\t\t- (Window.Topbar.ButtonsType == "Default" and RightWidth + Window.UIPadding or 0),',
+                  '\t\t\t\t- (RightWidth + Window.UIPadding),'
               ),
               (
-                  '''\n\tif Window.Topbar.ButtonsType ~= "Default" then
-\t\tCreator.AddSignal(Window.UIElements.Main.Main.Topbar.Right:GetPropertyChangedSignal("AbsoluteSize"), function()
-\t\t\tWindow.UIElements.Main.Main.Topbar.Left.Position = UDim2.new(
-\t\t\t\t0,
-\t\t\t\t(Window.UIElements.Main.Main.Topbar.Right.AbsoluteSize.X / Config.WindUI.UIScale) + Window.UIPadding - 4,
-\t\t\t\t0,
-\t\t\t\t0
-\t\t\t)
-\t\tend)
-\tend
-''',
-                  '''\n'''
+                  '\n\tif Window.Topbar.ButtonsType ~= "Default" then\n\t\tCreator.AddSignal(Window.UIElements.Main.Main.Topbar.Right:GetPropertyChangedSignal("AbsoluteSize"), function()\n\t\t\tWindow.UIElements.Main.Main.Topbar.Left.Position = UDim2.new(\n\t\t\t\t0,\n\t\t\t\t(Window.UIElements.Main.Main.Topbar.Right.AbsoluteSize.X / Config.WindUI.UIScale) + Window.UIPadding - 4,\n\t\t\t\t0,\n\t\t\t\t0\n\t\t\t)\n\t\tend)\n\tend\n',
+                  '\n'
               ),
               (
-                  '''\t\t(Window.Topbar.ButtonsType == "Default" and 998 or 999),''',
-                  '''\t\t(Window.Topbar.ButtonsType == "Default" and 998 or 997),'''
+                  '\t\t(Window.Topbar.ButtonsType == "Default" and 998 or 999),',
+                  '\t\t(Window.Topbar.ButtonsType == "Default" and 998 or 997),'
               ),
               (
-                  '''\tend, (Window.Topbar.ButtonsType == "Default" and 999 or 997), nil, Color3.fromHex("#F4695F"))''',
-                  '''\tend, 999, nil, Color3.fromHex("#F4695F"))'''
+                  '\tend, (Window.Topbar.ButtonsType == "Default" and 999 or 997), nil, Color3.fromHex("#F4695F"))',
+                  '\tend, 999, nil, Color3.fromHex("#F4695F"))'
               ),
           ]
 
@@ -76,6 +61,7 @@ jobs:
               text = text.replace(old, new, 1)
 
           path.write_text(text, encoding="utf-8")
+          PY
 
       - name: Setup Node.js
         uses: actions/setup-node@v5
