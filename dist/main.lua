@@ -2777,19 +2777,15 @@ local aa=a.load'd'
 local ab=aa.New
 local ac=aa.Tween
 
-
-
-
 local ad={
 Holder=nil,
-
 Parent=nil,
 }
 
 function ad.Create(ae,af,ag,ah,ai)
 local aj={
-UICorner=28,
-UIPadding=12,
+UICorner=22,
+UIPadding=14,
 
 Window=ag,
 WindUI=ah,
@@ -2799,9 +2795,7 @@ UIElements={},
 
 if ae then
 aj.UIPadding=0
-end
-if ae then
-aj.UICorner=26
+aj.UICorner=20
 end
 
 af=af or"Dialog"
@@ -2827,11 +2821,10 @@ ab("ImageLabel",{
 Image="rbxassetid://8992230677",
 ThemeTag={
 ImageColor3="WindowShadow",
-
 },
 ImageTransparency=1,
-Size=UDim2.new(1,100,1,100),
-Position=UDim2.new(0,-50,0,-50),
+Size=UDim2.new(1,90,1,90),
+Position=UDim2.new(0,-45,0,-45),
 ScaleType="Slice",
 SliceCenter=Rect.new(99,99,99,99),
 BackgroundTransparency=1,
@@ -2840,7 +2833,7 @@ Name="Blur",
 })
 
 aj.UIElements.Main=ab("Frame",{
-Size=UDim2.new(0,280,0,0),
+Size=UDim2.new(0,300,0,0),
 ThemeTag={
 BackgroundColor3=af.."Background",
 },
@@ -2859,7 +2852,6 @@ PaddingBottom=UDim.new(0,aj.UIPadding),
 
 aj.UIElements.MainContainer=aa.NewRoundFrame(aj.UICorner,"Squircle",{
 Visible=false,
-
 ImageTransparency=ae and 0.15 or 0,
 Parent=ai or aj.UIElements.FullScreen,
 Position=UDim2.new(0.5,0,0.5,0),
@@ -2871,33 +2863,7 @@ ImageTransparency=af.."BackgroundTransparency",
 },
 ZIndex=9999,
 },{
-
-
-
-
-
-
 aj.UIElements.Main,
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 })
 
 function aj.Open(ak)
@@ -2910,34 +2876,30 @@ task.spawn(function()
 aj.UIElements.MainContainer.Visible=true
 
 if not ae then
-ac(aj.UIElements.FullScreen,0.1,{BackgroundTransparency=0.65}):Play()
+ac(aj.UIElements.FullScreen,0.16,{BackgroundTransparency=0.55}):Play()
 end
-ac(aj.UIElements.MainContainer,0.1,{ImageTransparency=0}):Play()
-
-
+ac(aj.UIElements.MainContainer,0.16,{ImageTransparency=0}):Play()
 task.spawn(function()
-task.wait(0.05)
+task.wait(0.06)
 aj.UIElements.Main.Visible=true
 end)
 end)
 end
 function aj.Close(ak)
 if not ae then
-ac(aj.UIElements.FullScreen,0.1,{BackgroundTransparency=1}):Play()
+ac(aj.UIElements.FullScreen,0.14,{BackgroundTransparency=1}):Play()
 aj.UIElements.FullScreen.Active=false
 task.spawn(function()
-task.wait(0.1)
+task.wait(0.14)
 aj.UIElements.FullScreen.Visible=false
 end)
 end
 aj.UIElements.Main.Visible=false
 
-ac(aj.UIElements.MainContainer,0.1,{ImageTransparency=1}):Play()
-
-
+ac(aj.UIElements.MainContainer,0.14,{ImageTransparency=1}):Play()
 
 task.spawn(function()
-task.wait(0.1)
+task.wait(0.14)
 if not ae then
 aj.UIElements.FullScreen:Destroy()
 else
@@ -2947,7 +2909,6 @@ end)
 
 return function()end
 end
-
 
 return aj
 end
