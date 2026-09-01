@@ -9,10 +9,10 @@ local UserInputService = game:GetService("UserInputService")
 function Toggle.New(Value, Icon, IconSize, Parent, Callback, NewElement, Config)
 	local Toggle = {}
 
-	-- iOS 26-inspired liquid switch: roomy pill track with a soft glass thumb.
-	local ToggleWidth = NewElement and 54 or 50
-	local ToggleHeight = NewElement and 32 or 30
-	local ThumbWidth = NewElement and 29 or 27
+	-- iOS 26-inspired liquid switch: long, low pill with an elongated glass thumb.
+	local ToggleWidth = NewElement and 64 or 60
+	local ToggleHeight = NewElement and 29 or 28
+	local ThumbWidth = NewElement and 36 or 34
 	local ThumbHeight = ToggleHeight - 6
 	local Inset = 3
 	local Radius = ToggleHeight / 2
@@ -52,7 +52,6 @@ function Toggle.New(Value, Icon, IconSize, Parent, Callback, NewElement, Config)
 		Position = UDim2.fromScale(0.5, 0.5),
 		Name = "ToggleFrame",
 	}, {
-		-- Active layer keeps the switch green while preserving the smoked OFF track.
 		Creator.NewRoundFrame(Radius, "Squircle", {
 			Size = UDim2.fromScale(1, 1),
 			Name = "Layer",
@@ -63,14 +62,13 @@ function Toggle.New(Value, Icon, IconSize, Parent, Callback, NewElement, Config)
 			ZIndex = 1,
 		}),
 
-		-- Soft liquid-glass inner sheen.
 		Creator.NewRoundFrame(Radius - 1, "SquircleOutline", {
 			Size = UDim2.new(1, -2, 1, -2),
 			AnchorPoint = Vector2.new(0.5, 0.5),
 			Position = UDim2.fromScale(0.5, 0.5),
 			Name = "InnerStroke",
 			ImageColor3 = Color3.fromRGB(255, 255, 255),
-			ImageTransparency = 0.82,
+			ImageTransparency = 0.84,
 			ZIndex = 2,
 		}),
 
@@ -78,11 +76,10 @@ function Toggle.New(Value, Icon, IconSize, Parent, Callback, NewElement, Config)
 			Size = UDim2.fromScale(1, 1),
 			Name = "Stroke",
 			ImageColor3 = Color3.fromRGB(255, 255, 255),
-			ImageTransparency = 0.9,
+			ImageTransparency = 0.92,
 			ZIndex = 2,
 		}),
 
-		-- Public name Frame is kept for compatibility with the element wrapper.
 		Creator.NewRoundFrame(9999, "Squircle", {
 			Size = UDim2.fromOffset(ThumbWidth, ThumbHeight),
 			Position = UDim2.new(0, Inset, 0.5, 0),
@@ -91,12 +88,11 @@ function Toggle.New(Value, Icon, IconSize, Parent, Callback, NewElement, Config)
 			Name = "Frame",
 			ZIndex = 4,
 		}, {
-			-- Main white liquid pill.
 			Creator.NewRoundFrame(9999, "Squircle", {
 				Size = UDim2.fromScale(1, 1),
 				AnchorPoint = Vector2.new(0.5, 0.5),
 				Position = UDim2.fromScale(0.5, 0.5),
-				ImageColor3 = Color3.fromRGB(250, 250, 252),
+				ImageColor3 = Color3.fromRGB(252, 252, 253),
 				ImageTransparency = 0,
 				Name = "Bar",
 				ZIndex = 5,
@@ -109,7 +105,7 @@ function Toggle.New(Value, Icon, IconSize, Parent, Callback, NewElement, Config)
 					AnchorPoint = Vector2.new(0.5, 0.5),
 					Position = UDim2.fromScale(0.5, 0.5),
 					ImageColor3 = Color3.fromRGB(255, 255, 255),
-					ImageTransparency = 0.38,
+					ImageTransparency = 0.34,
 					Name = "GlassEdge",
 					ZIndex = 6,
 				}),
@@ -118,7 +114,7 @@ function Toggle.New(Value, Icon, IconSize, Parent, Callback, NewElement, Config)
 					AnchorPoint = Vector2.new(0.5, 0.5),
 					Position = UDim2.new(0.5, 0, 0.5, 1),
 					ImageColor3 = Color3.fromRGB(0, 0, 0),
-					ImageTransparency = 0.82,
+					ImageTransparency = 0.84,
 					Name = "ThumbShadow",
 					ZIndex = 4,
 				}),
@@ -147,10 +143,10 @@ function Toggle.New(Value, Icon, IconSize, Parent, Callback, NewElement, Config)
 	local function applyVisual(toggled, animate)
 		local thumbPosition = UDim2.new(0, getThumbX(toggled), 0.5, 0)
 		local layerTransparency = toggled and 0 or 1
-		local strokeTransparency = toggled and 0.93 or 0.84
+		local strokeTransparency = toggled and 0.94 or 0.86
 
 		if animate then
-			Tween(ToggleFrame.Frame, 0.28, { Position = thumbPosition }, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
+			Tween(ToggleFrame.Frame, 0.3, { Position = thumbPosition }, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
 			Tween(ToggleFrame.Layer, 0.2, { ImageTransparency = layerTransparency }, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
 			Tween(ToggleFrame.InnerStroke, 0.2, { ImageTransparency = strokeTransparency }, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
 		else
@@ -161,7 +157,6 @@ function Toggle.New(Value, Icon, IconSize, Parent, Callback, NewElement, Config)
 	end
 
 	function Toggle:Set(Toggled, isCallback, isAnim)
-		-- Existing callers use isAnim=true for initial placement.
 		applyVisual(Toggled, not isAnim)
 
 		isCallback = isCallback ~= false
@@ -185,8 +180,7 @@ function Toggle.New(Value, Icon, IconSize, Parent, Callback, NewElement, Config)
 		local hasDragged = false
 		local isScrolling = false
 
-		-- iOS-like press response: the liquid thumb gently stretches instead of ballooning.
-		Tween(ToggleFrame.Frame.Bar.UIScale, 0.16, { Scale = 1.045 }, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
+		Tween(ToggleFrame.Frame.Bar.UIScale, 0.16, { Scale = 1.035 }, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
 
 		if dragConnection then
 			dragConnection:Disconnect()
