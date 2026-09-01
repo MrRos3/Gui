@@ -1,35 +1,19 @@
 --[[
     Gui v0.3.0
-    Customized WindUI derivative.
+    Roblox UI library by MrRos3.
 
-    The public loader now runs the customized runtime built from src/ in this repository.
-    WindUI is licensed under the MIT License. See LICENSE and NOTICE.md.
+    Source: https://github.com/MrRos3/Gui
+    License: MIT
 ]]
 
 local PROJECT_VERSION = "0.3.0"
-local UPSTREAM_VERSION = "1.6.66"
 local RUNTIME_URL = "https://raw.githubusercontent.com/MrRos3/Gui/main/dist/main.lua"
-local FALLBACK_RUNTIME_URL = "https://raw.githubusercontent.com/MrRos3/Gui/main/vendor/windui.lua"
 
-local function download(url)
-    local ok, source = pcall(function()
-        return game:HttpGet(url)
-    end)
-    if ok and type(source) == "string" and #source > 0 then
-        return source
-    end
-    return nil
-end
+local ok, source = pcall(function()
+    return game:HttpGet(RUNTIME_URL)
+end)
 
-local source = download(RUNTIME_URL)
-local runtimePath = "dist/main.lua"
-
-if not source then
-    source = download(FALLBACK_RUNTIME_URL)
-    runtimePath = "vendor/windui.lua (fallback)"
-end
-
-assert(source, "[Gui] Failed to download the UI runtime")
+assert(ok and type(source) == "string" and #source > 0, "[Gui] Failed to download the UI runtime")
 
 local loader, loadError = loadstring(source)
 assert(loader, "[Gui] Failed to compile the UI runtime: " .. tostring(loadError))
@@ -38,7 +22,6 @@ local Gui = loader()
 assert(type(Gui) == "table", "[Gui] UI runtime returned an invalid value")
 
 Gui.RuntimeVersion = tostring(Gui.Version or PROJECT_VERSION)
-Gui.WindUIVersion = UPSTREAM_VERSION
 Gui.Version = PROJECT_VERSION
 Gui.Name = "Gui"
 Gui.DefaultTheme = "Gui Dark"
@@ -49,9 +32,8 @@ Gui.GuiInfo = {
     Version = PROJECT_VERSION,
     Owner = "MrRos3",
     Repository = "MrRos3/Gui",
-    Runtime = runtimePath,
-    Upstream = "WindUI",
-    UpstreamVersion = UPSTREAM_VERSION,
+    Runtime = "dist/main.lua",
+    License = "MIT",
 }
 
 Gui.Brand = {
