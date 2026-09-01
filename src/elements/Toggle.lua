@@ -26,8 +26,8 @@ function Element:New(Config)
 		Desc = Toggle.Desc,
 		Window = Config.Window,
 		Parent = Config.Parent,
-		-- 86px is the exact width of the state label + capsule group.
-		TextOffset = Config.Window.NewElements and 86 or 82,
+		-- Compact state label + 44px capsule group.
+		TextOffset = Config.Window.NewElements and 74 or 70,
 		Hover = false,
 		Tab = Config.Tab,
 		Index = Config.Index,
