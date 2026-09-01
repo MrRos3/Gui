@@ -9,12 +9,12 @@ local UserInputService = game:GetService("UserInputService")
 function Toggle.New(Value, Icon, IconSize, Parent, Callback, NewElement, Config)
 	local Toggle = {}
 
-	-- iOS 26-inspired liquid switch: long, low pill with an elongated glass thumb.
-	local ToggleWidth = NewElement and 64 or 60
-	local ToggleHeight = NewElement and 29 or 28
-	local ThumbWidth = NewElement and 36 or 34
-	local ThumbHeight = ToggleHeight - 6
-	local Inset = 3
+	-- Compact iOS-style switch proportions for dense settings layouts.
+	local ToggleWidth = NewElement and 51 or 47
+	local ToggleHeight = NewElement and 31 or 29
+	local ThumbWidth = NewElement and 27 or 25
+	local ThumbHeight = ThumbWidth
+	local Inset = 2
 	local Radius = ToggleHeight / 2
 	local Travel = ToggleWidth - ThumbWidth - (Inset * 2)
 
@@ -146,7 +146,7 @@ function Toggle.New(Value, Icon, IconSize, Parent, Callback, NewElement, Config)
 		local strokeTransparency = toggled and 0.94 or 0.86
 
 		if animate then
-			Tween(ToggleFrame.Frame, 0.3, { Position = thumbPosition }, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
+			Tween(ToggleFrame.Frame, 0.26, { Position = thumbPosition }, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
 			Tween(ToggleFrame.Layer, 0.2, { ImageTransparency = layerTransparency }, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
 			Tween(ToggleFrame.InnerStroke, 0.2, { ImageTransparency = strokeTransparency }, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
 		else
