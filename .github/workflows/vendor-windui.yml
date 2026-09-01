@@ -1,0 +1,61 @@
+name: Vendor WindUI
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/vendor-windui.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  vendor:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Gui
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Clone WindUI 1.6.66
+        run: |
+          git clone --depth 1 --branch 1.6.66 --recurse-submodules --shallow-submodules \
+            https://github.com/Footagesus/WindUI.git /tmp/windui
+
+      - name: Vendor source and runtime
+        run: |
+          rm -rf src build tests vendor
+          mkdir -p vendor
+
+          cp -R /tmp/windui/src ./src
+          cp -R /tmp/windui/build ./build
+
+          if [ -d /tmp/windui/tests ]; then
+            cp -R /tmp/windui/tests ./tests
+          fi
+
+          for file in aftman.toml default.project.json package.json package-lock.json; do
+            if [ -f "/tmp/windui/$file" ]; then
+              cp "/tmp/windui/$file" "./$file"
+            fi
+          done
+
+          curl -fL \
+            "https://github.com/Footagesus/WindUI/releases/download/1.6.66/main.lua" \
+            -o vendor/windui.lua
+
+      - name: Commit vendored WindUI
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src build tests vendor aftman.toml default.project.json package.json package-lock.json 2>/dev/null || true
+
+          if git diff --cached --quiet; then
+            echo "WindUI 1.6.66 is already vendored."
+            exit 0
+          fi
+
+          git commit -m "Vendor WindUI 1.6.66 [skip ci]"
+          git push
