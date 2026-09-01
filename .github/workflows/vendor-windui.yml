@@ -1,3 +1,4 @@
+# Imports the pinned WindUI source/runtime into this repository.
 name: Vendor WindUI
 
 on:
