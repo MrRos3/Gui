@@ -48,13 +48,13 @@ Home:Button({
 
 Home:Button({
     Title = "Runtime info",
-    Desc = "Shows the vendored Gui runtime version kept underneath Gui.",
+    Desc = "Shows the current Gui runtime version.",
     Icon = "package",
     Callback = function()
         local info = Gui:GetInfo()
         Gui:Notify({
             Title = "Gui Runtime",
-            Content = "Gui " .. info.Version .. " • base " .. info.UpstreamVersion,
+            Content = "Gui " .. tostring(info.Version) .. " • runtime " .. tostring(Gui.RuntimeVersion or info.Version),
             Icon = "package",
         })
     end,
@@ -81,7 +81,7 @@ addThemeButton("Gui Violet", "wand-sparkles")
 
 About:Button({
     Title = "MrRos3/Gui",
-    Desc = "Custom Gui derivative with its own loader, branding and themes.",
+    Desc = "Custom Gui library with its own loader, branding and themes.",
     Icon = "github",
     Callback = function()
         Gui:Notify({
