@@ -5,7 +5,7 @@
    | |_| | |_| | |
     \____|\__,_|_|
 
-    v0.3.0  |  2026-09-01  |  Customized Roblox UI library derived from WindUI
+    v0.3.0  |  2026-09-01  |  Polished Roblox UI library by MrRos3
 
     Source: https://github.com/MrRos3/Gui
     Project: Gui by MrRos3
@@ -2476,7 +2476,7 @@ return[[
     "main": "./dist/main.lua",
     "repository": "https://github.com/MrRos3/Gui",
     "author": "MrRos3",
-    "description": "Customized Roblox UI library derived from WindUI",
+    "description": "Polished Roblox UI library by MrRos3",
     "license": "MIT",
     "scripts": {
         "dev": "bash build/build.sh dev $INPUT_FILE",
@@ -2491,7 +2491,7 @@ return[[
         "ui-library",
         "ui-design",
         "luau",
-        "windui-derivative"
+        "gui"
     ],
     "devDependencies": {
         "chokidar-cli": "^3.0.0",
