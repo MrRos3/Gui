@@ -1,4 +1,4 @@
-# Rebuild marker: runtime compatibility restore
+# Rebuild marker: iOS 26 controls
 name: Build Gui
 
 on:
