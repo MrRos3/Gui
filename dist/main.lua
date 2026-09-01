@@ -6470,11 +6470,11 @@ function aa.New(af,ag,ah,ai,aj,ak,al)
 local am={}
 
 
-local an=ak and 64 or 60
-local ao=ak and 29 or 28
-local ap=ak and 36 or 34
-local aq=ao-6
-local ar=3
+local an=ak and 51 or 47
+local ao=ak and 31 or 29
+local ap=ak and 27 or 25
+local aq=ap
+local ar=2
 local as=ao/2
 local at=an-ap-(ar*2)
 
@@ -6606,7 +6606,7 @@ local b=az and 0 or 1
 local d=az and 0.94 or 0.86
 
 if aA then
-ad(aw.Frame,0.3,{Position=aB},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+ad(aw.Frame,0.26,{Position=aB},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
 ad(aw.Layer,0.2,{ImageTransparency=b},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
 ad(aw.InnerStroke,0.2,{ImageTransparency=d},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
 else
