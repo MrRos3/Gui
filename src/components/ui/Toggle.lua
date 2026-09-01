@@ -23,22 +23,38 @@ local function addStroke(object, color, transparency, thickness)
 	return stroke
 end
 
+local function themeColor(property, fallback)
+	local value = Creator.GetThemeProperty(property, Creator.Theme)
+	if typeof(value) == "Color3" then
+		return value
+	end
+	return fallback
+end
+
 function Toggle.New(Value, Icon, IconSize, Parent, Callback, NewElement, Config)
 	local Toggle = {}
 
-	-- True capsule geometry copied from the reference control.
-	-- Plain Frame + UICorner is intentional: do not use the Gui squircle renderer here.
-	local TrackWidth = 52
-	local TrackHeight = 30
-	local ThumbSize = 26
+	-- Compact true-capsule geometry. Plain Frame + UICorner keeps the silhouette exact.
+	local TrackWidth = 44
+	local TrackHeight = 24
+	local ThumbSize = 20
 	local Inset = 2
 	local Travel = TrackWidth - ThumbSize - (Inset * 2)
-	local GroupWidth = 86
+	local GroupWidth = 72
 
-	local OffColor = Color3.fromRGB(40, 40, 40)
-	local OnColor = Color3.fromRGB(220, 20, 60)
+	local function getOffColor()
+		return themeColor("Button", Color3.fromRGB(40, 40, 40))
+	end
+
+	local function getOnColor()
+		return themeColor("Toggle", themeColor("Primary", Color3.fromRGB(90, 150, 255)))
+	end
+
+	local function getOffTextColor()
+		return themeColor("Placeholder", Color3.fromRGB(176, 176, 182))
+	end
+
 	local ThumbColor = Color3.fromRGB(255, 255, 255)
-	local OffTextColor = Color3.fromRGB(176, 176, 182)
 
 	local ToggleContainer = New("Frame", {
 		Name = "ToggleContainer",
@@ -49,13 +65,13 @@ function Toggle.New(Value, Icon, IconSize, Parent, Callback, NewElement, Config)
 
 	local StateLabel = New("TextLabel", {
 		Name = "StateLabel",
-		Size = UDim2.fromOffset(28, TrackHeight),
+		Size = UDim2.fromOffset(24, TrackHeight),
 		Position = UDim2.fromOffset(0, 0),
 		BackgroundTransparency = 1,
 		Text = "OFF",
 		Font = Enum.Font.GothamBold,
-		TextSize = 10,
-		TextColor3 = OffTextColor,
+		TextSize = 9,
+		TextColor3 = getOffTextColor(),
 		TextXAlignment = Enum.TextXAlignment.Right,
 		TextYAlignment = Enum.TextYAlignment.Center,
 		ZIndex = 14,
@@ -67,7 +83,7 @@ function Toggle.New(Value, Icon, IconSize, Parent, Callback, NewElement, Config)
 		Size = UDim2.fromOffset(TrackWidth, TrackHeight),
 		Position = UDim2.new(1, 0, 0.5, 0),
 		AnchorPoint = Vector2.new(1, 0.5),
-		BackgroundColor3 = OffColor,
+		BackgroundColor3 = getOffColor(),
 		BackgroundTransparency = 0,
 		BorderSizePixel = 0,
 		ClipsDescendants = false,
@@ -75,7 +91,7 @@ function Toggle.New(Value, Icon, IconSize, Parent, Callback, NewElement, Config)
 		Parent = ToggleContainer,
 	})
 	addCorner(ToggleFrame, TrackHeight / 2)
-	addStroke(ToggleFrame, Color3.fromRGB(255, 255, 255), 0.93, 1)
+	addStroke(ToggleFrame, Color3.fromRGB(255, 255, 255), 0.94, 1)
 
 	local Thumb = New("Frame", {
 		Name = "Thumb",
@@ -89,7 +105,8 @@ function Toggle.New(Value, Icon, IconSize, Parent, Callback, NewElement, Config)
 		Parent = ToggleFrame,
 	})
 	addCorner(Thumb, ThumbSize / 2)
-	addStroke(Thumb, OnColor, 0.42, 1)
+	local ThumbStroke = addStroke(Thumb, getOnColor(), 0.48, 1)
+	Creator.AddThemeObject(ThumbStroke, { Color = "Toggle" })
 
 	local ThumbScale = New("UIScale", {
 		Name = "UIScale",
@@ -102,7 +119,7 @@ function Toggle.New(Value, Icon, IconSize, Parent, Callback, NewElement, Config)
 		if iconData then
 			New("ImageLabel", {
 				Name = "Icon",
-				Size = UDim2.fromOffset(math.min(12, IconSize or 12), math.min(12, IconSize or 12)),
+				Size = UDim2.fromOffset(math.min(10, IconSize or 10), math.min(10, IconSize or 10)),
 				BackgroundTransparency = 1,
 				AnchorPoint = Vector2.new(0.5, 0.5),
 				Position = UDim2.fromScale(0.5, 0.5),
@@ -135,22 +152,35 @@ function Toggle.New(Value, Icon, IconSize, Parent, Callback, NewElement, Config)
 		return Inset + (toggled and Travel or 0)
 	end
 
+	local function updateThemeBindings(toggled)
+		Creator.AddThemeObject(ToggleFrame, {
+			BackgroundColor3 = toggled and "Toggle" or "Button",
+		}, true)
+		Creator.AddThemeObject(StateLabel, {
+			TextColor3 = toggled and "Toggle" or "Placeholder",
+		}, true)
+	end
+
 	local function updateStateLabel(toggled)
 		StateLabel.Text = toggled and "ON" or "OFF"
-		StateLabel.TextColor3 = toggled and OnColor or OffTextColor
 	end
 
 	local function applyVisual(toggled, animate)
 		local thumbPosition = UDim2.new(0, getThumbX(toggled), 0.5, 0)
-		local trackColor = toggled and OnColor or OffColor
+		local trackColor = toggled and getOnColor() or getOffColor()
+		local textColor = toggled and getOnColor() or getOffTextColor()
+
+		updateThemeBindings(toggled)
 		updateStateLabel(toggled)
 
 		if animate then
-			Tween(Thumb, 0.24, { Position = thumbPosition }, Enum.EasingStyle.Back, Enum.EasingDirection.Out):Play()
-			Tween(ToggleFrame, 0.18, { BackgroundColor3 = trackColor }, Enum.EasingStyle.Quad, Enum.EasingDirection.Out):Play()
+			Tween(Thumb, 0.22, { Position = thumbPosition }, Enum.EasingStyle.Back, Enum.EasingDirection.Out):Play()
+			Tween(ToggleFrame, 0.16, { BackgroundColor3 = trackColor }, Enum.EasingStyle.Quad, Enum.EasingDirection.Out):Play()
+			Tween(StateLabel, 0.16, { TextColor3 = textColor }, Enum.EasingStyle.Quad, Enum.EasingDirection.Out):Play()
 		else
 			Thumb.Position = thumbPosition
 			ToggleFrame.BackgroundColor3 = trackColor
+			StateLabel.TextColor3 = textColor
 		end
 	end
 
@@ -210,16 +240,19 @@ function Toggle.New(Value, Icon, IconSize, Parent, Callback, NewElement, Config)
 			local mouseDelta = inputChanged.Position.X - startMouseX
 			local newX = math.clamp(startFrameX + mouseDelta, Inset, Inset + Travel)
 			local percent = Travel > 0 and math.clamp((newX - Inset) / Travel, 0, 1) or 0
+			local offColor = getOffColor()
+			local onColor = getOnColor()
+			local offText = getOffTextColor()
 
 			Thumb.Position = UDim2.new(0, newX, 0.5, 0)
-			ToggleFrame.BackgroundColor3 = OffColor:Lerp(OnColor, percent)
+			ToggleFrame.BackgroundColor3 = offColor:Lerp(onColor, percent)
 
 			if percent >= 0.5 then
 				StateLabel.Text = "ON"
-				StateLabel.TextColor3 = OnColor
+				StateLabel.TextColor3 = onColor
 			else
 				StateLabel.Text = "OFF"
-				StateLabel.TextColor3 = OffTextColor
+				StateLabel.TextColor3 = offText
 			end
 		end)
 
