@@ -1,0 +1,72 @@
+name: Apply iOS 26 Control Polish
+
+on:
+  push:
+    paths:
+      - '.github/workflows/ios26-control-polish.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  polish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Polish slider and theme accents
+        shell: python
+        run: |
+          from pathlib import Path
+
+          slider_path = Path('src/elements/Slider.lua')
+          s = slider_path.read_text()
+
+          replacements = [
+              ('\t\tThumbSize = 13,', '\t\tThumbSize = 16,'),
+              ('\t\tImageTransparency = 0.95,\n\t\tSize = UDim2.new(1, not Slider.IsTextbox and -TotalSliderWidth or (-Slider.TextBoxWidth - 8), 0, 4),',
+               '\t\tImageTransparency = 0.88,\n\t\tSize = UDim2.new(1, not Slider.IsTextbox and -TotalSliderWidth or (-Slider.TextBoxWidth - 8), 0, 3),'),
+              ('\t\t\tImageTransparency = 0.1,\n\t\t\tThemeTag = {\n\t\t\t\tImageColor3 = "Slider",\n\t\t\t},',
+               '\t\t\tImageTransparency = 0,\n\t\t\tThemeTag = {\n\t\t\t\tImageColor3 = "Slider",\n\t\t\t},'),
+              ('\t\t\t\tSize = UDim2.new(\n\t\t\t\t\t0,\n\t\t\t\t\tConfig.Window.NewElements and (Slider.ThumbSize * 2) or (Slider.ThumbSize + 2),\n\t\t\t\t\t0,\n\t\t\t\t\tConfig.Window.NewElements and (Slider.ThumbSize + 4) or (Slider.ThumbSize + 2)\n\t\t\t\t),',
+               '\t\t\t\tSize = UDim2.fromOffset(Slider.ThumbSize, Slider.ThumbSize),'),
+              ('\t\t\t\tThemeTag = {\n\t\t\t\t\tImageColor3 = "SliderThumb",\n\t\t\t\t},\n\t\t\t\tName = "Thumb",',
+               '\t\t\t\tImageColor3 = Color3.fromRGB(255, 255, 255),\n\t\t\t\tName = "Thumb",'),
+              ('\t\t\t\tCreator.NewRoundFrame(999, "SquircleGlass", {\n\t\t\t\t\tSize = UDim2.new(1, 0, 1, 0),\n\t\t\t\t\tImageColor3 = Color3.new(1, 1, 1),\n\t\t\t\t\tName = "Highlight",\n\t\t\t\t\tImageTransparency = 0.5,\n\t\t\t\t}),',
+               '\t\t\t\tCreator.NewRoundFrame(999, "SquircleOutline", {\n\t\t\t\t\tSize = UDim2.new(1, 2, 1, 2),\n\t\t\t\t\tAnchorPoint = Vector2.new(0.5, 0.5),\n\t\t\t\t\tPosition = UDim2.fromScale(0.5, 0.5),\n\t\t\t\t\tImageColor3 = Color3.fromRGB(0, 0, 0),\n\t\t\t\t\tName = "Highlight",\n\t\t\t\t\tImageTransparency = 0.78,\n\t\t\t\t}),'),
+              ('\t\t\t\t\tImageTransparency = 0,\n\t\t\t\t\tSize = UDim2.new(\n\t\t\t\t\t\t0,\n\t\t\t\t\t\tConfig.Window.NewElements and (Slider.ThumbSize * 2) or (Slider.ThumbSize + 2),\n\t\t\t\t\t\t0,\n\t\t\t\t\t\tConfig.Window.NewElements and (Slider.ThumbSize + 4) or (Slider.ThumbSize + 2)\n\t\t\t\t\t),',
+               '\t\t\t\t\tImageTransparency = 0,\n\t\t\t\t\tSize = UDim2.fromOffset(Slider.ThumbSize, Slider.ThumbSize),'),
+              ('\t\t\t\t\tImageTransparency = 0.85,\n\t\t\t\t\tSize = UDim2.new(\n\t\t\t\t\t\t0,\n\t\t\t\t\t\t(Config.Window.NewElements and (Slider.ThumbSize * 2) or Slider.ThumbSize) + 8,\n\t\t\t\t\t\t0,\n\t\t\t\t\t\tSlider.ThumbSize + 8\n\t\t\t\t\t),',
+               '\t\t\t\t\tImageTransparency = 0,\n\t\t\t\t\tSize = UDim2.fromOffset(Slider.ThumbSize + 3, Slider.ThumbSize + 3),'),
+          ]
+
+          for old, new in replacements:
+              if old not in s:
+                  raise SystemExit('Expected slider snippet not found:\n' + old[:160])
+              s = s.replace(old, new, 1)
+
+          slider_path.write_text(s)
+
+          main_path = Path('main.lua')
+          m = main_path.read_text()
+          m = m.replace('Slider = Color3.fromHex("#929AA7")', 'Slider = Color3.fromHex("#7C8CFF")', 1)
+          m = m.replace('Toggle = Color3.fromHex("#5DE7FF")', 'Toggle = Color3.fromHex("#34C759")', 1)
+          m = m.replace('Toggle = Color3.fromHex("#55F1D6")', 'Toggle = Color3.fromHex("#34C759")', 1)
+          m = m.replace('Toggle = Color3.fromHex("#A98BFF")', 'Toggle = Color3.fromHex("#34C759")', 1)
+          m = m.replace('Slider = Color3.fromHex("#5DE7FF")', 'Slider = Color3.fromHex("#7C8CFF")', 1)
+          m = m.replace('Slider = Color3.fromHex("#A98BFF")', 'Slider = Color3.fromHex("#7C8CFF")', 1)
+          main_path.write_text(m)
+
+      - name: Remove one-time workflow
+        run: rm .github/workflows/ios26-control-polish.yml
+
+      - name: Commit changes
+        run: |
+          git config user.name "MrRos3"
+          git config user.email "114161345+MrRos3@users.noreply.github.com"
+          git add src/elements/Slider.lua main.lua .github/workflows/ios26-control-polish.yml
+          git commit -m "Polish slider and theme accents for iOS 26" || exit 0
+          git push
