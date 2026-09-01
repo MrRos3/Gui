@@ -1,14 +1,14 @@
 --[[
-     ____       _
-    / ___|_   _(_)
-   | |  _| | | | |
-   | |_| | |_| | |
-    \____|\__,_|_|
+ __     __          _        _   _ ___
+ \ \   / /_ _ _ __ | |_ __ _| | | |_ _|
+  \ \ / / _` | '_ \| __/ _` | | | || |
+   \ V / (_| | | | | || (_| | |_| || |
+    \_/ \__,_|_| |_|\__\__,_|\___/|___|
 
-    v0.3.0  |  2026-09-01  |  Polished Roblox UI library by MrRos3
+    v0.3.0  |  2026-09-01  |  VantaUI - polished AMOLED-first Roblox UI library by MrRos3
 
     Source: https://github.com/MrRos3/Gui
-    Project: Gui by MrRos3
+    Project: VantaUI by MrRos3
     License: MIT
 ]]
 
@@ -2471,12 +2471,12 @@ New=a.load'j'.New
 
 return[[
 {
-    "name": "mrros3-gui",
+    "name": "mrros3-vantaui",
     "version": "0.3.0",
     "main": "./dist/main.lua",
     "repository": "https://github.com/MrRos3/Gui",
     "author": "MrRos3",
-    "description": "Polished Roblox UI library by MrRos3",
+    "description": "VantaUI - polished AMOLED-first Roblox UI library by MrRos3",
     "license": "MIT",
     "scripts": {
         "dev": "bash build/build.sh dev $INPUT_FILE",
@@ -2491,7 +2491,8 @@ return[[
         "ui-library",
         "ui-design",
         "luau",
-        "gui"
+        "vantaui",
+        "amoled"
     ],
     "devDependencies": {
         "chokidar-cli": "^3.0.0",

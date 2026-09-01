@@ -2,12 +2,12 @@
 
 return [[
 {
-    "name": "mrros3-gui",
+    "name": "mrros3-vantaui",
     "version": "0.3.0",
     "main": "./dist/main.lua",
     "repository": "https://github.com/MrRos3/Gui",
     "author": "MrRos3",
-    "description": "Polished Roblox UI library by MrRos3",
+    "description": "VantaUI - polished AMOLED-first Roblox UI library by MrRos3",
     "license": "MIT",
     "scripts": {
         "dev": "bash build/build.sh dev $INPUT_FILE",
@@ -22,7 +22,8 @@ return [[
         "ui-library",
         "ui-design",
         "luau",
-        "gui"
+        "vantaui",
+        "amoled"
     ],
     "devDependencies": {
         "chokidar-cli": "^3.0.0",
