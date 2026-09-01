@@ -7006,7 +7006,7 @@ IsFocusing=false,
 
 Width=ak.Width or 130,
 TextBoxWidth=ak.Window.NewElements and 40 or 30,
-ThumbSize=13,
+ThumbSize=16,
 IconSize=26,
 }
 if al.Icons=={}then
@@ -7094,8 +7094,8 @@ Tags=ak.Tags,
 }
 
 al.UIElements.SliderIcon=ae.NewRoundFrame(99,"Squircle",{
-ImageTransparency=0.95,
-Size=UDim2.new(1,not al.IsTextbox and-aw or(-al.TextBoxWidth-8),0,4),
+ImageTransparency=0.88,
+Size=UDim2.new(1,not al.IsTextbox and-aw or(-al.TextBoxWidth-8),0,3),
 AnchorPoint=Vector2.new(0.5,0.5),
 Position=UDim2.new(0.5,0,0.5,0),
 Name="Frame",
@@ -7106,18 +7106,13 @@ ImageColor3="Text",
 ae.NewRoundFrame(99,"Squircle",{
 Name="Frame",
 Size=UDim2.new(ar,0,1,0),
-ImageTransparency=0.1,
+ImageTransparency=0,
 ThemeTag={
 ImageColor3="Slider",
 },
 },{
 ae.NewRoundFrame(99,"Squircle",{
-Size=UDim2.new(
-0,
-ak.Window.NewElements and(al.ThumbSize*2)or(al.ThumbSize+2),
-0,
-ak.Window.NewElements and(al.ThumbSize+4)or(al.ThumbSize+2)
-),
+Size=UDim2.fromOffset(al.ThumbSize,al.ThumbSize),
 Position=UDim2.new(1,0,0.5,0),
 AnchorPoint=Vector2.new(0.5,0.5),
 ThemeTag={
@@ -7282,12 +7277,7 @@ ak.WindUI.CurrentInput=nil
 if ak.Window.NewElements then
 ag(al.UIElements.SliderIcon.Frame.Thumb,0.2,{
 ImageTransparency=0,
-Size=UDim2.new(
-0,
-ak.Window.NewElements and(al.ThumbSize*2)or(al.ThumbSize+2),
-0,
-ak.Window.NewElements and(al.ThumbSize+4)or(al.ThumbSize+2)
-),
+Size=UDim2.fromOffset(al.ThumbSize,al.ThumbSize),
 },Enum.EasingStyle.Quint,Enum.EasingDirection.InOut):Play()
 end
 if ax then
@@ -7377,13 +7367,8 @@ al:Set(ap,aA)
 
 if ak.Window.NewElements then
 ag(al.UIElements.SliderIcon.Frame.Thumb,0.24,{
-ImageTransparency=0.85,
-Size=UDim2.new(
-0,
-(ak.Window.NewElements and(al.ThumbSize*2)or al.ThumbSize)+8,
-0,
-al.ThumbSize+8
-),
+ImageTransparency=0,
+Size=UDim2.fromOffset(al.ThumbSize+3,al.ThumbSize+3),
 },Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
 end
 if ax then
