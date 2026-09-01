@@ -1,15 +1,14 @@
 --[[
-     _      ___         ____  ______
-    | | /| / (_)__  ___/ / / / /  _/
-    | |/ |/ / / _ \/ _  / /_/ // /  
-    |__/|__/_/_//_/\_,_/\____/___/
-    
+     ____       _
+    / ___|_   _(_)
+   | |  _| | | | |
+   | |_| | |_| | |
+    \____|\__,_|_|
+
     v{{VERSION}}  |  {{BUILD_DATE}}  |  {{DESCRIPTION}}
-    
-    To view the source code, see the `src/` folder on the official GitHub repository.
-    
-    Author: Footagesus (Footages, .ftgs, oftgs)
-    Github: {{REPOSITORY}}
-    Discord: {{DISCORD}}
+
+    Source: {{REPOSITORY}}
+    Project: Gui by MrRos3
+    Based on WindUI by Footagesus
     License: {{LICENSE}}
 ]]
