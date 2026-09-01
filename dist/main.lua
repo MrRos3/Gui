@@ -9,7 +9,6 @@
 
     Source: https://github.com/MrRos3/Gui
     Project: Gui by MrRos3
-    Based on WindUI by Footagesus
     License: MIT
 ]]
 
