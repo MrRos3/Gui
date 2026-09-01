@@ -6474,21 +6474,25 @@ local an=52
 local ao=30
 local ap=26
 local aq=2
-local ar=ao/2
-local as=an-ap-(aq*2)
+local ar=an-ap-(aq*2)
+local as=96
 
-local at
+local at=Color3.fromRGB(40,40,40)
+local au=Color3.fromRGB(220,20,60)
+local av=Color3.fromRGB(150,150,156)
+
+local aw
 if ag and ag~=""then
-local au=ab.Icon(ag)
-if au then
-at=ac("ImageLabel",{
+local ax=ab.Icon(ag)
+if ax then
+aw=ac("ImageLabel",{
 Size=UDim2.fromOffset(math.min(12,ah or 12),math.min(12,ah or 12)),
 BackgroundTransparency=1,
 AnchorPoint=Vector2.new(0.5,0.5),
 Position=UDim2.fromScale(0.5,0.5),
-Image=au[1],
-ImageRectOffset=au[2].ImageRectPosition,
-ImageRectSize=au[2].ImageRectSize,
+Image=ax[1],
+ImageRectOffset=ax[2].ImageRectPosition,
+ImageRectSize=ax[2].ImageRectSize,
 ImageTransparency=0.35,
 ImageColor3=Color3.fromRGB(72,72,76),
 ZIndex=7,
@@ -6496,27 +6500,38 @@ ZIndex=7,
 end
 end
 
-local au=ac("Frame",{
-Size=UDim2.fromOffset(an,ao),
+local ax=ac("Frame",{
+Size=UDim2.fromOffset(as,ao),
 BackgroundTransparency=1,
 Parent=ai,
 })
 
-local av=ab.NewRoundFrame(ar,"Squircle",{
-ImageColor3=Color3.fromRGB(40,40,40),
+local ay=ac("TextLabel",{
+Size=UDim2.fromOffset(38,20),
+Position=UDim2.new(0,0,0.5,-10),
+BackgroundTransparency=1,
+Text="OFF",
+Font=Enum.Font.GothamBold,
+TextSize=10,
+TextColor3=av,
+TextXAlignment=Enum.TextXAlignment.Right,
+ZIndex=14,
+Parent=ax,
+})
+
+local az=ab.NewRoundFrame(ao/2,"Squircle",{
+ImageColor3=at,
 ImageTransparency=0,
-Parent=au,
+Parent=ax,
 Size=UDim2.fromOffset(an,ao),
-AnchorPoint=Vector2.new(0.5,0.5),
-Position=UDim2.fromScale(0.5,0.5),
+Position=UDim2.new(1,-an,0.5,0),
+AnchorPoint=Vector2.new(0,0.5),
 Name="ToggleFrame",
 },{
-ab.NewRoundFrame(ar,"Squircle",{
+ab.NewRoundFrame(ao/2,"Squircle",{
 Size=UDim2.fromScale(1,1),
 Name="Layer",
-ThemeTag={
-ImageColor3="Toggle",
-},
+ImageColor3=au,
 ImageTransparency=1,
 ZIndex=1,
 }),
@@ -6545,14 +6560,12 @@ ab.NewRoundFrame(9999,"SquircleOutline",{
 Size=UDim2.fromScale(1,1),
 AnchorPoint=Vector2.new(0.5,0.5),
 Position=UDim2.fromScale(0.5,0.5),
-ThemeTag={
-ImageColor3="Toggle",
-},
+ImageColor3=au,
 ImageTransparency=0.55,
 Name="ThumbStroke",
 ZIndex=6,
 }),
-at,
+aw,
 }),
 }),
 
@@ -6567,129 +6580,135 @@ ZIndex=10,
 }),
 })
 
-local aw
-local ax
+local aA
+local aB
 
-local function getThumbX(ay)
-return aq+(ay and as or 0)
+local function getThumbX(b)
+return aq+(b and ar or 0)
 end
 
-local function applyVisual(ay,az)
-local aA=UDim2.new(0,getThumbX(ay),0.5,0)
-local aB=ay and 0 or 1
+local function updateStateLabel(b)
+ay.Text=b and"ON"or"OFF"
+ay.TextColor3=b and au or av
+end
 
-if az then
-ad(av.Layer,0.22,{ImageTransparency=aB},Enum.EasingStyle.Quart,Enum.EasingDirection.Out):Play()
-ad(av.Frame,0.24,{Position=aA},Enum.EasingStyle.Back,Enum.EasingDirection.Out):Play()
+local function applyVisual(b,d)
+local f=UDim2.new(0,getThumbX(b),0.5,0)
+local g=b and 0 or 1
+updateStateLabel(b)
+
+if d then
+ad(az.Layer,0.22,{ImageTransparency=g},Enum.EasingStyle.Quart,Enum.EasingDirection.Out):Play()
+ad(az.Frame,0.24,{Position=f},Enum.EasingStyle.Back,Enum.EasingDirection.Out):Play()
 else
-av.Frame.Position=aA
-av.Layer.ImageTransparency=aB
+az.Frame.Position=f
+az.Layer.ImageTransparency=g
 end
 end
 
-function am.Set(ay,az,aA,aB)
-applyVisual(az,not aB)
+function am.Set(b,d,f,g)
+applyVisual(d,not g)
 
-aA=aA~=false
+f=f~=false
 task.spawn(function()
-if aj and aA then
-ab.SafeCallback(aj,az)
+if aj and f then
+ab.SafeCallback(aj,d)
 end
 end)
 end
 
-function am.Animate(ay,az,aA)
+function am.Animate(b,d,f)
 if al.Window.IsToggleDragging then
 return
 end
 
 al.Window.IsToggleDragging=true
 
-local aB=az.Position.X
-local b=az.Position.Y
-local d=av.Frame.Position.X.Offset
-local f=false
-local g=false
+local g=d.Position.X
+local h=d.Position.Y
+local i=az.Frame.Position.X.Offset
+local l=false
+local m=false
 
-ad(av.Frame.Bar.UIScale,0.12,{Scale=1.04},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+ad(az.Frame.Bar.UIScale,0.12,{Scale=1.04},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
 
-if aw then
-aw:Disconnect()
+if aA then
+aA:Disconnect()
 end
 
-aw=ae.InputChanged:Connect(function(h)
+aA=ae.InputChanged:Connect(function(p)
 if not al.Window.IsToggleDragging then
 return
 end
-if h.UserInputType~=Enum.UserInputType.MouseMovement and h.UserInputType~=Enum.UserInputType.Touch then
+if p.UserInputType~=Enum.UserInputType.MouseMovement and p.UserInputType~=Enum.UserInputType.Touch then
 return
 end
 
-local i=math.abs(h.Position.X-aB)
-local l=math.abs(h.Position.Y-b)
+local r=math.abs(p.Position.X-g)
+local u=math.abs(p.Position.Y-h)
 
-if not f and l>10 and l>i then
-g=true
+if not l and u>10 and u>r then
+m=true
 return
 end
-if g then
+if m then
 return
 end
 
-if i>5 then
-f=true
+if r>5 then
+l=true
 end
 
-local m=h.Position.X-aB
-local p=math.clamp(d+m,aq,aq+as)
-local r=as>0 and math.clamp((p-aq)/as,0,1)or 0
+local v=p.Position.X-g
+local x=math.clamp(i+v,aq,aq+ar)
+local z=ar>0 and math.clamp((x-aq)/ar,0,1)or 0
 
-av.Frame.Position=UDim2.new(0,p,0.5,0)
-av.Layer.ImageTransparency=1-r
+az.Frame.Position=UDim2.new(0,x,0.5,0)
+az.Layer.ImageTransparency=1-z
 end)
 
-if ax then
-ax:Disconnect()
+if aB then
+aB:Disconnect()
 end
 
-ax=ae.InputEnded:Connect(function(h)
+aB=ae.InputEnded:Connect(function(p)
 if not al.Window.IsToggleDragging then
 return
 end
-if h.UserInputType~=Enum.UserInputType.MouseButton1 and h.UserInputType~=Enum.UserInputType.Touch then
+if p.UserInputType~=Enum.UserInputType.MouseButton1 and p.UserInputType~=Enum.UserInputType.Touch then
 return
 end
 
 al.Window.IsToggleDragging=false
 al.WindUI.CurrentInput=nil
 
-if aw then
-aw:Disconnect()
-aw=nil
+if aA then
+aA:Disconnect()
+aA=nil
 end
-if ax then
-ax:Disconnect()
-ax=nil
+if aB then
+aB:Disconnect()
+aB=nil
 end
 
-ad(av.Frame.Bar.UIScale,0.16,{Scale=1},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+ad(az.Frame.Bar.UIScale,0.16,{Scale=1},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
 
-if g then
-applyVisual(aA.Value,true)
+if m then
+applyVisual(f.Value,true)
 return
 end
 
-if not f then
-aA:Set(not aA.Value,true,false)
+if not l then
+f:Set(not f.Value,true,false)
 else
-local i=av.Frame.Position.X.Offset
-local l=i>(aq+as/2)
-aA:Set(l,true,false)
+local r=az.Frame.Position.X.Offset
+local u=r>(aq+ar/2)
+f:Set(u,true,false)
 end
 end)
 end
 
-return au,am
+return ax,am
 end
 
 return aa end function a.G()
