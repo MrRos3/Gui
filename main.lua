@@ -24,7 +24,7 @@ assert(type(Gui) == "table", "[Gui] UI runtime returned an invalid value")
 Gui.RuntimeVersion = tostring(Gui.Version or PROJECT_VERSION)
 Gui.Version = PROJECT_VERSION
 Gui.Name = "Gui"
-Gui.DefaultTheme = "Gui Smoked"
+Gui.DefaultTheme = "Gui AMOLED"
 Gui.TransparencyValue = 0.1
 
 Gui.GuiInfo = {
