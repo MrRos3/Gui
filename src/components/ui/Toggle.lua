@@ -9,13 +9,17 @@ local UserInputService = game:GetService("UserInputService")
 function Toggle.New(Value, Icon, IconSize, Parent, Callback, NewElement, Config)
 	local Toggle = {}
 
-	-- Match the reference script exactly: 52x30 track, 26px thumb, 2px inset.
+	-- Reference-script proportions and colors.
 	local ToggleWidth = 52
 	local ToggleHeight = 30
 	local ThumbSize = 26
 	local Inset = 2
-	local Radius = ToggleHeight / 2
 	local Travel = ToggleWidth - ThumbSize - (Inset * 2)
+	local GroupWidth = 96 -- 38px state + 6px gap + 52px switch
+
+	local ToggleOff = Color3.fromRGB(40, 40, 40)
+	local ToggleOn = Color3.fromRGB(220, 20, 60)
+	local StateOff = Color3.fromRGB(150, 150, 156)
 
 	local IconToggleFrame
 	if Icon and Icon ~= "" then
@@ -37,26 +41,37 @@ function Toggle.New(Value, Icon, IconSize, Parent, Callback, NewElement, Config)
 	end
 
 	local ToggleContainer = New("Frame", {
-		Size = UDim2.fromOffset(ToggleWidth, ToggleHeight),
+		Size = UDim2.fromOffset(GroupWidth, ToggleHeight),
 		BackgroundTransparency = 1,
 		Parent = Parent,
 	})
 
-	local ToggleFrame = Creator.NewRoundFrame(Radius, "Squircle", {
-		ImageColor3 = Color3.fromRGB(40, 40, 40),
+	local StateLabel = New("TextLabel", {
+		Size = UDim2.fromOffset(38, 20),
+		Position = UDim2.new(0, 0, 0.5, -10),
+		BackgroundTransparency = 1,
+		Text = "OFF",
+		Font = Enum.Font.GothamBold,
+		TextSize = 10,
+		TextColor3 = StateOff,
+		TextXAlignment = Enum.TextXAlignment.Right,
+		ZIndex = 14,
+		Parent = ToggleContainer,
+	})
+
+	local ToggleFrame = Creator.NewRoundFrame(ToggleHeight / 2, "Squircle", {
+		ImageColor3 = ToggleOff,
 		ImageTransparency = 0,
 		Parent = ToggleContainer,
 		Size = UDim2.fromOffset(ToggleWidth, ToggleHeight),
-		AnchorPoint = Vector2.new(0.5, 0.5),
-		Position = UDim2.fromScale(0.5, 0.5),
+		Position = UDim2.new(1, -ToggleWidth, 0.5, 0),
+		AnchorPoint = Vector2.new(0, 0.5),
 		Name = "ToggleFrame",
 	}, {
-		Creator.NewRoundFrame(Radius, "Squircle", {
+		Creator.NewRoundFrame(ToggleHeight / 2, "Squircle", {
 			Size = UDim2.fromScale(1, 1),
 			Name = "Layer",
-			ThemeTag = {
-				ImageColor3 = "Toggle",
-			},
+			ImageColor3 = ToggleOn,
 			ImageTransparency = 1,
 			ZIndex = 1,
 		}),
@@ -85,9 +100,7 @@ function Toggle.New(Value, Icon, IconSize, Parent, Callback, NewElement, Config)
 					Size = UDim2.fromScale(1, 1),
 					AnchorPoint = Vector2.new(0.5, 0.5),
 					Position = UDim2.fromScale(0.5, 0.5),
-					ThemeTag = {
-						ImageColor3 = "Toggle",
-					},
+					ImageColor3 = ToggleOn,
 					ImageTransparency = 0.55,
 					Name = "ThumbStroke",
 					ZIndex = 6,
@@ -114,9 +127,15 @@ function Toggle.New(Value, Icon, IconSize, Parent, Callback, NewElement, Config)
 		return Inset + (toggled and Travel or 0)
 	end
 
+	local function updateStateLabel(toggled)
+		StateLabel.Text = toggled and "ON" or "OFF"
+		StateLabel.TextColor3 = toggled and ToggleOn or StateOff
+	end
+
 	local function applyVisual(toggled, animate)
 		local thumbPosition = UDim2.new(0, getThumbX(toggled), 0.5, 0)
 		local layerTransparency = toggled and 0 or 1
+		updateStateLabel(toggled)
 
 		if animate then
 			Tween(ToggleFrame.Layer, 0.22, { ImageTransparency = layerTransparency }, Enum.EasingStyle.Quart, Enum.EasingDirection.Out):Play()
