@@ -6855,14 +6855,10 @@ UIElements={},
 ai.ToggleFrame=a.load'C'{
 Title=ai.Title,
 Desc=ai.Desc,
-
-
-
-
 Window=ah.Window,
 Parent=ah.Parent,
 
-TextOffset=ah.Window.NewElements and 108 or 104,
+TextOffset=ah.Window.NewElements and 86 or 82,
 Hover=false,
 Tab=ah.Tab,
 Index=ah.Index,
@@ -6952,11 +6948,6 @@ am:Animate(ao,ai)
 end
 end)
 end
-
-
-
-
-
 else
 if ai.Type=="Toggle"then
 aa.AddSignal(al.ToggleFrame.Hitbox.MouseButton1Click,function()
