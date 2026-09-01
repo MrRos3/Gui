@@ -6470,51 +6470,50 @@ function aa.New(af,ag,ah,ai,aj,ak,al)
 local am={}
 
 
-local an=ak and 48 or 44
-local ao=ak and 29 or 27
-local ap=ao-4
-local aq=2
-local ar=ao/2
-local as=an-ap-(aq*2)
+local an=ak and 54 or 50
+local ao=ak and 32 or 30
+local ap=ak and 29 or 27
+local aq=ao-6
+local ar=3
+local as=ao/2
+local at=an-ap-(ar*2)
 
-local at
+local au
 if ag and ag~=""then
-local au=ab.Icon(ag)
-if au then
-at=ac("ImageLabel",{
-Size=UDim2.fromOffset(math.min(13,ah or 13),math.min(13,ah or 13)),
+local av=ab.Icon(ag)
+if av then
+au=ac("ImageLabel",{
+Size=UDim2.fromOffset(math.min(12,ah or 12),math.min(12,ah or 12)),
 BackgroundTransparency=1,
 AnchorPoint=Vector2.new(0.5,0.5),
 Position=UDim2.fromScale(0.5,0.5),
-Image=au[1],
-ImageRectOffset=au[2].ImageRectPosition,
-ImageRectSize=au[2].ImageRectSize,
-ImageTransparency=0.28,
-ImageColor3=Color3.fromRGB(92,92,96),
-ZIndex=4,
+Image=av[1],
+ImageRectOffset=av[2].ImageRectPosition,
+ImageRectSize=av[2].ImageRectSize,
+ImageTransparency=0.45,
+ImageColor3=Color3.fromRGB(96,98,105),
+ZIndex=7,
 })
 end
 end
 
-local au=ac("Frame",{
+local av=ac("Frame",{
 Size=UDim2.fromOffset(an,ao),
 BackgroundTransparency=1,
 Parent=ai,
 })
 
-local av=ab.NewRoundFrame(ar,"Squircle",{
+local aw=ab.NewRoundFrame(as,"Squircle",{
+ImageColor3=Color3.fromRGB(69,71,78),
 ImageTransparency=0,
-ThemeTag={
-ImageColor3="ElementBackground",
-},
-Parent=au,
+Parent=av,
 Size=UDim2.fromOffset(an,ao),
 AnchorPoint=Vector2.new(0.5,0.5),
 Position=UDim2.fromScale(0.5,0.5),
 Name="ToggleFrame",
 },{
 
-ab.NewRoundFrame(ar,"Squircle",{
+ab.NewRoundFrame(as,"Squircle",{
 Size=UDim2.fromScale(1,1),
 Name="Layer",
 ThemeTag={
@@ -6525,46 +6524,65 @@ ZIndex=1,
 }),
 
 
-ab.NewRoundFrame(ar,"SquircleOutline",{
+ab.NewRoundFrame(as-1,"SquircleOutline",{
+Size=UDim2.new(1,-2,1,-2),
+AnchorPoint=Vector2.new(0.5,0.5),
+Position=UDim2.fromScale(0.5,0.5),
+Name="InnerStroke",
+ImageColor3=Color3.fromRGB(255,255,255),
+ImageTransparency=0.82,
+ZIndex=2,
+}),
+
+ab.NewRoundFrame(as,"SquircleOutline",{
 Size=UDim2.fromScale(1,1),
 Name="Stroke",
-ImageColor3=Color3.new(1,1,1),
+ImageColor3=Color3.fromRGB(255,255,255),
 ImageTransparency=0.9,
 ZIndex=2,
 }),
 
 
 ab.NewRoundFrame(9999,"Squircle",{
-Size=UDim2.fromOffset(ap,ap),
-Position=UDim2.new(0,aq,0.5,0),
+Size=UDim2.fromOffset(ap,aq),
+Position=UDim2.new(0,ar,0.5,0),
 AnchorPoint=Vector2.new(0,0.5),
 ImageTransparency=1,
 Name="Frame",
-ZIndex=3,
+ZIndex=4,
 },{
+
 ab.NewRoundFrame(9999,"Squircle",{
 Size=UDim2.fromScale(1,1),
 AnchorPoint=Vector2.new(0.5,0.5),
 Position=UDim2.fromScale(0.5,0.5),
-ImageColor3=Color3.fromRGB(255,255,255),
+ImageColor3=Color3.fromRGB(250,250,252),
 ImageTransparency=0,
 Name="Bar",
-ZIndex=3,
+ZIndex=5,
 },{
 ac("UIScale",{
 Scale=1,
 }),
-
 ab.NewRoundFrame(9999,"SquircleOutline",{
 Size=UDim2.new(1,1,1,1),
 AnchorPoint=Vector2.new(0.5,0.5),
 Position=UDim2.fromScale(0.5,0.5),
+ImageColor3=Color3.fromRGB(255,255,255),
+ImageTransparency=0.38,
+Name="GlassEdge",
+ZIndex=6,
+}),
+ab.NewRoundFrame(9999,"SquircleOutline",{
+Size=UDim2.new(1,3,1,3),
+AnchorPoint=Vector2.new(0.5,0.5),
+Position=UDim2.new(0.5,0,0.5,1),
 ImageColor3=Color3.fromRGB(0,0,0),
 ImageTransparency=0.82,
-Name="ThumbEdge",
+Name="ThumbShadow",
 ZIndex=4,
 }),
-at,
+au,
 }),
 }),
 
@@ -6579,161 +6597,134 @@ ZIndex=10,
 }),
 })
 
-local aw
 local ax
+local ay
 
-local function getThumbX(ay)
-return aq+(ay and as or 0)
+local function getThumbX(az)
+return ar+(az and at or 0)
 end
 
-local function applyVisual(ay,az)
-local aA=UDim2.new(0,getThumbX(ay),0.5,0)
-local aB=ay and 0 or 1
+local function applyVisual(az,aA)
+local aB=UDim2.new(0,getThumbX(az),0.5,0)
+local b=az and 0 or 1
+local d=az and 0.93 or 0.84
 
-if az then
-ad(
-av.Frame,
-0.24,
-{Position=aA},
-Enum.EasingStyle.Quint,
-Enum.EasingDirection.Out
-):Play()
-ad(
-av.Layer,
-0.18,
-{ImageTransparency=aB},
-Enum.EasingStyle.Quint,
-Enum.EasingDirection.Out
-):Play()
+if aA then
+ad(aw.Frame,0.28,{Position=aB},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+ad(aw.Layer,0.2,{ImageTransparency=b},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+ad(aw.InnerStroke,0.2,{ImageTransparency=d},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
 else
-av.Frame.Position=aA
-av.Layer.ImageTransparency=aB
+aw.Frame.Position=aB
+aw.Layer.ImageTransparency=b
+aw.InnerStroke.ImageTransparency=d
 end
 end
 
-function am.Set(ay,az,aA,aB)
+function am.Set(az,aA,aB,b)
 
+applyVisual(aA,not b)
 
-applyVisual(az,not aB)
-
-aA=aA~=false
+aB=aB~=false
 task.spawn(function()
-if aj and aA then
-ab.SafeCallback(aj,az)
+if aj and aB then
+ab.SafeCallback(aj,aA)
 end
 end)
 end
 
-function am.Animate(ay,az,aA)
+function am.Animate(az,aA,aB)
 if al.Window.IsToggleDragging then
 return
 end
 
 al.Window.IsToggleDragging=true
 
-local aB=az.Position.X
-local b=az.Position.Y
-local d=av.Frame.Position.X.Offset
-local f=false
+local b=aA.Position.X
+local d=aA.Position.Y
+local f=aw.Frame.Position.X.Offset
 local g=false
+local h=false
 
-ad(
-av.Frame.Bar.UIScale,
-0.16,
-{Scale=1.07},
-Enum.EasingStyle.Quint,
-Enum.EasingDirection.Out
-):Play()
 
-if aw then
-aw:Disconnect()
-end
-
-aw=ae.InputChanged:Connect(function(h)
-if not al.Window.IsToggleDragging then
-return
-end
-if
-h.UserInputType~=Enum.UserInputType.MouseMovement
-and h.UserInputType~=Enum.UserInputType.Touch
-then
-return
-end
-
-local i=math.abs(h.Position.X-aB)
-local l=math.abs(h.Position.Y-b)
-
-if not f and l>10 and l>i then
-g=true
-return
-end
-if g then
-return
-end
-
-if i>5 then
-f=true
-end
-
-local m=h.Position.X-aB
-local p=math.clamp(d+m,aq,aq+as)
-local r=as>0 and math.clamp((p-aq)/as,0,1)or 0
-
-av.Frame.Position=UDim2.new(0,p,0.5,0)
-av.Layer.ImageTransparency=1-r
-end)
+ad(aw.Frame.Bar.UIScale,0.16,{Scale=1.045},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
 
 if ax then
 ax:Disconnect()
 end
 
-ax=ae.InputEnded:Connect(function(h)
+ax=ae.InputChanged:Connect(function(i)
 if not al.Window.IsToggleDragging then
 return
 end
-if
-h.UserInputType~=Enum.UserInputType.MouseButton1
-and h.UserInputType~=Enum.UserInputType.Touch
-then
+if i.UserInputType~=Enum.UserInputType.MouseMovement and i.UserInputType~=Enum.UserInputType.Touch then
+return
+end
+
+local l=math.abs(i.Position.X-b)
+local m=math.abs(i.Position.Y-d)
+
+if not g and m>10 and m>l then
+h=true
+return
+end
+if h then
+return
+end
+
+if l>5 then
+g=true
+end
+
+local p=i.Position.X-b
+local r=math.clamp(f+p,ar,ar+at)
+local u=at>0 and math.clamp((r-ar)/at,0,1)or 0
+
+aw.Frame.Position=UDim2.new(0,r,0.5,0)
+aw.Layer.ImageTransparency=1-u
+end)
+
+if ay then
+ay:Disconnect()
+end
+
+ay=ae.InputEnded:Connect(function(i)
+if not al.Window.IsToggleDragging then
+return
+end
+if i.UserInputType~=Enum.UserInputType.MouseButton1 and i.UserInputType~=Enum.UserInputType.Touch then
 return
 end
 
 al.Window.IsToggleDragging=false
 al.WindUI.CurrentInput=nil
 
-if aw then
-aw:Disconnect()
-aw=nil
-end
 if ax then
 ax:Disconnect()
 ax=nil
 end
+if ay then
+ay:Disconnect()
+ay=nil
+end
 
-ad(
-av.Frame.Bar.UIScale,
-0.18,
-{Scale=1},
-Enum.EasingStyle.Quint,
-Enum.EasingDirection.Out
-):Play()
+ad(aw.Frame.Bar.UIScale,0.2,{Scale=1},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
 
-if g then
-applyVisual(aA.Value,true)
+if h then
+applyVisual(aB.Value,true)
 return
 end
 
-if not f then
-aA:Set(not aA.Value,true,false)
+if not g then
+aB:Set(not aB.Value,true,false)
 else
-local i=av.Frame.Position.X.Offset
-local l=i>(aq+as/2)
-aA:Set(l,true,false)
+local l=aw.Frame.Position.X.Offset
+local m=l>(ar+at/2)
+aB:Set(m,true,false)
 end
 end)
 end
 
-return au,am
+return av,am
 end
 
 return aa end function a.G()
