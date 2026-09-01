@@ -13662,8 +13662,8 @@ Padding=UDim.new(0,aw.UIPadding/2),
 ao("Frame",{
 AutomaticSize="XY",
 BackgroundTransparency=1,
-Position=UDim2.new(aw.Topbar.ButtonsType=="Default"and 1 or 0,0,0.5,0),
-AnchorPoint=Vector2.new(aw.Topbar.ButtonsType=="Default"and 1 or 0,0.5),
+Position=UDim2.new(1,0,0.5,0),
+AnchorPoint=Vector2.new(1,0.5),
 Name="Right",
 },{
 ao("UIListLayout",{
@@ -13691,9 +13691,6 @@ local A=aw.UIElements.Main.Main.Topbar.Right.UIListLayout.AbsoluteContentSize.X
 /av.WindUI.UIScale
 
 z=aw.UIElements.Main.Main.Topbar.Left.AbsoluteSize.X/av.WindUI.UIScale
-if aw.Topbar.ButtonsType~="Default"then
-z=z+A+aw.UIPadding-4
-end
 
 aw.UIElements.Main.Main.Topbar.Center.Position=
 UDim2.new(0,z+(aw.UIPadding/av.WindUI.UIScale),0.5,0)
@@ -13701,22 +13698,12 @@ aw.UIElements.Main.Main.Topbar.Center.Size=UDim2.new(
 1,
 -z
 -(aw.UIPadding/av.WindUI.UIScale)
--(aw.Topbar.ButtonsType=="Default"and A+aw.UIPadding or 0),
+-(A+aw.UIPadding),
 1,
 0
 )
 end)
 
-if aw.Topbar.ButtonsType~="Default"then
-an.AddSignal(aw.UIElements.Main.Main.Topbar.Right:GetPropertyChangedSignal"AbsoluteSize",function()
-aw.UIElements.Main.Main.Topbar.Left.Position=UDim2.new(
-0,
-(aw.UIElements.Main.Main.Topbar.Right.AbsoluteSize.X/av.WindUI.UIScale)+aw.UIPadding-4,
-0,
-0
-)
-end)
-end
 
 function aw.CreateTopbarButton(z,A,B,C,F,G,H,J)
 local L=an.Image(
@@ -14024,7 +14011,7 @@ aw.Topbar.ButtonsType=="Mac"and"rbxassetid://127426072704909"or"maximize",
 function()
 aw:ToggleFullscreen()
 end,
-(aw.Topbar.ButtonsType=="Default"and 998 or 999),
+(aw.Topbar.ButtonsType=="Default"and 998 or 997),
 true,
 Color3.fromHex"#60C762",
 aw.Topbar.ButtonsType=="Mac"and 9 or nil
@@ -14806,7 +14793,7 @@ else
 aw:Destroy()
 end
 end
-end,(aw.Topbar.ButtonsType=="Default"and 999 or 997),nil,Color3.fromHex"#F4695F")
+end,999,nil,Color3.fromHex"#F4695F")
 
 function aw.Tag(L,M)
 if aw.UIElements.Main.Main.Topbar.Center.Visible==false then

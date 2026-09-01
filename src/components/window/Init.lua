@@ -842,8 +842,8 @@ return function(Config)
 				New("Frame", { -- Topbar Right Side -- Window.UIElements.Main.Main.Topbar.Right
 					AutomaticSize = "XY",
 					BackgroundTransparency = 1,
-					Position = UDim2.new(Window.Topbar.ButtonsType == "Default" and 1 or 0, 0, 0.5, 0),
-					AnchorPoint = Vector2.new(Window.Topbar.ButtonsType == "Default" and 1 or 0, 0.5),
+					Position = UDim2.new(1, 0, 0.5, 0),
+					AnchorPoint = Vector2.new(1, 0.5),
 					Name = "Right",
 				}, {
 					New("UIListLayout", {
@@ -871,9 +871,6 @@ return function(Config)
 			/ Config.WindUI.UIScale
 
 		LeftWidth = Window.UIElements.Main.Main.Topbar.Left.AbsoluteSize.X / Config.WindUI.UIScale
-		if Window.Topbar.ButtonsType ~= "Default" then
-			LeftWidth = LeftWidth + RightWidth + Window.UIPadding - 4
-		end
 
 		Window.UIElements.Main.Main.Topbar.Center.Position =
 			UDim2.new(0, LeftWidth + (Window.UIPadding / Config.WindUI.UIScale), 0.5, 0)
@@ -881,22 +878,12 @@ return function(Config)
 			1,
 			-LeftWidth
 				- (Window.UIPadding / Config.WindUI.UIScale)
-				- (Window.Topbar.ButtonsType == "Default" and RightWidth + Window.UIPadding or 0),
+				- (RightWidth + Window.UIPadding),
 			1,
 			0
 		)
 	end)
 
-	if Window.Topbar.ButtonsType ~= "Default" then
-		Creator.AddSignal(Window.UIElements.Main.Main.Topbar.Right:GetPropertyChangedSignal("AbsoluteSize"), function()
-			Window.UIElements.Main.Main.Topbar.Left.Position = UDim2.new(
-				0,
-				(Window.UIElements.Main.Main.Topbar.Right.AbsoluteSize.X / Config.WindUI.UIScale) + Window.UIPadding - 4,
-				0,
-				0
-			)
-		end)
-	end
 
 	function Window:CreateTopbarButton(Name, Icon, Callback, LayoutOrder, IconThemed, Color, IconSize)
 		local IconFrame = Creator.Image(
@@ -1204,7 +1191,7 @@ return function(Config)
 		function()
 			Window:ToggleFullscreen()
 		end,
-		(Window.Topbar.ButtonsType == "Default" and 998 or 999),
+		(Window.Topbar.ButtonsType == "Default" and 998 or 997),
 		true,
 		Color3.fromHex("#60C762"),
 		Window.Topbar.ButtonsType == "Mac" and 9 or nil
@@ -1986,7 +1973,7 @@ return function(Config)
 				Window:Destroy()
 			end
 		end
-	end, (Window.Topbar.ButtonsType == "Default" and 999 or 997), nil, Color3.fromHex("#F4695F"))
+	end, 999, nil, Color3.fromHex("#F4695F"))
 
 	function Window:Tag(TagConfig)
 		if Window.UIElements.Main.Main.Topbar.Center.Visible == false then
