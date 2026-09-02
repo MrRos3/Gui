@@ -242,7 +242,7 @@ function VantaUI:CreateWindow(config)
         config.NewElements = true
     end
     if config.Size == nil then
-        config.Size = UDim2.fromOffset(760, 520)
+        config.Size = UDim2.fromOffset(620, 420)
     end
 
     local usesThemeWallpaper = config.Background == nil
