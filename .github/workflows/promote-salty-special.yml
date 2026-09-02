@@ -1,0 +1,201 @@
+name: Promote tested Salty Special
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/promote-salty-special.yml"
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout VantaUI
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Promote tested VantaTest sources and assets
+        run: |
+          set -euo pipefail
+          mkdir -p assets src/components/window src/modules
+
+          curl -fsSL "https://raw.githubusercontent.com/MrRos3/VantaTest/main/src/components/window/Init.lua" -o src/components/window/Init.lua
+          curl -fsSL "https://raw.githubusercontent.com/MrRos3/VantaTest/main/src/components/window/Openbutton.lua" -o src/components/window/Openbutton.lua
+          curl -fsSL "https://raw.githubusercontent.com/MrRos3/VantaTest/main/src/modules/Creator.lua" -o src/modules/Creator.lua
+          curl -fsSL "https://raw.githubusercontent.com/MrRos3/VantaTest/main/assets/vanta-brand.jpeg" -o assets/vanta-brand.jpeg
+          curl -fsSL "https://raw.githubusercontent.com/MrRos3/VantaTest/main/assets/salty-special.png" -o assets/salty-special.png
+          curl -fsSL "https://raw.githubusercontent.com/MrRos3/VantaTest/main/main.lua" -o main.lua
+
+          python - <<'PY'
+          from pathlib import Path
+
+          main = Path('main.lua')
+          text = main.read_text()
+          text = text.replace('MrRos3/VantaTest', 'MrRos3/VantaUI')
+          main.write_text(text)
+
+          example = r'''local VantaUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/MrRos3/VantaUI/main/main.lua"))()
+
+local Window = VantaUI:CreateWindow({
+    Title = "VantaUI Showcase",
+    Theme = "Salty Special",
+    StartupTab = "Home",
+    HideSearchBar = false,
+    Branding = {
+        Name = "VANTA",
+        Image = VantaUI.Brand.Image,
+        Folder = "VantaUI",
+        IconSize = 24,
+        IconRadius = 7,
+        OpenButtonIconRadius = 8,
+        Intro = false,
+    },
+    OpenButton = {
+        Title = "Open VantaUI",
+        Enabled = true,
+        Draggable = true,
+        OnlyIcon = true,
+        OnlyMobile = false,
+        CornerRadius = UDim.new(0, 11),
+        StrokeThickness = 2,
+        ImageZoom = 1,
+        Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0, Color3.fromHex("#000000")),
+            ColorSequenceKeypoint.new(1, Color3.fromHex("#000000")),
+        }),
+    },
+})
+
+Window:Tag({
+    Title = "v" .. VantaUI.Version,
+    Icon = "github",
+    Color = Color3.fromHex("#151116"),
+    Border = true,
+})
+
+local Home = Window:Tab({
+    Title = "Home",
+    Icon = "house",
+})
+
+local Themes = Window:Tab({
+    Title = "Themes",
+    Icon = "palette",
+})
+
+local About = Window:Tab({
+    Title = "About",
+    Icon = "info",
+})
+
+Home:Button({
+    Title = "VantaUI is alive",
+    Desc = "This window is loaded from the VantaUI public loader.",
+    Icon = "sparkles",
+    Callback = function()
+        VantaUI:Notify({
+            Content = "VantaUI v" .. VantaUI.Version .. " is running 🎉",
+            Icon = "sparkles",
+        })
+    end,
+})
+
+Home:Button({
+    Title = "Runtime info",
+    Desc = "Shows the current VantaUI runtime version.",
+    Icon = "package",
+    Callback = function()
+        local info = VantaUI:GetInfo()
+        VantaUI:Notify({
+            Title = "VantaUI Runtime",
+            Content = "VantaUI " .. tostring(info.Version) .. " • runtime " .. tostring(VantaUI.RuntimeVersion or info.Version),
+            Icon = "package",
+        })
+    end,
+})
+
+local function addThemeButton(themeName, icon)
+    Themes:Button({
+        Title = themeName,
+        Desc = "Switch the whole interface to " .. themeName .. ".",
+        Icon = icon,
+        Callback = function()
+            VantaUI:SetTheme(themeName)
+            VantaUI:Notify({
+                Content = "Theme changed to " .. themeName,
+                Icon = icon,
+            })
+        end,
+    })
+end
+
+addThemeButton("Salty Special", "sparkles")
+addThemeButton("Vanta Smoked", "cloud-fog")
+addThemeButton("Vanta Dark", "moon")
+addThemeButton("Vanta AMOLED", "circle-dot")
+addThemeButton("Vanta Violet", "wand-sparkles")
+
+About:Button({
+    Title = "VantaUI",
+    Desc = "Custom Roblox UI library by MrRos3.",
+    Icon = "github",
+    Callback = function()
+        VantaUI:Notify({
+            Content = "VantaUI • built by MrRos3 🖤",
+            Icon = "heart",
+        })
+    end,
+})
+'''
+          Path('example.lua').write_text(example)
+          PY
+
+          grep -q 'VantaUI.DefaultTheme = "Salty Special"' main.lua
+          grep -q 'ElementBackgroundTransparency = 0.16' main.lua
+          grep -q 'MrRos3/VantaUI/main/assets/salty-special.png' main.lua
+          grep -q 'OnlyIcon = true' example.lua
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Setup Lua
+        uses: leafo/gh-actions-lua@v11
+        with:
+          luaVersion: "5.1"
+
+      - name: Setup Aftman
+        uses: ok-nick/setup-aftman@v0.3.0
+
+      - name: Install build tools
+        run: aftman install
+
+      - name: Build production runtime
+        run: npm run build
+
+      - name: Commit promoted release and remove helper
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git restore package-lock.json 2>/dev/null || true
+          git rm .github/workflows/promote-salty-special.yml
+          git add main.lua example.lua assets/vanta-brand.jpeg assets/salty-special.png src/components/window/Init.lua src/components/window/Openbutton.lua src/modules/Creator.lua dist/main.lua build/package.lua
+          git commit -m "Promote Salty Special to VantaUI"
+          git pull --rebase origin main
+          git push origin HEAD:main
+
+          # workflow_dispatch is allowed from GITHUB_TOKEN, so run the normal
+          # production build once more against the committed release.
+          gh workflow run build-gui.yml --ref main
