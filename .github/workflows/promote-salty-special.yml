@@ -39,125 +39,51 @@ jobs:
           text = text.replace('MrRos3/VantaTest', 'MrRos3/VantaUI')
           main.write_text(text)
 
-          example = r'''local VantaUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/MrRos3/VantaUI/main/main.lua"))()
+          p = Path('example.lua')
+          s = p.read_text()
+          s = s.replace('Theme = "Vanta AMOLED"', 'Theme = "Salty Special"', 1)
 
-local Window = VantaUI:CreateWindow({
-    Title = "VantaUI Showcase",
-    Theme = "Salty Special",
-    StartupTab = "Home",
-    HideSearchBar = false,
-    Branding = {
-        Name = "VANTA",
-        Image = VantaUI.Brand.Image,
-        Folder = "VantaUI",
-        IconSize = 24,
-        IconRadius = 7,
-        OpenButtonIconRadius = 8,
-        Intro = false,
-    },
-    OpenButton = {
-        Title = "Open VantaUI",
-        Enabled = true,
-        Draggable = true,
-        OnlyIcon = true,
-        OnlyMobile = false,
-        CornerRadius = UDim.new(0, 11),
-        StrokeThickness = 2,
-        ImageZoom = 1,
-        Color = ColorSequence.new({
-            ColorSequenceKeypoint.new(0, Color3.fromHex("#000000")),
-            ColorSequenceKeypoint.new(1, Color3.fromHex("#000000")),
-        }),
-    },
-})
+          branding_lines = [
+              '    Branding = {',
+              '        Name = "VANTA",',
+              '        Image = VantaUI.Brand.Image,',
+              '        Folder = "VantaUI",',
+              '        IconSize = 24,',
+              '        IconRadius = 7,',
+              '        OpenButtonIconRadius = 8,',
+              '        Intro = false,',
+              '    },',
+          ]
+          marker = '    HideSearchBar = false,\n'
+          if '    Branding = {' not in s:
+              s = s.replace(marker, marker + '\n'.join(branding_lines) + '\n', 1)
 
-Window:Tag({
-    Title = "v" .. VantaUI.Version,
-    Icon = "github",
-    Color = Color3.fromHex("#151116"),
-    Border = true,
-})
+          open_extra = [
+              '        OnlyIcon = true,',
+              '        CornerRadius = UDim.new(0, 11),',
+              '        StrokeThickness = 2,',
+              '        ImageZoom = 1,',
+              '        Color = ColorSequence.new({',
+              '            ColorSequenceKeypoint.new(0, Color3.fromHex("#000000")),',
+              '            ColorSequenceKeypoint.new(1, Color3.fromHex("#000000")),',
+              '        }),',
+          ]
+          marker = '        OnlyMobile = false,\n'
+          if '        OnlyIcon = true,' not in s:
+              s = s.replace(marker, marker + '\n'.join(open_extra) + '\n', 1)
 
-local Home = Window:Tab({
-    Title = "Home",
-    Icon = "house",
-})
-
-local Themes = Window:Tab({
-    Title = "Themes",
-    Icon = "palette",
-})
-
-local About = Window:Tab({
-    Title = "About",
-    Icon = "info",
-})
-
-Home:Button({
-    Title = "VantaUI is alive",
-    Desc = "This window is loaded from the VantaUI public loader.",
-    Icon = "sparkles",
-    Callback = function()
-        VantaUI:Notify({
-            Content = "VantaUI v" .. VantaUI.Version .. " is running 🎉",
-            Icon = "sparkles",
-        })
-    end,
-})
-
-Home:Button({
-    Title = "Runtime info",
-    Desc = "Shows the current VantaUI runtime version.",
-    Icon = "package",
-    Callback = function()
-        local info = VantaUI:GetInfo()
-        VantaUI:Notify({
-            Title = "VantaUI Runtime",
-            Content = "VantaUI " .. tostring(info.Version) .. " • runtime " .. tostring(VantaUI.RuntimeVersion or info.Version),
-            Icon = "package",
-        })
-    end,
-})
-
-local function addThemeButton(themeName, icon)
-    Themes:Button({
-        Title = themeName,
-        Desc = "Switch the whole interface to " .. themeName .. ".",
-        Icon = icon,
-        Callback = function()
-            VantaUI:SetTheme(themeName)
-            VantaUI:Notify({
-                Content = "Theme changed to " .. themeName,
-                Icon = icon,
-            })
-        end,
-    })
-end
-
-addThemeButton("Salty Special", "sparkles")
-addThemeButton("Vanta Smoked", "cloud-fog")
-addThemeButton("Vanta Dark", "moon")
-addThemeButton("Vanta AMOLED", "circle-dot")
-addThemeButton("Vanta Violet", "wand-sparkles")
-
-About:Button({
-    Title = "VantaUI",
-    Desc = "Custom Roblox UI library by MrRos3.",
-    Icon = "github",
-    Callback = function()
-        VantaUI:Notify({
-            Content = "VantaUI • built by MrRos3 🖤",
-            Icon = "heart",
-        })
-    end,
-})
-'''
-          Path('example.lua').write_text(example)
+          s = s.replace('Color3.fromHex("#171C27")', 'Color3.fromHex("#151116")', 1)
+          salty_button = 'addThemeButton("Salty Special", "sparkles")\n'
+          first_theme = 'addThemeButton("Vanta Smoked", "cloud-fog")\n'
+          if salty_button not in s:
+              s = s.replace(first_theme, salty_button + first_theme, 1)
+          p.write_text(s)
           PY
 
           grep -q 'VantaUI.DefaultTheme = "Salty Special"' main.lua
           grep -q 'ElementBackgroundTransparency = 0.16' main.lua
           grep -q 'MrRos3/VantaUI/main/assets/salty-special.png' main.lua
+          grep -q 'Theme = "Salty Special"' example.lua
           grep -q 'OnlyIcon = true' example.lua
 
       - name: Setup Node.js
@@ -195,7 +121,4 @@ About:Button({
           git commit -m "Promote Salty Special to VantaUI"
           git pull --rebase origin main
           git push origin HEAD:main
-
-          # workflow_dispatch is allowed from GITHUB_TOKEN, so run the normal
-          # production build once more against the committed release.
           gh workflow run build-gui.yml --ref main
