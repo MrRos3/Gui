@@ -27,13 +27,38 @@ local ConfigManager = require("../../config/Init")
 local Notified = false
 
 return function(Config)
+	local Branding = typeof(Config.Branding) == "table" and Config.Branding or {}
+	local BrandImage = Branding.Image
+	local WindowIcon = Config.Icon
+	local WindowIconIsBrand = false
+
+	if BrandImage and Branding.UseAsWindowIcon ~= false then
+		WindowIcon = Branding.WindowIcon or BrandImage
+		WindowIconIsBrand = true
+	end
+
+	local OpenButtonConfig = Config.OpenButton
+	if typeof(OpenButtonConfig) == "table" then
+		local copiedConfig = {}
+		for key, value in next, OpenButtonConfig do
+			copiedConfig[key] = value
+		end
+		OpenButtonConfig = copiedConfig
+
+		if BrandImage and Branding.UseAsOpenButtonIcon ~= false and OpenButtonConfig.Icon == nil then
+			OpenButtonConfig.Icon = Branding.OpenButtonIcon or BrandImage
+		end
+	end
+
 	local Window = {
 		Title = Config.Title or "UI Library",
 		Author = Config.Author,
-		Icon = Config.Icon,
-		IconSize = Config.IconSize or 22,
-		IconThemed = Config.IconThemed,
-		IconRadius = Config.IconRadius or 0,
+		Icon = WindowIcon,
+		IconSize = Branding.IconSize or Config.IconSize or 22,
+		IconThemed = WindowIconIsBrand and false or Config.IconThemed,
+		IconRadius = WindowIconIsBrand and (Branding.IconRadius or Config.IconRadius or 7) or (Config.IconRadius or 0),
+		Branding = Branding,
+		BrandImage = BrandImage,
 		Folder = Config.Folder,
 		Resizable = Config.Resizable ~= false,
 		Background = Config.Background,
@@ -62,7 +87,7 @@ return function(Config)
 		IgnoreAlerts = Config.IgnoreAlerts or false,
 		HidePanelBackground = Config.HidePanelBackground or false,
 		AutoScale = Config.AutoScale ~= false,
-		OpenButton = Config.OpenButton,
+		OpenButton = OpenButtonConfig,
 		DragFrameSize = 160,
 
 		Position = UDim2.new(0.5, 0, 0.5, 0),
@@ -521,23 +546,6 @@ return function(Config)
 			and string.match(Window.Background, "^rbxassetid://%d+")
 		or nil
 
-	local function GetImageExtension(url)
-		if not url or typeof(url) ~= "string" then
-			return ".png"
-		end
-		local cleanUrl = url:match("^([^?#]+)") or url
-		local ext = cleanUrl:match("%.(%w+)$")
-		if ext then
-			ext = ext:lower()
-			if ext == "jpg" or ext == "jpeg" or ext == "png" or ext == "webp" then
-				return "." .. ext
-			end
-		end
-		return ".png"
-	end
-
-	--print(GetImageExtension(BGImageUrl))
-
 	if typeof(Window.Background) == "string" and BGVideo then
 		IsVideoBG = true
 
@@ -587,34 +595,11 @@ return function(Config)
 		})
 		BGImage:Play()
 	elseif BGHttpImage then
-		local imagePath = (Window.Folder or "Temp")
-			.. "/assets/."
-			.. Creator.SanitizeFilename(BGHttpImage)
-			.. GetImageExtension(BGHttpImage)
-
-		if isfile and not isfile(imagePath) then
-			local success, result = pcall(function()
-				local response = game.HttpGet and game:HttpGet(BGHttpImage)
-					or Creator.Request({
-						Url = BGHttpImage,
-						Method = "GET",
-						Headers = { ["User-Agent"] = "Roblox/Exploit" },
-					}).Body
-
-				writefile(imagePath, response)
-			end)
-
-			if not success then
-				warn("[ Window.Background ] Failed to download image: " .. tostring(result))
-			end
-		end
-
-		local success, customAsset = pcall(function()
-			return getcustomasset(imagePath)
-		end)
+		local success, customAsset = pcall(Creator.LoadRemoteImage, BGHttpImage, Window.Folder or "Temp")
 
 		if not success then
 			warn("[ Window.Background ] Failed to load custom asset: " .. tostring(customAsset))
+			customAsset = ""
 		end
 
 		BGImage = New("ImageLabel", {
@@ -947,6 +932,29 @@ return function(Config)
 			true
 		)
 
+		-- Keep the original working topbar button object, but replace only the
+		-- visible Mac fill with a native circular frame. This preserves every
+		-- original callback/hover/init path while making the dots truly round.
+		if Window.Topbar.ButtonsType ~= "Default" then
+			Button.ImageTransparency = 1
+			local CircleFill = New("Frame", {
+				Name = "CircleFill",
+				Size = UDim2.fromScale(1, 1),
+				Position = UDim2.fromScale(0.5, 0.5),
+				AnchorPoint = Vector2.new(0.5, 0.5),
+				BackgroundColor3 = Color or Color3.fromHex("#ff3030"),
+				BackgroundTransparency = 0,
+				BorderSizePixel = 0,
+				ZIndex = Button.ZIndex,
+				Active = false,
+			}, {
+				New("UICorner", { CornerRadius = UDim.new(1, 0) }),
+				New("UIAspectRatioConstraint", { AspectRatio = 1 }),
+			})
+			CircleFill.Parent = Button
+			IconFrame.ZIndex = Button.ZIndex + 1
+		end
+
 		local ButtonContainer = New("Frame", {
 			Size = Window.Topbar.ButtonsType ~= "Default" and UDim2.new(0, 24, 0, 24)
 				or UDim2.new(0, Window.Topbar.Height - 16, 0, Window.Topbar.Height - 16),
@@ -1100,7 +1108,7 @@ return function(Config)
 	task.spawn(function()
 		if Window.Icon then
 			local WindowIconContainer = New("Frame", {
-				Size = UDim2.new(0, 22, 0, 22),
+				Size = UDim2.new(0, Window.IconSize, 0, Window.IconSize),
 				BackgroundTransparency = 1,
 				Parent = Window.UIElements.Main.Main.Topbar.Left,
 			})
@@ -1626,7 +1634,7 @@ return function(Config)
 		end
 	end
 
-	if Window.OpenButtonMain and Window.OpenButtonMain.Button then
+	if Window.OpenButtonMain and Window.OpenButtonMain.Button and not Window.OpenButtonMain.Hitbox then
 		Creator.AddSignal(Window.OpenButtonMain.Button.TextButton.MouseButton1Click, function()
 			-- OpenButtonContainer.Visible = false
 			--Window.OpenButtonMain:Visible(false)

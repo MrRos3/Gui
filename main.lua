@@ -7,7 +7,11 @@
 ]]
 
 local PROJECT_VERSION = "0.3.0"
-local RUNTIME_URL = "https://raw.githubusercontent.com/MrRos3/VantaUI/main/dist/main.lua"
+local CACHE_BUSTER = tostring(os.time()) .. "-" .. tostring(math.random(100000, 999999))
+local RUNTIME_URL = "https://raw.githubusercontent.com/MrRos3/VantaUI/main/dist/main.lua?v=" .. CACHE_BUSTER
+local BRAND_IMAGE_URL = "https://raw.githubusercontent.com/MrRos3/VantaUI/main/assets/vanta-brand.jpeg"
+local SALTY_SPECIAL_WALLPAPER_URL = "https://raw.githubusercontent.com/MrRos3/VantaUI/main/assets/salty-special.png"
+local SALTY_SPECIAL_WALLPAPER_TRANSPARENCY = 0.32
 
 local ok, source = pcall(function()
     return game:HttpGet(RUNTIME_URL)
@@ -24,7 +28,7 @@ assert(type(VantaUI) == "table", "[VantaUI] UI runtime returned an invalid value
 VantaUI.RuntimeVersion = tostring(VantaUI.Version or PROJECT_VERSION)
 VantaUI.Version = PROJECT_VERSION
 VantaUI.Name = "VantaUI"
-VantaUI.DefaultTheme = "Vanta AMOLED"
+VantaUI.DefaultTheme = "Salty Special"
 VantaUI.DefaultStartupTab = "Home"
 VantaUI.TransparencyValue = 0.1
 
@@ -40,11 +44,39 @@ VantaUI.GuiInfo = {
 VantaUI.Brand = {
     Name = "VantaUI",
     Owner = "MrRos3",
+    Image = BRAND_IMAGE_URL,
     Accent = Color3.fromHex("#929AA7"),
     Cyan = Color3.fromHex("#5DE7FF"),
 }
 
+VantaUI.Assets = {
+    Brand = BRAND_IMAGE_URL,
+    SaltySpecialWallpaper = SALTY_SPECIAL_WALLPAPER_URL,
+}
+
 local VantaThemes = {
+    {
+        Name = "Salty Special",
+        Accent = Color3.fromHex("#12070A"),
+        Dialog = Color3.fromHex("#0A0709"),
+        Outline = Color3.fromHex("#5A1824"),
+        Text = Color3.fromHex("#FFFFFF"),
+        Placeholder = Color3.fromHex("#9A9AA3"),
+        Background = Color3.fromHex("#000000"),
+        Button = Color3.fromHex("#251016"),
+        Icon = Color3.fromHex("#E2DDE0"),
+        Toggle = Color3.fromHex("#A1162F"),
+        Slider = Color3.fromHex("#A1162F"),
+        Checkbox = Color3.fromHex("#D23A57"),
+        Primary = Color3.fromHex("#A1162F"),
+        SliderIcon = Color3.fromHex("#F1E3E7"),
+        PanelBackground = Color3.fromHex("#050406"),
+        PanelBackgroundTransparency = 0.42,
+        LabelBackground = Color3.fromHex("#0A080A"),
+        LabelBackgroundTransparency = 0.08,
+        ElementBackground = Color3.fromHex("#151116"),
+        ElementBackgroundTransparency = 0.16,
+    },
     {
         Name = "Vanta Smoked",
         Accent = Color3.fromHex("#171A20"),
@@ -145,12 +177,37 @@ local LegacyThemeNames = {
 for _, theme in ipairs(VantaThemes) do
     VantaUI:AddTheme(theme)
 
-    local legacyTheme = {}
-    for key, value in pairs(theme) do
-        legacyTheme[key] = value
+    local legacyName = LegacyThemeNames[theme.Name]
+    if legacyName then
+        local legacyTheme = {}
+        for key, value in pairs(theme) do
+            legacyTheme[key] = value
+        end
+        legacyTheme.Name = legacyName
+        VantaUI:AddTheme(legacyTheme)
     end
-    legacyTheme.Name = LegacyThemeNames[theme.Name]
-    VantaUI:AddTheme(legacyTheme)
+end
+
+local ActiveWindows = setmetatable({}, { __mode = "k" })
+
+local function applyThemeWallpaper(window, themeName)
+    if not window or window.Destroyed or not window._UsesVantaThemeWallpaper then
+        return
+    end
+
+    local transparency = themeName == "Salty Special" and SALTY_SPECIAL_WALLPAPER_TRANSPARENCY or 1
+    window:SetBackgroundImageTransparency(transparency)
+end
+
+local BaseSetTheme = VantaUI.SetTheme
+function VantaUI:SetTheme(themeName)
+    local theme = BaseSetTheme(self, themeName)
+    if theme then
+        for window in pairs(ActiveWindows) do
+            applyThemeWallpaper(window, themeName)
+        end
+    end
+    return theme
 end
 
 local function renameRuntimeGui()
@@ -185,6 +242,14 @@ function VantaUI:CreateWindow(config)
         config.NewElements = true
     end
 
+    local usesThemeWallpaper = config.Background == nil
+    if usesThemeWallpaper then
+        config.Background = SALTY_SPECIAL_WALLPAPER_URL
+        config.BackgroundImageTransparency = config.Theme == "Salty Special"
+                and SALTY_SPECIAL_WALLPAPER_TRANSPARENCY
+            or 1
+    end
+
     config.Topbar = config.Topbar or {}
     if config.Topbar.Height == nil then
         config.Topbar.Height = 44
@@ -195,6 +260,10 @@ function VantaUI:CreateWindow(config)
 
     local startupTab = config.StartupTab or VantaUI.DefaultStartupTab
     local window = BaseCreateWindow(self, config)
+
+    window._UsesVantaThemeWallpaper = usesThemeWallpaper
+    ActiveWindows[window] = true
+    applyThemeWallpaper(window, config.Theme)
 
     local BaseTab = window.Tab
     local startupTabSelected = false
@@ -229,10 +298,9 @@ function VantaUI:Notify(config)
 end
 
 function VantaUI:GetVantaThemes()
-    return { "Vanta Smoked", "Vanta Dark", "Vanta AMOLED", "Vanta Violet" }
+    return { "Salty Special", "Vanta Smoked", "Vanta Dark", "Vanta AMOLED", "Vanta Violet" }
 end
 
--- Backward-compatible public method used by existing scripts.
 function VantaUI:GetGuiThemes()
     return self:GetVantaThemes()
 end
