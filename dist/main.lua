@@ -1730,7 +1730,7 @@ h.Frame.Size=i and f.SizeLower or f.Size
 end
 
 h.Frame=d("Frame",{
-Position=UDim2.new(1,-29,0,76),
+Position=UDim2.new(1,-29,0,96),
 AnchorPoint=Vector2.new(1,0),
 Size=f.Size,
 Parent=g,
@@ -5236,7 +5236,7 @@ AutomaticSize="XY",
 
 local al=ac("Frame",{
 Size=UDim2.fromOffset(44,44),
-Position=UDim2.new(0.5,0,0,48),
+Position=UDim2.new(0.5,0,0,68),
 AnchorPoint=Vector2.new(0.5,0.5),
 Parent=ag.Parent,
 BackgroundTransparency=1,
