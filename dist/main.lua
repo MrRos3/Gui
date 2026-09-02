@@ -5236,7 +5236,7 @@ AutomaticSize="XY",
 
 local al=ac("Frame",{
 Size=UDim2.fromOffset(44,44),
-Position=UDim2.new(0.5,0,0,28),
+Position=UDim2.new(0.5,0,0,48),
 AnchorPoint=Vector2.new(0.5,0.5),
 Parent=ag.Parent,
 BackgroundTransparency=1,
