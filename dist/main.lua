@@ -1730,7 +1730,7 @@ h.Frame.Size=i and f.SizeLower or f.Size
 end
 
 h.Frame=d("Frame",{
-Position=UDim2.new(1,-29,0,56),
+Position=UDim2.new(1,-29,0,76),
 AnchorPoint=Vector2.new(1,0),
 Size=f.Size,
 Parent=g,
