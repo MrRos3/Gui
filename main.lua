@@ -228,6 +228,33 @@ end
 renameRuntimeGui()
 VantaUI:SetTheme(VantaUI.DefaultTheme)
 
+local function forceNotificationPosition()
+    if not VantaUI.NotificationGui then
+        return
+    end
+
+    local holder = VantaUI.NotificationGui:FindFirstChildWhichIsA("Frame")
+    if holder then
+        holder.Position = UDim2.new(1, -29, 0, 96)
+        holder.Size = UDim2.new(0, 300, 1, -116)
+    end
+end
+
+local function forceOpenButtonPosition(window)
+    if not window or window.Destroyed then
+        return
+    end
+
+    local openButtonMain = window.OpenButtonMain
+    local button = openButtonMain and openButtonMain.Button
+    local container = button and button.Parent
+    if container then
+        container.Position = UDim2.new(0.5, 0, 0, 88)
+    end
+end
+
+forceNotificationPosition()
+
 local BaseCreateWindow = VantaUI.CreateWindow
 function VantaUI:CreateWindow(config)
     config = config or {}
@@ -288,6 +315,10 @@ function VantaUI:CreateWindow(config)
     end
 
     renameRuntimeGui()
+    forceOpenButtonPosition(window)
+    task.defer(function()
+        forceOpenButtonPosition(window)
+    end)
     return window
 end
 
@@ -297,7 +328,10 @@ function VantaUI:Notify(config)
     if config.Title == nil then
         config.Title = "VantaUI"
     end
-    return BaseNotify(self, config)
+    forceNotificationPosition()
+    local notification = BaseNotify(self, config)
+    task.defer(forceNotificationPosition)
+    return notification
 end
 
 function VantaUI:GetVantaThemes()
