@@ -8,21 +8,27 @@ A polished AMOLED-first Roblox UI library by **MrRos3**.
 local VantaUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/MrRos3/VantaUI/main/main.lua"))()
 ```
 
-## Minimal interface sounds
+## Interface sounds
 
-VantaUI v0.3.1 enables the selected **Minimal** sound style by default. Buttons, tabs, toggles, dropdowns, sliders, inputs, notifications, and window opening or closing use the small original sounds hosted in `assets/sounds`.
+VantaUI v0.3.2 enables the selected **Soft** sound style by default, with Minimal still available as an alternative. Buttons, tabs, toggles, dropdowns, sliders, inputs, notifications, and window opening or closing use the small original sounds hosted in `assets/sounds`.
 
 Supported executors cache the sounds in `WindUI/<folder>/sounds` and load them through `getcustomasset` or `getsynasset`. Executors without downloadable asset support use a built-in Roblox fallback. Sounds can be adjusted per window:
 
 ```lua
 Sounds = {
     Enabled = true,
+    Preset = "Soft",
     Volume = 0.45,
     Pitch = 1,
 }
 ```
 
 Set `Sounds = false` to mute a window. The runtime also exposes `SetSoundEnabled`, `SetSoundVolume`, `SetSoundPitch`, and `SetSoundForEvent` for live changes.
+
+## v0.3.2
+
+- Soft GUI sound style selected as the production default
+- Minimal remains available through `SetSoundPreset("Minimal")`
 
 ## v0.3.1
 

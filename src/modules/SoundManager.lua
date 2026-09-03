@@ -38,12 +38,33 @@ local Events = {
 }
 
 local Assets = {
+	["soft-pop"] = "soft-pop.wav",
+	["soft-tick"] = "soft-tick.wav",
 	["minimal-tick"] = "minimal-tick.wav",
 	["minimal-confirm"] = "minimal-confirm.wav",
 	["error-buzz"] = "error-buzz.wav",
 }
 
 local Presets = {
+	Soft = {
+		Hover = { Sound = "soft-tick", Volume = 0.18, Pitch = 1.22 },
+		Click = { Sound = "soft-tick", Volume = 0.72, Pitch = 1 },
+		Tab = { Sound = "soft-pop", Volume = 0.62, Pitch = 1.06 },
+		ToggleOn = { Sound = "soft-pop", Volume = 0.7, Pitch = 1.12 },
+		ToggleOff = { Sound = "soft-tick", Volume = 0.55, Pitch = 0.86 },
+		DropdownOpen = { Sound = "soft-pop", Volume = 0.54, Pitch = 1.2 },
+		DropdownClose = { Sound = "soft-tick", Volume = 0.44, Pitch = 0.78 },
+		Select = { Sound = "soft-tick", Volume = 0.62, Pitch = 1.08 },
+		SliderTick = { Sound = "soft-tick", Volume = 0.24, Pitch = 1.28 },
+		InputFocus = { Sound = "soft-tick", Volume = 0.34, Pitch = 1.16 },
+		InputSubmit = { Sound = "soft-pop", Volume = 0.55, Pitch = 1 },
+		Notification = { Sound = "soft-pop", Volume = 0.76, Pitch = 0.96 },
+		NotificationClose = { Sound = "soft-tick", Volume = 0.4, Pitch = 0.76 },
+		WindowOpen = { Sound = "soft-pop", Volume = 0.8, Pitch = 0.82 },
+		WindowClose = { Sound = "soft-tick", Volume = 0.64, Pitch = 0.7 },
+		Success = { Sound = "soft-pop", Volume = 0.82, Pitch = 1.18 },
+		Error = { Sound = "error-buzz", Volume = 0.7, Pitch = 1 },
+	},
 	Minimal = {
 		Hover = { Sound = "minimal-tick", Volume = 0.18, Pitch = 1.22 },
 		Click = { Sound = "minimal-tick", Volume = 0.72, Pitch = 1 },
@@ -121,7 +142,7 @@ function SoundManager:Init(WindUI)
 	self.WindUI = WindUI
 	self.Config = {
 		Enabled = true,
-		Preset = "Minimal",
+		Preset = "Soft",
 		Volume = 0.45,
 		Pitch = 1,
 		Folder = "VantaUI",
@@ -129,7 +150,7 @@ function SoundManager:Init(WindUI)
 		Overrides = {},
 		Assets = {},
 	}
-	self.ActiveMap = copyTable(Presets.Minimal)
+	self.ActiveMap = copyTable(Presets.Soft)
 	return self
 end
 
@@ -279,7 +300,7 @@ function SoundManager:_playEntry(eventName, entry, options)
 end
 
 function SoundManager:_refreshMap()
-	self.ActiveMap = copyTable(Presets.Minimal)
+	self.ActiveMap = copyTable(Presets[self.Config.Preset] or Presets.Soft)
 	for eventName, override in pairs(self.Config.Overrides) do
 		self.ActiveMap[eventName] = mergeEntry(self.ActiveMap[eventName], override)
 	end
@@ -294,6 +315,9 @@ function SoundManager:Configure(config)
 
 	if config.Enabled ~= nil then
 		self.Config.Enabled = config.Enabled == true
+	end
+	if config.Preset and Presets[config.Preset] then
+		self.Config.Preset = config.Preset
 	end
 	if config.Volume ~= nil then
 		self.Config.Volume = math.clamp(tonumber(config.Volume) or self.Config.Volume, 0, 2)
@@ -334,10 +358,10 @@ function SoundManager:SetEnabled(value)
 end
 
 function SoundManager:SetPreset(name)
-	if name ~= "Minimal" then
+	if not Presets[name] then
 		return false
 	end
-	self.Config.Preset = "Minimal"
+	self.Config.Preset = name
 	self:_refreshMap()
 	if self.Config.Enabled then
 		self:PreloadPreset()
@@ -424,7 +448,7 @@ function SoundManager:GetEvents()
 end
 
 function SoundManager:GetPresetNames()
-	return { "Minimal" }
+	return { "Soft", "Minimal" }
 end
 
 function SoundManager:GetSoundNames()

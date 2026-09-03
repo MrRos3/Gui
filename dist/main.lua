@@ -5,7 +5,7 @@
    \ V / (_| | | | | || (_| | |_| || |
     \_/ \__,_|_| |_|\__\__,_|\___/|___|
 
-    v0.3.1  |  2026-09-03  |  VantaUI - polished AMOLED-first Roblox UI library by MrRos3
+    v0.3.2  |  2026-09-03  |  VantaUI - polished AMOLED-first Roblox UI library by MrRos3
 
     Source: https://github.com/MrRos3/VantaUI
     Project: VantaUI by MrRos3
@@ -1729,12 +1729,33 @@ local i={
 }
 
 local l={
+["soft-pop"]="soft-pop.wav",
+["soft-tick"]="soft-tick.wav",
 ["minimal-tick"]="minimal-tick.wav",
 ["minimal-confirm"]="minimal-confirm.wav",
 ["error-buzz"]="error-buzz.wav",
 }
 
 local m={
+Soft={
+Hover={Sound="soft-tick",Volume=0.18,Pitch=1.22},
+Click={Sound="soft-tick",Volume=0.72,Pitch=1},
+Tab={Sound="soft-pop",Volume=0.62,Pitch=1.06},
+ToggleOn={Sound="soft-pop",Volume=0.7,Pitch=1.12},
+ToggleOff={Sound="soft-tick",Volume=0.55,Pitch=0.86},
+DropdownOpen={Sound="soft-pop",Volume=0.54,Pitch=1.2},
+DropdownClose={Sound="soft-tick",Volume=0.44,Pitch=0.78},
+Select={Sound="soft-tick",Volume=0.62,Pitch=1.08},
+SliderTick={Sound="soft-tick",Volume=0.24,Pitch=1.28},
+InputFocus={Sound="soft-tick",Volume=0.34,Pitch=1.16},
+InputSubmit={Sound="soft-pop",Volume=0.55,Pitch=1},
+Notification={Sound="soft-pop",Volume=0.76,Pitch=0.96},
+NotificationClose={Sound="soft-tick",Volume=0.4,Pitch=0.76},
+WindowOpen={Sound="soft-pop",Volume=0.8,Pitch=0.82},
+WindowClose={Sound="soft-tick",Volume=0.64,Pitch=0.7},
+Success={Sound="soft-pop",Volume=0.82,Pitch=1.18},
+Error={Sound="error-buzz",Volume=0.7,Pitch=1},
+},
 Minimal={
 Hover={Sound="minimal-tick",Volume=0.18,Pitch=1.22},
 Click={Sound="minimal-tick",Volume=0.72,Pitch=1},
@@ -1812,7 +1833,7 @@ function f.Init(r,u)
 r.WindUI=u
 r.Config={
 Enabled=true,
-Preset="Minimal",
+Preset="Soft",
 Volume=0.45,
 Pitch=1,
 Folder="VantaUI",
@@ -1820,7 +1841,7 @@ BaseUrl=g,
 Overrides={},
 Assets={},
 }
-r.ActiveMap=copyTable(m.Minimal)
+r.ActiveMap=copyTable(m.Soft)
 return r
 end
 
@@ -1970,7 +1991,7 @@ return true
 end
 
 function f._refreshMap(r)
-r.ActiveMap=copyTable(m.Minimal)
+r.ActiveMap=copyTable(m[r.Config.Preset]or m.Soft)
 for u,v in pairs(r.Config.Overrides)do
 r.ActiveMap[u]=mergeEntry(r.ActiveMap[u],v)
 end
@@ -1985,6 +2006,9 @@ u=u or{}
 
 if u.Enabled~=nil then
 r.Config.Enabled=u.Enabled==true
+end
+if u.Preset and m[u.Preset]then
+r.Config.Preset=u.Preset
 end
 if u.Volume~=nil then
 r.Config.Volume=math.clamp(tonumber(u.Volume)or r.Config.Volume,0,2)
@@ -2025,10 +2049,10 @@ return r.Config.Enabled
 end
 
 function f.SetPreset(r,u)
-if u~="Minimal"then
+if not m[u]then
 return false
 end
-r.Config.Preset="Minimal"
+r.Config.Preset=u
 r:_refreshMap()
 if r.Config.Enabled then
 r:PreloadPreset()
@@ -2115,7 +2139,7 @@ return copyTable(i)
 end
 
 function f.GetPresetNames(r)
-return{"Minimal"}
+return{"Soft","Minimal"}
 end
 
 function f.GetSoundNames(r)
@@ -2995,7 +3019,7 @@ New=a.load'k'.New
 return[[
 {
     "name": "mrros3-vantaui",
-    "version": "0.3.1",
+    "version": "0.3.2",
     "main": "./dist/main.lua",
     "repository": "https://github.com/MrRos3/VantaUI",
     "author": "MrRos3",
