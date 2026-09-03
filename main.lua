@@ -1,12 +1,12 @@
 --[[
-    VantaUI v0.3.0
+    VantaUI v0.3.1
     Roblox UI library by MrRos3.
 
     Source: https://github.com/MrRos3/VantaUI
     License: MIT
 ]]
 
-local PROJECT_VERSION = "0.3.0"
+local PROJECT_VERSION = "0.3.1"
 local CACHE_BUSTER = tostring(os.time()) .. "-" .. tostring(math.random(100000, 999999))
 local RUNTIME_URL = "https://raw.githubusercontent.com/MrRos3/VantaUI/refs/heads/main/dist/main.lua?v=" .. CACHE_BUSTER
 local BRAND_IMAGE_URL = "https://raw.githubusercontent.com/MrRos3/VantaUI/main/assets/vanta-brand.jpeg"

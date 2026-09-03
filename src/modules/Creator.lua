@@ -34,6 +34,7 @@ Creator = {
 	CanDraggable = true,
 	Theme = nil,
 	Themes = nil,
+	SoundManager = nil,
 	Icons = Icons,
 	Signals = {},
 	Objects = {},
@@ -135,12 +136,20 @@ Creator = {
 
 function Creator.Init(WindUITable)
 	WindUI = WindUITable
+	Creator.SoundManager = WindUITable.SoundManager
 
 	Creator.ThemeFallbacks = require("../themes/Fallbacks")(Creator)
 
 	Creator.UIScale = WindUITable.UIScale
 
 	DynamicShapeModule:Init(Creator)
+end
+
+function Creator.PlaySound(eventName, options)
+	if Creator.SoundManager then
+		return Creator.SoundManager:Play(eventName, options)
+	end
+	return false
 end
 
 function Creator.AddSignal(Signal, Function)
