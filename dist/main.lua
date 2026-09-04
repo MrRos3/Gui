@@ -5,7 +5,7 @@
    \ V / (_| | | | | || (_| | |_| || |
     \_/ \__,_|_| |_|\__\__,_|\___/|___|
 
-    v0.3.2  |  2026-09-03  |  VantaUI - polished AMOLED-first Roblox UI library by MrRos3
+    v0.3.2  |  2026-09-04  |  VantaUI - polished AMOLED-first Roblox UI library by MrRos3
 
     Source: https://github.com/MrRos3/VantaUI
     Project: VantaUI by MrRos3
@@ -15897,18 +15897,29 @@ local av=protectgui or(syn and syn.protect_gui)or function()end
 
 local aw=gethui and gethui()or(al or ap:WaitForChild"PlayerGui")
 
-local ax=at("UIScale",{
+local ax=1000000
+local az=sethiddenproperty or sethiddenprop
+
+local function KeepScreenGuiOnTop(aA,aB)
+aA.DisplayOrder=aB
+
+if az then
+pcall(az,aA,"OnTopOfCoreBlur",true)
+end
+end
+
+local aA=at("UIScale",{
 Scale=aa.UIScale,
 })
 
-aa.UIScaleObj=ax
+aa.UIScaleObj=aA
 
 aa.ScreenGui=at("ScreenGui",{
 Name="Gui",
 Parent=aw,
 IgnoreGuiInset=true,
 ScreenInsets="None",
-DisplayOrder=-99999,
+DisplayOrder=ax,
 },{
 
 at("Folder",{
@@ -15935,165 +15946,173 @@ aa.NotificationGui=at("ScreenGui",{
 Name="Gui/Notifications",
 Parent=aw,
 IgnoreGuiInset=true,
+DisplayOrder=ax+3,
 })
 aa.DropdownGui=at("ScreenGui",{
 Name="Gui/Dropdowns",
 Parent=aw,
 IgnoreGuiInset=true,
+DisplayOrder=ax+2,
 })
 aa.TooltipGui=at("ScreenGui",{
 Name="Gui/Tooltips",
 Parent=aw,
 IgnoreGuiInset=true,
+DisplayOrder=ax+1,
 })
 av(aa.ScreenGui)
 av(aa.NotificationGui)
 av(aa.DropdownGui)
 av(aa.TooltipGui)
 
+KeepScreenGuiOnTop(aa.ScreenGui,ax)
+KeepScreenGuiOnTop(aa.NotificationGui,ax+3)
+KeepScreenGuiOnTop(aa.DropdownGui,ax+2)
+KeepScreenGuiOnTop(aa.TooltipGui,ax+1)
+
 aa.SoundManager:Init(aa)
 as.Init(aa)
 
-function aa.SetParent(az,aA)
+function aa.SetParent(aB,aC)
 if aa.ScreenGui then
-aa.ScreenGui.Parent=aA
+aa.ScreenGui.Parent=aC
 end
 if aa.NotificationGui then
-aa.NotificationGui.Parent=aA
+aa.NotificationGui.Parent=aC
 end
 if aa.DropdownGui then
-aa.DropdownGui.Parent=aA
+aa.DropdownGui.Parent=aC
 end
 if aa.TooltipGui then
-aa.TooltipGui.Parent=aA
+aa.TooltipGui.Parent=aC
 end
 end
 math.clamp(aa.TransparencyValue,0,1)
 
-local az=aa.NotificationModule.Init(aa.NotificationGui)
+local aB=aa.NotificationModule.Init(aa.NotificationGui)
 
-function aa.Notify(aA,aB)
-aB.Holder=az.Frame
-aB.Window=aa.Window
+function aa.Notify(aC,aD)
+aD.Holder=aB.Frame
+aD.Window=aa.Window
 
-return aa.NotificationModule.New(aB)
+return aa.NotificationModule.New(aD)
 end
 
-function aa.SetNotificationLower(aA,aB)
-az.SetLower(aB)
+function aa.SetNotificationLower(aC,aD)
+aB.SetLower(aD)
 end
 
-function aa.ConfigureSounds(aA,aB)
-return aa.SoundManager:Configure(aB)
+function aa.ConfigureSounds(aC,aD)
+return aa.SoundManager:Configure(aD)
 end
 
-function aa.SetSoundEnabled(aA,aB)
-return aa.SoundManager:SetEnabled(aB)
+function aa.SetSoundEnabled(aC,aD)
+return aa.SoundManager:SetEnabled(aD)
 end
 
-function aa.SetSoundPreset(aA,aB)
-return aa.SoundManager:SetPreset(aB)
+function aa.SetSoundPreset(aC,aD)
+return aa.SoundManager:SetPreset(aD)
 end
 
-function aa.SetSoundVolume(aA,aB)
-return aa.SoundManager:SetVolume(aB)
+function aa.SetSoundVolume(aC,aD)
+return aa.SoundManager:SetVolume(aD)
 end
 
-function aa.SetSoundPitch(aA,aB)
-return aa.SoundManager:SetPitch(aB)
+function aa.SetSoundPitch(aC,aD)
+return aa.SoundManager:SetPitch(aD)
 end
 
-function aa.SetSoundForEvent(aA,aB,aC,aD)
-return aa.SoundManager:SetSoundForEvent(aB,aC,aD)
+function aa.SetSoundForEvent(aC,aD,b,d)
+return aa.SoundManager:SetSoundForEvent(aD,b,d)
 end
 
-function aa.ClearSoundOverride(aA,aB)
-return aa.SoundManager:ClearSoundOverride(aB)
+function aa.ClearSoundOverride(aC,aD)
+return aa.SoundManager:ClearSoundOverride(aD)
 end
 
-function aa.ClearSoundOverrides(aA)
+function aa.ClearSoundOverrides(aC)
 return aa.SoundManager:ClearSoundOverrides()
 end
 
-function aa.PlaySound(aA,aB,aC)
-return aa.SoundManager:Play(aB,aC)
+function aa.PlaySound(aC,aD,b)
+return aa.SoundManager:Play(aD,b)
 end
 
-function aa.PreviewSound(aA,aB,aC)
-return aa.SoundManager:Preview(aB,aC)
+function aa.PreviewSound(aC,aD,b)
+return aa.SoundManager:Preview(aD,b)
 end
 
-function aa.GetSoundConfig(aA)
+function aa.GetSoundConfig(aC)
 return aa.SoundManager:GetConfig()
 end
 
-function aa.GetSoundEvents(aA)
+function aa.GetSoundEvents(aC)
 return aa.SoundManager:GetEvents()
 end
 
-function aa.GetSoundPresets(aA)
+function aa.GetSoundPresets(aC)
 return aa.SoundManager:GetPresetNames()
 end
 
-function aa.GetSoundNames(aA)
+function aa.GetSoundNames(aC)
 return aa.SoundManager:GetSoundNames()
 end
 
-function aa.SetFont(aA,aB)
-as.UpdateFont(aB)
+function aa.SetFont(aC,aD)
+as.UpdateFont(aD)
 end
 
-function aa.OnThemeChange(aA,aB)
-aa.OnThemeChangeFunction=aB
+function aa.OnThemeChange(aC,aD)
+aa.OnThemeChangeFunction=aD
 end
 
-function aa.AddTheme(aA,aB)
-aa.Themes[aB.Name]=aB
-return aB
+function aa.AddTheme(aC,aD)
+aa.Themes[aD.Name]=aD
+return aD
 end
 
-function aa.SetTheme(aA,aB)
-if aa.Themes[aB]then
-aa.Theme=aa.Themes[aB]
-as.SetTheme(aa.Themes[aB])
+function aa.SetTheme(aC,aD)
+if aa.Themes[aD]then
+aa.Theme=aa.Themes[aD]
+as.SetTheme(aa.Themes[aD])
 
 if aa.OnThemeChangeFunction then
-aa.OnThemeChangeFunction(aB)
+aa.OnThemeChangeFunction(aD)
 end
 
-return aa.Themes[aB]
+return aa.Themes[aD]
 end
 return nil
 end
 
-function aa.GetThemes(aA)
+function aa.GetThemes(aC)
 return aa.Themes
 end
-function aa.GetCurrentTheme(aA)
+function aa.GetCurrentTheme(aC)
 return aa.Theme.Name
 end
-function aa.GetTransparency(aA)
+function aa.GetTransparency(aC)
 return aa.Transparent or false
 end
-function aa.GetWindowSize(aA)
+function aa.GetWindowSize(aC)
 return aa.Window.UIElements.Main.Size
 end
-function aa.Localization(aA,aB)
-return aa.LocalizationModule:New(aB,as)
+function aa.Localization(aC,aD)
+return aa.LocalizationModule:New(aD,as)
 end
 
-function aa.SetLanguage(aA,aB)
+function aa.SetLanguage(aC,aD)
 if as.Localization then
-return as.SetLanguage(aB)
+return as.SetLanguage(aD)
 end
 return false
 end
 
-function aa.ToggleAcrylic(aA,aB)
+function aa.ToggleAcrylic(aC,aD)
 if aa.Window and aa.Window.AcrylicPaint and aa.Window.AcrylicPaint.Model then
-aa.Window.Acrylic=aB
-aa.Window.AcrylicPaint.Model.Transparency=aB and 0.98 or 1
-if aB then
+aa.Window.Acrylic=aD
+aa.Window.AcrylicPaint.Model.Transparency=aD and 0.98 or 1
+if aD then
 au.Enable()
 else
 au.Disable()
@@ -16101,56 +16120,56 @@ end
 end
 end
 
-function aa.Gradient(aA,aB,aC)
-local aD={}
-local b={}
+function aa.Gradient(aC,aD,b)
+local d={}
+local f={}
 
-for d,f in next,aB do
-local g=tonumber(d)
-if g then
-g=math.clamp(g/100,0,1)
+for g,h in next,aD do
+local i=tonumber(g)
+if i then
+i=math.clamp(i/100,0,1)
 
-local h=f.Color
-if typeof(h)=="string"and string.sub(h,1,1)=="#"then
-h=Color3.fromHex(h)
+local l=h.Color
+if typeof(l)=="string"and string.sub(l,1,1)=="#"then
+l=Color3.fromHex(l)
 end
 
-local i=f.Transparency or 0
+local m=h.Transparency or 0
 
-table.insert(aD,ColorSequenceKeypoint.new(g,h))
-table.insert(b,NumberSequenceKeypoint.new(g,i))
+table.insert(d,ColorSequenceKeypoint.new(i,l))
+table.insert(f,NumberSequenceKeypoint.new(i,m))
 end
 end
 
-table.sort(aD,function(d,f)
-return d.Time<f.Time
+table.sort(d,function(g,h)
+return g.Time<h.Time
 end)
-table.sort(b,function(d,f)
-return d.Time<f.Time
+table.sort(f,function(g,h)
+return g.Time<h.Time
 end)
 
-if#aD<2 then
-table.insert(aD,ColorSequenceKeypoint.new(1,aD[1].Value))
-table.insert(b,NumberSequenceKeypoint.new(1,b[1].Value))
+if#d<2 then
+table.insert(d,ColorSequenceKeypoint.new(1,d[1].Value))
+table.insert(f,NumberSequenceKeypoint.new(1,f[1].Value))
 end
 
-local d={
-Color=ColorSequence.new(aD),
-Transparency=NumberSequence.new(b),
+local g={
+Color=ColorSequence.new(d),
+Transparency=NumberSequence.new(f),
 }
 
-if aC then
-for f,g in pairs(aC)do
-d[f]=g
+if b then
+for h,i in pairs(b)do
+g[h]=i
 end
 end
 
-return d
+return g
 end
 
-function aa.Popup(aA,aB)
-aB.WindUI=aa
-return a.load'v'.new(aB,aa.ScreenGui.Popups)
+function aa.Popup(aC,aD)
+aD.WindUI=aa
+return a.load'v'.new(aD,aa.ScreenGui.Popups)
 end
 
 aa.Themes=a.load'w'(aa,as)
@@ -16229,83 +16248,83 @@ as.Themes=aa.Themes
 aa:SetTheme"Gui Dark"
 aa:SetLanguage(as.Language)
 
-function aa.CreateWindow(aA,aB)
-local aC=a.load'af'
+function aa.CreateWindow(aC,aD)
+local b=a.load'af'
 
 if not am:IsStudio()and writefile then
 if not isfolder"Gui"then
 makefolder"Gui"
 end
-if aB.Folder then
-makefolder(aB.Folder)
+if aD.Folder then
+makefolder(aD.Folder)
 else
-makefolder(aB.Title)
+makefolder(aD.Title)
 end
 end
 
-aB.WindUI=aa
-aB.Window=aa.Window
-aB.Parent=aa.ScreenGui.Window
+aD.WindUI=aa
+aD.Window=aa.Window
+aD.Parent=aa.ScreenGui.Window
 
 if aa.Window then
 warn"[Gui] You cannot create more than one window"
 return
 end
 
-local aD=aB.Sounds
-if aD==nil then
-aD={}
+local d=aD.Sounds
+if d==nil then
+d={}
 end
-if typeof(aD)=="table"and aD.Folder==nil then
-aD.Folder=aB.Folder or aB.Title or"VantaUI"
+if typeof(d)=="table"and d.Folder==nil then
+d.Folder=aD.Folder or aD.Title or"VantaUI"
 end
-aa:ConfigureSounds(aD)
+aa:ConfigureSounds(d)
 
-local b=true
+local f=true
 
-local d=aa.Themes[aB.Theme or"Gui Dark"]
+local g=aa.Themes[aD.Theme or"Gui Dark"]
 
 
-as.SetTheme(d)
+as.SetTheme(g)
 
-local f=gethwid or function()
+local h=gethwid or function()
 return ak.LocalPlayer.UserId
 end
 
-local g=f()
+local i=h()
 
-if aB.KeySystem then
-b=false
+if aD.KeySystem then
+f=false
 
 local function loadKeysystem()
-ar.new(aB,g,function(h)
-b=h
+ar.new(aD,i,function(l)
+f=l
 end)
 end
 
-local h=(aB.Folder or"Temp").."/"..g..".key"
+local l=(aD.Folder or"Temp").."/"..i..".key"
 
-if aB.KeySystem.KeyValidator then
-if aB.KeySystem.SaveKey and isfile(h)then
-local i=readfile(h)
-local l=aB.KeySystem.KeyValidator(i)
+if aD.KeySystem.KeyValidator then
+if aD.KeySystem.SaveKey and isfile(l)then
+local m=readfile(l)
+local p=aD.KeySystem.KeyValidator(m)
 
-if l then
-b=true
+if p then
+f=true
 else
 loadKeysystem()
 end
 else
 loadKeysystem()
 end
-elseif not aB.KeySystem.API then
-if aB.KeySystem.SaveKey and isfile(h)then
-local i=readfile(h)
-local l=(type(aB.KeySystem.Key)=="table")and table.find(aB.KeySystem.Key,i)
-or tostring(aB.KeySystem.Key)==tostring(i)
+elseif not aD.KeySystem.API then
+if aD.KeySystem.SaveKey and isfile(l)then
+local m=readfile(l)
+local p=(type(aD.KeySystem.Key)=="table")and table.find(aD.KeySystem.Key,m)
+or tostring(aD.KeySystem.Key)==tostring(m)
 
-if l then
-b=true
+if p then
+f=true
 else
 loadKeysystem()
 end
@@ -16313,29 +16332,29 @@ else
 loadKeysystem()
 end
 else
-if isfile(h)then
-local i=readfile(h)
-local l=false
+if isfile(l)then
+local m=readfile(l)
+local p=false
 
-for m,p in next,aB.KeySystem.API do
-local r=aa.Services[p.Type]
-if r then
-local u={}
-for v,x in next,r.Args do
-table.insert(u,p[x])
+for r,u in next,aD.KeySystem.API do
+local v=aa.Services[u.Type]
+if v then
+local x={}
+for z,A in next,v.Args do
+table.insert(x,u[A])
 end
 
-local v=r.New(table.unpack(u))
-local x=v.Verify(i)
-if x then
-l=true
+local z=v.New(table.unpack(x))
+local A=z.Verify(m)
+if A then
+p=true
 break
 end
 end
 end
 
-b=l
-if not l then
+f=p
+if not p then
 loadKeysystem()
 end
 else
@@ -16345,15 +16364,15 @@ end
 
 repeat
 task.wait()
-until b
+until f
 end
 
-local h=aC(aB)
+local l=b(aD)
 
-aa.Transparent=aB.Transparent
-aa.Window=h
+aa.Transparent=aD.Transparent
+aa.Window=l
 
-if aB.Acrylic then
+if aD.Acrylic then
 au.init()
 end
 
@@ -16369,7 +16388,7 @@ end
 
 
 
-return h
+return l
 end
 
 return aa
